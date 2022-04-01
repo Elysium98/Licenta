@@ -7,8 +7,6 @@ namespace BooksAPI.Data
 {
     public class AppDBContext : IdentityDbContext<User, IdentityRole, string>
     {
-        public AppDBContext(DbContextOptions options) : base(options)
-        {
-        }
+        public AppDBContext(DbContextOptions options) : base(options) { }
     }
 }

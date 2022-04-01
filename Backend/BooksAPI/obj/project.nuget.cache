@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5l+2JudQ8nHEEtXzuS288Q10aWVjw1uxBV2m5xw9AiByRHoDjrC3mLTo70h45GWJ0uEPZRM2zvyHYg7rxO4a5Q==",
+  "dgSpecHash": "BWYMpz17ydRn7E7UZWlxhCh9oYvk1WOsBo9Hd9RrvK3q1DR5JdniO5E8rCzLIs5/LBsdH5/WSRtiRY6FvM8mEw==",
   "success": true,
-  "projectFilePath": "D:\\Facultate\\Licenta\\Backend BUN\\BooksAPI\\BooksAPI\\BooksAPI.csproj",
+  "projectFilePath": "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Paul\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Paul\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.3\\microsoft.aspnetcore.authentication.jwtbearer.6.0.3.nupkg.sha512",
