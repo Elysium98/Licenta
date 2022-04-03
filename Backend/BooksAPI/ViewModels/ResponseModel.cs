@@ -8,11 +8,11 @@ namespace BooksAPI.ViewModels
         {
             ResponseCode = responseCode;
             ResponseMessage = responseMessage;
-            DateSet = dataSet;
+            DataSet = dataSet;
         }
 
         public ResponseCode ResponseCode { get; set; }
         public string ResponseMessage { get; set; }
-        public object DateSet { get; set; }
+        public object DataSet { get; set; }
     }
 }
