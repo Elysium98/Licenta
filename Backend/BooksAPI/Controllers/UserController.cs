@@ -1,5 +1,6 @@
 ﻿using BooksAPI.Data.Entities;
 using BooksAPI.Enums;
+using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using BooksAPI.ViewModels.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 
 namespace BooksAPI.Controllers
 {
@@ -28,12 +30,17 @@ namespace BooksAPI.Controllers
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        private readonly IConfiguration _config;
+        private readonly IEmailSender _emailSender;
+
         public UserController(
             ILogger<UserController> logger,
             UserManager<User> userManager,
             SignInManager<User> signManager,
             IOptions<JWTConfig> jwtConfig,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration config,
+            IEmailSender emailSender
         )
         {
             _userManager = userManager;
@@ -41,8 +48,13 @@ namespace BooksAPI.Controllers
             _roleManager = roleManager;
             _logger = logger;
             _jWTConfig = jwtConfig.Value;
+            _config = config;
+            _emailSender = emailSender;
         }
 
+        ///<summary>
+        ///Register
+        ///</summary>
         [HttpPost("register")]
         public async Task<object> RegisterUser([FromBody] RegisterModel model)
         {
@@ -66,10 +78,26 @@ namespace BooksAPI.Controllers
                 if (result.Succeeded)
                 {
                     var tempUser = await _userManager.FindByEmailAsync(model.Email);
+
+                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+
+                    //var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
+                    //var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+                    //query["token"] = token;
+                    //query["userid"] = tempUser.Id;
+                    //uriBuilder.Query = query.ToString();
+                    //var urlString = uriBuilder.ToString();
+
+                    //var senderEmail = _config["ReturnPaths:SenderEmail"];
+
+                    //await _emailSender.SendEmailAsync(senderEmail, tempUser.Email, "Confirm your email address", urlString);
+
+
                     await _userManager.AddToRoleAsync(tempUser, model.Role);
 
                     return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "User has been Registered", null)
+                        new ResponseModel(ResponseCode.OK, "User has been registered", null)
                     );
                 }
                 return await Task.FromResult(
@@ -89,9 +117,9 @@ namespace BooksAPI.Controllers
         }
 
         ///<summary>
-        ///Get All Users
+        ///Gets all users
         ///</summary>
-        //       [Authorize(Roles ="Admin")]
+        //     [Authorize(Roles = "User")]
         [HttpGet()]
         public async Task<object> GetUsers()
         {
@@ -102,7 +130,6 @@ namespace BooksAPI.Controllers
                 foreach (var user in users)
                 {
                     var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-
                     allUserDTO.Add(
                         new UserDTO(
                             user.FullName,
@@ -124,7 +151,27 @@ namespace BooksAPI.Controllers
         }
 
         ///<summary>
-        ///Get All Users by Role
+        ///Get a user by id
+        ///</summary>
+        [HttpGet("user/{id}")]
+        public async Task<object> GetUser(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", user));
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(
+                    new ResponseModel(ResponseCode.Error, ex.Message, null)
+                );
+            }
+        }
+
+        ///<summary>
+        ///Gets all users by role
         ///</summary>
 
         [HttpGet("{role}", Name = "getUsersByRole")]
@@ -160,28 +207,11 @@ namespace BooksAPI.Controllers
             }
         }
 
-        [HttpGet("getRoles")]
-        public async Task<object> GetRoles()
-        {
-            try
-            {
-                var role = _roleManager.Roles.Select(x => x).ToList();
-
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", role));
-            }
-            catch (Exception ex)
-            {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
-            }
-        }
-
         ///<summary>
-        ///To login into App
+        ///Login
         ///</summary>
         ///<param name="model"></param>
-        //
+
         [HttpPost("login")]
         public async Task<object> Login([FromBody] LoginModel model)
         {
@@ -224,39 +254,20 @@ namespace BooksAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("addRole")]
-        public async Task<object> AddRole([FromBody] RoleModel model)
+        ///<summary>
+        ///Delete a user by id
+        ///</summary>
+        [HttpDelete("{id}")]
+        public async Task<object> DeleteUser(string Id)
         {
+            var user = await _userManager.FindByIdAsync(Id);
+
             try
             {
-                if (model == null || model.Role == "")
-                {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.Error, "parameters are missing", null)
-                    );
-                }
-                if (await _roleManager.RoleExistsAsync(model.Role))
-                {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "Role already exist", null)
-                    );
-                }
-                var role = new IdentityRole();
-                role.Name = model.Role;
-                var result = await _roleManager.CreateAsync(role);
-                if (result.Succeeded)
-                {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "Role added successfully", null)
-                    );
-                }
+                var result = await _userManager.DeleteAsync(user);
+
                 return await Task.FromResult(
-                    new ResponseModel(
-                        ResponseCode.Error,
-                        "something went wrong please try again later",
-                        null
-                    )
+                    new ResponseModel(ResponseCode.OK, "User deleted successfully", null)
                 );
             }
             catch (Exception ex)
@@ -295,6 +306,20 @@ namespace BooksAPI.Controllers
             };
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             return jwtTokenHandler.WriteToken(token);
+        }
+
+        [HttpPost("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            var result = await _userManager.ConfirmEmailAsync(user, model.Token);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

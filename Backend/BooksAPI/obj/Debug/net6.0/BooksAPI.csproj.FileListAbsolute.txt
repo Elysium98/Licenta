@@ -197,3 +197,5 @@ D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\obj\Debug\net6.0\refint\Boo
 D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\obj\Debug\net6.0\BooksAPI.pdb
 D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\obj\Debug\net6.0\BooksAPI.genruntimeconfig.cache
 D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\obj\Debug\net6.0\ref\BooksAPI.dll
+D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\bin\Debug\net6.0\BooksAPI.xml
+D:\Facultate\Licenta_Github\Licenta\Backend\BooksAPI\obj\Debug\net6.0\BooksAPI.xml

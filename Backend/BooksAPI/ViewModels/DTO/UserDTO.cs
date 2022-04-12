@@ -2,7 +2,13 @@
 {
     public class UserDTO
     {
-        public UserDTO(string fullName, string email, string userName, DateTime dateCreated, string role)
+        public UserDTO(
+            string fullName,
+            string email,
+            string userName,
+            DateTime dateCreated,
+            string role
+        )
         {
             FullName = fullName;
             Email = email;
@@ -16,7 +22,6 @@
         public string UserName { get; set; }
         public DateTime DateCreated { get; set; }
         public string Token { get; set; }
-
-       public string Role { get; set; }
+        public string Role { get; set; }
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BooksAPI</name>
+    </assembly>
+    <members>
+        <member name="M:BooksAPI.Controllers.BookController.GetBooks">
+            <summary>
+            Gets all books
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.GetBookById(System.Guid)">
+            <summary>
+            Gets a book with a certain id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.CreateBook(BooksAPI.Models.Book)">
+            <summary>
+            Add a book
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.Book)">
+            <summary>
+            Update the book
+            </summary>
+            <param name="id"></param>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.DeleteBook(System.Guid)">
+            <summary>
+            Delete the book
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.RoleController.GetRoles">
+            <summary>
+            Get all roles
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.RoleController.GetRole(System.String)">
+            <summary>
+            Get a role by id
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.RoleController.DeleteRole(System.String)">
+            <summary>
+            Delete a role by id
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.RoleController.AddRole(BooksAPI.ViewModels.RoleModel)">
+            <summary>
+            Add a role
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.RegisterUser(BooksAPI.ViewModels.RegisterModel)">
+            <summary>
+            Register
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.GetUsers">
+            <summary>
+            Gets all users
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.GetUser(System.String)">
+            <summary>
+            Get a user by id
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.GetUsersByRole(System.String)">
+            <summary>
+            Gets all users by role
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.Login(BooksAPI.ViewModels.LoginModel)">
+            <summary>
+            Login
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.DeleteUser(System.String)">
+            <summary>
+            Delete a user by id
+            </summary>
+        </member>
+    </members>
+</doc>

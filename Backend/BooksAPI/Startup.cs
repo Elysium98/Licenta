@@ -1,5 +1,7 @@
 ﻿using BooksAPI.Data;
 using BooksAPI.Data.Entities;
+using BooksAPI.Services;
+using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +39,10 @@ namespace BooksAPI
         {
             services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
 
+            services.AddSingleton<IEmailSender, EmailSender>();
+
+            services.AddTransient<IBookService, BookService>();
+
             services.AddDbContext<AppDBContext>(
                 opt =>
                 {
@@ -44,8 +51,12 @@ namespace BooksAPI
             );
 
             services
-                .AddIdentity<User, IdentityRole>(opt => { })
-                .AddEntityFrameworkStores<AppDBContext>();
+                .AddIdentity<User, IdentityRole>(opt => {
+
+          //       opt.SignIn.RequireConfirmedEmail = true;
+                })
+                .AddEntityFrameworkStores<AppDBContext>()
+                .AddDefaultTokenProviders();
 
             services
                 .AddAuthentication(
@@ -75,10 +86,45 @@ namespace BooksAPI
                 );
 
             services.AddControllers();
+
+
+
+            
             services.AddSwaggerGen(
                 c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BooksAPI", Version = "v1" });
+                    c.AddSecurityDefinition(
+                        "Bearer",
+                        new OpenApiSecurityScheme
+                        {
+                            In = ParameterLocation.Header,
+                            Description = "Please insert token",
+                            Name = "Authorization",
+                            Type = SecuritySchemeType.Http,
+                            BearerFormat = "JWT",
+                            Scheme = "bearer"
+                        }
+                    );
+                    c.AddSecurityRequirement(
+                        new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    }
+                                },
+                                new string[] { }
+                            },
+                        }
+                    );
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
                 }
             );
 
