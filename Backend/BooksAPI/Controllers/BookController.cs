@@ -2,6 +2,7 @@
 using BooksAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 namespace BooksAPI.Controllers
 {
@@ -11,10 +12,19 @@ namespace BooksAPI.Controllers
     {
         private IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public static IWebHostEnvironment _webHostEnviroment;
+
+        public BookController(IBookService bookService, IWebHostEnvironment webHostEnvironment)
         {
             _bookService = bookService;
+
+            _webHostEnviroment = webHostEnvironment;
         }
+
+
+ 
+    
+
 
         /// <summary>
         /// Gets all books
@@ -56,15 +66,52 @@ namespace BooksAPI.Controllers
         /// <returns></returns>
   //      [Authorize(Roles = "User")]
         [HttpPost()]
-        public async Task<IActionResult> CreateBook([FromBody] Book book)
+        public async Task<IActionResult> CreateBook( Book book)
         {
             if (book == null)
             {
                 return BadRequest("Book cannot be null");
             }
-            await _bookService.Create(book);
 
+            await _bookService.Create(book);
+            
             return Ok(book);
+        }
+
+        [HttpPost("saveFile")]
+        public async Task<IActionResult> SaveStudentWithPhoto()
+        {
+            try
+            {
+
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
+                {
+
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         /// <summary>

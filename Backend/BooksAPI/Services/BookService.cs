@@ -1,6 +1,7 @@
 ﻿using BooksAPI.Data;
 using BooksAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 
 namespace BooksAPI.Services
 {
@@ -16,9 +17,13 @@ namespace BooksAPI.Services
         public async Task<bool> Create(Book model)
         {
             _context.Books.Add(model);
+            {
+               
+             
 
-            await _context.SaveChangesAsync();
-            return true;
+                await _context.SaveChangesAsync();
+                return true;
+            }
         }
 
         public async Task<bool> Delete(Guid id)
