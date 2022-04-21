@@ -1,5 +1,5 @@
 ﻿using BooksAPI.Data.Entities;
-using BooksAPI.Enums;
+using BooksAPI.Services;
 using BooksAPI.ViewModels;
 using BooksAPI.ViewModels.DTO;
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +14,12 @@ namespace BooksAPI.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public RoleController(
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager
+        )
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -26,19 +29,17 @@ namespace BooksAPI.Controllers
         ///Get all roles
         ///</summary>
         [HttpGet()]
-        public async Task<object> GetRoles()
+        public async Task<IActionResult> GetRoles()
         {
             try
             {
                 var roles = _roleManager.Roles.ToList();
 
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", roles));
+                return Ok(roles);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -46,19 +47,17 @@ namespace BooksAPI.Controllers
         ///Get a role by id
         ///</summary>
         [HttpGet("{id}")]
-        public async Task<object> GetRole(string id)
+        public async Task<IActionResult> GetRole(string id)
         {
             try
             {
                 var role = await _roleManager.FindByIdAsync(id);
 
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", role));
+                return Ok(role);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -66,7 +65,7 @@ namespace BooksAPI.Controllers
         ///Delete a role by id
         ///</summary>
         [HttpDelete("{id}")]
-        public async Task<object> DeleteRole(string id)
+        public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
 
@@ -74,15 +73,11 @@ namespace BooksAPI.Controllers
             {
                 var result = await _roleManager.DeleteAsync(role);
 
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.OK, "Role deleted successfully", null)
-                );
+                return Ok("Role deleted successfully");
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -91,44 +86,30 @@ namespace BooksAPI.Controllers
         ///</summary>
         //   [Authorize(Roles = "Admin")]
         [HttpPost()]
-        public async Task<object> AddRole([FromBody] RoleModel model)
+        public async Task<IActionResult> AddRole([FromBody] RoleModel model)
         {
             try
             {
-                if (model == null || model.Role == "")
+                if (model == null || model.Name == "")
                 {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.Error, "Parameters are missing", null)
-                    );
+                    return BadRequest("Parameters are missing");
                 }
-                if (await _roleManager.RoleExistsAsync(model.Role))
+                if (await _roleManager.RoleExistsAsync(model.Name))
                 {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "Role already exist", null)
-                    );
+                    return BadRequest("Role already exist");
                 }
                 var role = new IdentityRole();
-                role.Name = model.Role;
+                role.Name = model.Name;
                 var result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "Role added successfully", null)
-                    );
+                    return Ok("Role added successfully");
                 }
-                return await Task.FromResult(
-                    new ResponseModel(
-                        ResponseCode.Error,
-                        "Something went wrong please try again",
-                        null
-                    )
-                );
+                return BadRequest("Something went wrong please try again");
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 

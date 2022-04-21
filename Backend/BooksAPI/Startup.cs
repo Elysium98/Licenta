@@ -1,6 +1,7 @@
 ﻿using BooksAPI.Data;
 using BooksAPI.Data.Entities;
 using BooksAPI.Services;
+using BooksAPI.Services.Category;
 using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,6 +46,8 @@ namespace BooksAPI
 
             services.AddTransient<IBookService, BookService>();
 
+            services.AddTransient<ICategoryService, CategoryService>();
+
             services.AddDbContext<AppDBContext>(
                 opt =>
                 {
@@ -53,10 +56,12 @@ namespace BooksAPI
             );
 
             services
-                .AddIdentity<User, IdentityRole>(opt => {
-
-          //       opt.SignIn.RequireConfirmedEmail = true;
-                })
+                .AddIdentity<ApplicationUser, IdentityRole>(
+                    opt =>
+                    {
+                        //       opt.SignIn.RequireConfirmedEmail = true;
+                    }
+                )
                 .AddEntityFrameworkStores<AppDBContext>()
                 .AddDefaultTokenProviders();
 
@@ -87,13 +92,8 @@ namespace BooksAPI
                     }
                 );
 
-   
-
             services.AddControllers();
 
-
-
-            
             services.AddSwaggerGen(
                 c =>
                 {
@@ -162,8 +162,6 @@ namespace BooksAPI
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-       
 
             app.UseEndpoints(
                 endpoints =>

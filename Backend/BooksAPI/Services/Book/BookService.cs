@@ -8,19 +8,16 @@ namespace BooksAPI.Services
     public class BookService : IBookService
     {
         private readonly AppDBContext _context;
+
         public BookService(AppDBContext context)
         {
             _context = context;
-
         }
 
-        public async Task<bool> Create(Book model)
+        public async Task<bool> Create(BookModel model)
         {
             _context.Books.Add(model);
             {
-               
-             
-
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -28,34 +25,43 @@ namespace BooksAPI.Services
 
         public async Task<bool> Delete(Guid id)
         {
-            var book =   await _context.Books.FindAsync(id);
+            var book = await _context.Books.FindAsync(id);
 
+            if (book == null)
+            {
+                return false;
+            }
 
-         var result =   _context.Books.Remove(book);
-     
-             await _context.SaveChangesAsync();
+            _context.Books.Remove(book);
+
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<Book> Get(Guid id)
+        public async Task<BookModel> Get(Guid id)
         {
-    
-                var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books.FindAsync(id);
 
-                return book;
-            
+            return book;
         }
 
-        public async Task<List<Book>> GetAll()
+        public async Task<List<BookModel>> GetAll()
         {
-            var result = await _context.Books.ToListAsync();
+            var result = await _context.Books
+                .Include(x => x.Category)
+                .Include(y => y.User)
+                .ToListAsync();
 
             return result;
         }
 
-        public async Task<bool> Update(Guid id, Book model)
+        public async Task<bool> Update(Guid id, BookModel model)
         {
+            if (model.Id == null)
+            {
+                return false;
+            }
             _context.Entry(model).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();

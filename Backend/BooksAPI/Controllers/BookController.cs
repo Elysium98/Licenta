@@ -21,11 +21,6 @@ namespace BooksAPI.Controllers
             _webHostEnviroment = webHostEnvironment;
         }
 
-
- 
-    
-
-
         /// <summary>
         /// Gets all books
         /// </summary>
@@ -33,14 +28,20 @@ namespace BooksAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
-            List<Book> books = await _bookService.GetAll();
-            if (books.Count == 0)
+            try
             {
-                return NoContent();
+                List<BookModel> books = await _bookService.GetAll();
+                if (books.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(books);
             }
-            return Ok(books);
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
-
 
         /// <summary>
         /// Gets a book with a certain id
@@ -50,32 +51,46 @@ namespace BooksAPI.Controllers
         [HttpGet("{id}", Name = "GetBookById")]
         public async Task<IActionResult> GetBookById(Guid id)
         {
-            Book foundBook = await _bookService.Get(id);
-            if (foundBook == null)
+            try
             {
-                return NotFound();
-            }
-            return Ok(foundBook);
-        }
+                BookModel foundBook = await _bookService.Get(id);
+                if (foundBook == null)
+                {
+                    return NotFound();
+                }
 
+                return Ok(foundBook);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         /// <summary>
         /// Add a book
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-  //      [Authorize(Roles = "User")]
+        //      [Authorize(Roles = "User")]
         [HttpPost()]
-        public async Task<IActionResult> CreateBook( Book book)
+        public async Task<IActionResult> CreateBook(BookModel book)
         {
-            if (book == null)
+            try
             {
-                return BadRequest("Book cannot be null");
-            }
+                if (book == null)
+                {
+                    return BadRequest("Book cannot be null");
+                }
 
-            await _bookService.Create(book);
-            
-            return Ok(book);
+                await _bookService.Create(book);
+
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost("saveFile")]
@@ -83,7 +98,6 @@ namespace BooksAPI.Controllers
         {
             try
             {
-
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
                 var folderName = Path.Combine("Resources", "Images");
@@ -91,15 +105,15 @@ namespace BooksAPI.Controllers
 
                 if (file.Length > 0)
                 {
-
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName.Trim('"');
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
-
                     }
                     return Ok(new { dbPath });
                 }
@@ -121,19 +135,25 @@ namespace BooksAPI.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] Book book)
+        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookModel book)
         {
-            if (book == null)
+            try
             {
-                return BadRequest();
+                if (book == null)
+                {
+                    return BadRequest();
+                }
+                if (!await _bookService.Update(id, book))
+                {
+                    return NotFound();
+                }
+                return Ok();
             }
-            if (!await _bookService.Update(id, book))
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, ex.Message);
             }
-            return Ok();
         }
-
 
         /// <summary>
         /// Delete the book
@@ -143,11 +163,18 @@ namespace BooksAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(Guid id)
         {
-            if (!await _bookService.Delete(id))
+            try
             {
-                return NotFound();
+                if (!await _bookService.Delete(id))
+                {
+                    return NotFound();
+                }
+                return Ok("Book deleted successfully");
             }
-            return Ok();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

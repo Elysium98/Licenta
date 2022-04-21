@@ -17,14 +17,14 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:BooksAPI.Controllers.BookController.CreateBook(BooksAPI.Models.Book)">
+        <member name="M:BooksAPI.Controllers.BookController.CreateBook(BooksAPI.Models.BookModel)">
             <summary>
             Add a book
             </summary>
             <param name="book"></param>
             <returns></returns>
         </member>
-        <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.Book)">
+        <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.BookModel)">
             <summary>
             Update the book
             </summary>
@@ -35,6 +35,41 @@
         <member name="M:BooksAPI.Controllers.BookController.DeleteBook(System.Guid)">
             <summary>
             Delete the book
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.GetCategories">
+            <summary>
+            Gets all books
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.GetCategoryById(System.Guid)">
+            <summary>
+            Gets a book with a certain id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.CreateCategory(BooksAPI.Models.CategoryModel)">
+            <summary>
+            Add a category
+            </summary>
+            <param name="category"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.UpdateCategory(System.Guid,BooksAPI.Models.CategoryModel)">
+            <summary>
+            Update the category
+            </summary>
+            <param name="id"></param>
+            <param name="category"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.DeleteCategory(System.Guid)">
+            <summary>
+            Delete the category
             </summary>
             <param name="id"></param>
             <returns></returns>

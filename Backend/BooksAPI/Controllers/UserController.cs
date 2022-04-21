@@ -1,5 +1,4 @@
 ﻿using BooksAPI.Data.Entities;
-using BooksAPI.Enums;
 using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using BooksAPI.ViewModels.DTO;
@@ -22,9 +21,9 @@ namespace BooksAPI.Controllers
     {
         private readonly ILogger<UserController> _logger;
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         private readonly JWTConfig _jWTConfig;
 
@@ -35,8 +34,8 @@ namespace BooksAPI.Controllers
 
         public UserController(
             ILogger<UserController> logger,
-            UserManager<User> userManager,
-            SignInManager<User> signManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signManager,
             IOptions<JWTConfig> jwtConfig,
             RoleManager<IdentityRole> roleManager,
             IConfiguration config,
@@ -56,17 +55,15 @@ namespace BooksAPI.Controllers
         ///Register
         ///</summary>
         [HttpPost("register")]
-        public async Task<object> RegisterUser([FromBody] RegisterModel model)
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterModel model)
         {
             try
             {
                 if (!await _roleManager.RoleExistsAsync(model.Role))
                 {
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.Error, "Role does not exist", null)
-                    );
+                    return BadRequest("Role does not exist");
                 }
-                var user = new User()
+                var user = new ApplicationUser()
                 {
                     FullName = model.FullName,
                     Email = model.Email,
@@ -96,42 +93,34 @@ namespace BooksAPI.Controllers
 
                     await _userManager.AddToRoleAsync(tempUser, model.Role);
 
-                    return await Task.FromResult(
-                        new ResponseModel(ResponseCode.OK, "User has been registered", null)
-                    );
+                    return Ok(tempUser);
                 }
-                return await Task.FromResult(
-                    new ResponseModel(
-                        ResponseCode.Error,
-                        "",
-                        result.Errors.Select(x => x.Description).ToArray()
-                    )
-                );
+                return BadRequest();
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return BadRequest(ex.Message);
             }
         }
 
         ///<summary>
         ///Gets all users
         ///</summary>
-        //     [Authorize(Roles = "User")]
+        // [Authorize(Roles = "User")]
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet()]
-        public async Task<object> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             try
             {
-                List<UserDTO> allUserDTO = new List<UserDTO>();
+                List<UserDTO> UserDTO = new List<UserDTO>();
                 var users = _userManager.Users.ToList();
                 foreach (var user in users)
                 {
                     var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-                    allUserDTO.Add(
+                    UserDTO.Add(
                         new UserDTO(
+                            user.Id,
                             user.FullName,
                             user.Email,
                             user.UserName,
@@ -140,13 +129,17 @@ namespace BooksAPI.Controllers
                         )
                     );
                 }
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", users));
+                if (UserDTO.Count == 0)
+                {
+                    return NoContent();
+                }
+                //  return await Task.FromResult(allUserDTO);
+                return Ok(UserDTO);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                // return await Task.FromResult(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -154,19 +147,22 @@ namespace BooksAPI.Controllers
         ///Get a user by id
         ///</summary>
         [HttpGet("user/{id}")]
-        public async Task<object> GetUser(string id)
+        public async Task<IActionResult> GetUser(string id)
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(id);
+                var foundUser = await _userManager.FindByIdAsync(id);
 
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", user));
+                if (foundUser == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(foundUser);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -188,6 +184,7 @@ namespace BooksAPI.Controllers
                     {
                         allUserDTO.Add(
                             new UserDTO(
+                                user.Id,
                                 user.FullName,
                                 user.Email,
                                 user.UserName,
@@ -197,13 +194,11 @@ namespace BooksAPI.Controllers
                         );
                     }
                 }
-                return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", allUserDTO));
+                return await Task.FromResult(allUserDTO);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -213,7 +208,7 @@ namespace BooksAPI.Controllers
         ///<param name="model"></param>
 
         [HttpPost("login")]
-        public async Task<object> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             try
             {
@@ -231,6 +226,7 @@ namespace BooksAPI.Controllers
                         var appUser = await _userManager.FindByEmailAsync(model.Email);
                         var role = (await _userManager.GetRolesAsync(appUser)).FirstOrDefault();
                         var user = new UserDTO(
+                            appUser.Id,
                             appUser.FullName,
                             appUser.Email,
                             appUser.UserName,
@@ -239,18 +235,14 @@ namespace BooksAPI.Controllers
                         );
                         user.Token = GenerateToken(appUser, role);
 
-                        return await Task.FromResult(new ResponseModel(ResponseCode.OK, "", user));
+                        return Ok(user);
                     }
                 }
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, "Invalid email or password", null)
-                );
+                return BadRequest("Invalid email or password");
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -258,44 +250,42 @@ namespace BooksAPI.Controllers
         ///Delete a user by id
         ///</summary>
         [HttpDelete("{id}")]
-        public async Task<object> DeleteUser(string Id)
+        public async Task<IActionResult> DeleteUser(string Id)
         {
             var user = await _userManager.FindByIdAsync(Id);
 
             try
             {
-                var result = await _userManager.DeleteAsync(user);
+                if (user == null)
+                {
+                    return BadRequest("User Id is null");
+                }
 
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.OK, "User deleted successfully", null)
-                );
+                await _userManager.DeleteAsync(user);
+
+                return Ok("User deleted successfully");
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(
-                    new ResponseModel(ResponseCode.Error, ex.Message, null)
-                );
+                return StatusCode(500, ex.Message);
             }
         }
 
-        private string GenerateToken(User user, string role)
+        private string GenerateToken(ApplicationUser user, string role)
         {
-            var claims = new List<System.Security.Claims.Claim>()
+            var claims = new List<Claim>()
             {
-                new System.Security.Claims.Claim(JwtRegisteredClaimNames.NameId, user.Id),
-                new System.Security.Claims.Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new System.Security.Claims.Claim(
-                    JwtRegisteredClaimNames.Jti,
-                    Guid.NewGuid().ToString()
-                ),
-                new System.Security.Claims.Claim(ClaimTypes.Role, role),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, role),
             };
 
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jWTConfig.Key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
