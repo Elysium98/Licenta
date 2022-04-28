@@ -1,0 +1,123 @@
+<mat-toolbar color="primary" class="sticky">
+  <!-- <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div>
+      <a class="app-logo">
+        <img id="logo" src="../../../assets/img/books.ico" routerLink="/home" />
+      </a>
+    </div>
+  
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+      <div class="search-bar">
+        <form class="search-form">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Caută după titlu, autor sau editură</mat-label>
+            <input
+              type="text"
+              placeholder="Titlu, Autor sau Editură"
+              aria-label="Number"
+              matInput
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete"> </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+  
+      <ul class="navigation-items">
+        <div>
+          <a id="acc-btn">
+            <mat-icon matSuffi x>perm_identity</mat-icon>
+            <span class="aligned-with-icon">Contul meu</span>
+          </a>
+        </div>
+        <div>
+          <button mat-raised-button class="book_btn" routerLink="/add-book">
+            Adauga carte
+          </button>
+        </div>
+      </ul>
+    </div> -->
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>
+    <a class="app-logo">
+      <img
+        id="logo"
+        src="../../../assets/img/books.ico"
+        routerLink="/home"
+      /> </a
+  ></span>
+  <!-- <span>My App</span> -->
+  <span class="example-spacer"></span>
+  <div class="search-bar">
+    <form class="search-form">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="searchedTitle(title.value)"
+      >
+        Search
+      </button>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Caută după titlu, autor sau editură</mat-label>
+        <input
+          #title
+          type="text"
+          placeholder="Titlu, Autor sau Editură"
+          aria-label="Number"
+          matInput
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto="matAutocomplete"> </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
+  <!-- <button
+    mat-raised-button
+    id="logout-btn"
+    *ngIf="isLoggedIn$ | async"
+    (click)="logout()"
+  >
+    Logout
+  </button> -->
+
+  <!-- <button mat-raised-button class="book_btn" routerLink="/add-book">
+    Adauga carte
+  </button> -->
+
+  <button mat-raised-button class="book_btn" routerLink="/add-book">
+    Cărți
+  </button>
+
+  <a (click)="openDialog()" *ngIf="!(isLoggedIn$ | async)">
+    <mat-icon class="account_btn" matSuffi x>perm_identity</mat-icon>
+  </a>
+
+  <a [matMenuTriggerFor]="menu" *ngIf="isLoggedIn$ | async">
+    <mat-icon class="account_btn" matSuffi x>perm_identity</mat-icon>
+    <!-- <span class="aligned-with-icon">Contul meu</span> -->
+  </a>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/user-profile">
+      <span>My profile</span>
+    </button>
+    <button mat-menu-item>
+      <span>History</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<!-- <div class="loader-container">
+  <mat-spinner *ngIf="isLoading$ | async" mode="indeterminate"> </mat-spinner>
+</div> -->

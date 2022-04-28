@@ -1,0 +1,135 @@
+// .register-form {
+//     font-family: sans-serif;
+//     width: 380px;
+//     height: 480px;
+//     z-index: 100 !important;
+//     background-size: cover;
+//     position: absolute;
+//     display: none;
+//     left: 34%;
+//   }
+
+// .form-box {
+//     // width: 380px;
+//     // height: 480px;
+//     // position: relative;
+//     // margin: 6% auto;
+//     // background: #fff;
+//     // padding: 5px;
+//     // overflow: hidden;
+//     // border: orange solid 9px;
+//     // border-style: outset;
+//   }
+
+// .button-box {
+//     width: 220px ;
+//     margin: 35px auto ;
+//     position: relative ;
+//     box-shadow: 0 0 20px 9px #ff61241f ;
+//     border-radius: 30px ;
+//   }
+
+//   .toggle-btn {
+//     padding: 10px 30px ;
+//     cursor: pointer  ;
+//     background: transparent ;
+//     border: 0 ;
+//     outline: none ;
+//     position: relative ;
+//   }
+
+//   #slide-btn {
+//     top: 0 ;
+//     left: 0 ;
+//     position: absolute ;
+//     width: 110px ;
+//     height: 100% ;
+//     background: linear-gradient(to right, #ff105f, #ffad06) ;
+//     border-radius: 30px ;
+//     transition: 0.5s ;
+//   }
+
+//   .input-group {
+//     top: 180px;
+//     position: absolute;
+//     width: 280px;
+//     transition: 0.5s;
+//   }
+
+// .input-field {
+//   width: 100%;
+//   padding: 10px 0;
+//   margin: 5px 0;
+//   border-left: 0;
+//   border-top: 0;
+//   border-right: 0;
+//   border-bottom: 1px solid #999;
+//   outline: none;
+//   background: transparent;
+// }
+
+// #login {
+//   left: 50px !important;
+// }
+// #register {
+//   left: 450px !important;
+// }
+// .login-page {
+//   top: 0;
+//   margin: 0;
+//   padding: 0;
+//   width: 100%;
+//   height: 100%;
+//   display: block;
+//   background-color: #303F9F;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   overflow: hidden;
+// }
+
+// mat-card {
+//   width: 30%;
+//   margin: 10% auto;
+//   border-radius: 8px;
+// }
+mat-form-field,
+mat-checkbox {
+  width: 80%;
+  display: block;
+  margin: 0px 50px;
+}
+mat-card-content {
+  margin-top: 20px;
+}
+
+.login-button {
+  margin-top: 20px;
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+}
+
+::ng-deep .mat-tab-body-content {
+  overflow: hidden !important;
+}
+::ng-deep .mat-dialog-content {
+  overflow: hidden !important;
+  margin-top: 10%;
+}
+::ng-deep .mat-dialog-container {
+  overflow: hidden !important;
+}
+
+:host ::ng-deep .mat-button {
+  font-size: 22px;
+  // margin-top: 80%;
+}
+
+::ng-deep .mat-dialog-actions {
+  margin-bottom: 0;
+}
+
+.flex_form_1 {
+  display: inline-block;
+}

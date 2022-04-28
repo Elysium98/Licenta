@@ -1,0 +1,44 @@
+.add-item-container {
+  height: fit-content;
+}
+.add-item-container form {
+  padding-top: 0;
+  margin-top: 0;
+  margin-left: 15vw;
+}
+hr.line {
+  border: 1px solid white;
+  width: 93vw;
+}
+form {
+  margin-top: 50px;
+  margin-left: 5%;
+  display: inline-block;
+}
+.form-field {
+  width: 400px;
+  height: 8.5vh;
+  max-width: 400px;
+}
+.submitButton {
+  margin-left: 25%;
+  width: 200px;
+  height: 45px;
+}
+.onlineMarket {
+  width: 700px;
+  height: 600px;
+  float: right;
+}
+.form-div {
+  display: grid;
+  grid-template-columns: 150px 200px;
+  grid-template-areas: "theText theInput";
+  padding-bottom: 10px;
+}
+.form-text {
+  grid-area: theText;
+}
+.form-input {
+  grid-area: theInput;
+}

@@ -1,0 +1,137 @@
+<body class="add-item-container">
+  <form [formGroup]="addBookFormGroup" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Titlu: </mat-label>
+        <input
+          matInput
+          placeholder="Name of the book"
+          formControlName="title"
+        />
+        <!-- <mat-error *ngIf="hasError('title', 'required')"
+          >Title is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Autor: </mat-label>
+        <input
+          matInput
+          placeholder="Author of the book"
+          formControlName="author"
+        />
+        <!-- <mat-error *ngIf="hasError('author', 'required')"
+          >Author is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Image: </mat-label>
+        <input
+          matInput
+          placeholder="Image of the book"
+          formControlName="image"
+        />
+        <!-- <mat-error *ngIf="hasError('author', 'required')"
+          >Author is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Editura: </mat-label>
+        <input
+          matInput
+          placeholder="Publishing of the book"
+          formControlName="publishing"
+        />
+        <!-- <mat-error *ngIf="hasError('author', 'required')"
+          >Publishing is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Limba: </mat-label>
+        <input
+          matInput
+          placeholder="Language of the book"
+          formControlName="language"
+        />
+        <!-- <mat-error *ngIf="hasError('author', 'required')"
+          >Publishing is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Status: </mat-label>
+        <input
+          matInput
+          placeholder="Language of the book"
+          formControlName="status"
+        />
+        <!-- <mat-error *ngIf="hasError('author', 'required')"
+          >Status is required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Pages: </mat-label>
+        <input
+          [readonly]="editMode"
+          [min]="0"
+          matInput
+          placeholder="Inventory number of the item"
+          type="number"
+          formControlName="page"
+        />
+        <!-- <mat-error *ngIf="hasError('page', 'required')"
+          >Page number required!</mat-error
+        > -->
+      </mat-form-field>
+    </p>
+
+    <!-- <p>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Category: </mat-label>
+        <input
+          matInput
+          placeholder="Category of the book"
+          formControlName="category"
+        />
+
+      </mat-form-field>
+    </p>
+     -->
+    <p>
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Choose a category</mat-label>
+        <mat-select
+          formControlName="category"
+          (selectionChange)="change($event)"
+        >
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+
+    <button
+      mat-raised-button
+      class="submitButton"
+      type="submit"
+      [disabled]="!addBookFormGroup.valid"
+    >
+      Submit
+    </button>
+  </form>
+</body>

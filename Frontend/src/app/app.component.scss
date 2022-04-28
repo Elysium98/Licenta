@@ -1,0 +1,78 @@
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+::ng-deep mat-sidenav-container .mat-drawer-container .mat-drawer-container {
+  background-color: transparent !important;
+}
+
+.mat-sidenav-container {
+  background-color: #d7d4c3ba;
+}
+
+.mat-toolbar.mat-primary {
+  -webkit-transition: 700ms;
+  -ms-transition: 700ms;
+  transition: 700ms;
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+.fixed {
+  position: absolute;
+  background-color: transparent !important;
+  top: 0;
+  z-index: 5;
+  margin-top: 0.9%;
+  align-content: center;
+  color: #fff;
+}
+.sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 5;
+}
+img {
+  height: 120px;
+}
+
+.divFundo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.twitter-like {
+  .mat-progress-spinner {
+    display: inline;
+  }
+}
+
+.loader-container {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+.overlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.337);
+  z-index: 99999;
+}
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

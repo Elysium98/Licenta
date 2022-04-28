@@ -1,0 +1,140 @@
+<!-- <div *ngIf="!isSignedIn">
+    <h2>Sign up</h2>
+    <input type="text" #emailSignup/>
+    <input type="text" #passwordSignup/>
+    <button (click)="onSignup(emailSignup.value,passwordSignup.value)">Sign up</button>
+  </div>
+  <hr>
+  <div *ngIf="!isSignedIn">
+    <h2>Sign In</h2>
+    <input type="text" #email/>
+    <input type="text" #password/>
+    <button (click)="onSignin(email.value,password.value)">Sign in</button>
+  </div>
+  <app-header *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-header> -->
+
+<!-- <div class='form-box'>
+  <div class="button-box">
+    <div id="slide-btn"></div>
+        <button   class="toggle-btn" click="login()">Login</button>
+        <button   class="toggle-btn" click="register()">Register</button>
+    </div>
+</div> -->
+<div class="login-page">
+  <!-- <mat-card class="mat-elevation-z12"> -->
+  <div
+    fxLayout="row wrap"
+    fxLayoutGap="10px"
+    fxLayoutAlign="flex-start"
+    style="background-color: #c19b1e; padding-top: 66px"
+  ></div>
+  <mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
+    <mat-tab label="Sign In">
+      <mat-card-content>
+        <div mat-dialog-content id="login" class="input-group">
+          <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmitLogin()">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+
+            <div mat-dialog-actions align="center">
+              <button mat-button [disabled]="!loginFormGroup.valid">
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+    </mat-tab>
+
+    <mat-tab label="Sign Up">
+      <mat-card-content>
+        <div mat-dialog-content id="register" class="input-group">
+          <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmitRegister()">
+            <mat-form-field appearance="outline">
+              <mat-label>Nume</mat-label>
+              <input matInput type="text" formControlName="fullName" />
+            </mat-form-field>
+
+            <!-- <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Choose a role</mat-label>
+              <mat-select
+                formControlName="role"
+                (selectionChange)="change($event)"
+              >
+                <mat-option *ngFor="let role of roles" [value]="role.name">
+                  {{ role.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline">
+              <mat-label>Prenume</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <div fxLayout="row">
+              <mat-form-field appearance="outline">
+                <mat-label>Oras</mat-label>
+                <input matInput type="text" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Data nasterii</mat-label>
+                <input matInput type="date" />
+              </mat-form-field>
+            </div>
+
+            <!-- <mat-form-field appearance="outline">
+              <mat-label>Studii</mat-label>
+              <input matInput type="text" />
+            </mat-form-field> -->
+
+            <div fxLayout="row">
+              <!-- <mat-form-field appearance="outline">
+                <mat-label>ID Student</mat-label>
+                <input matInput type="text" />
+              </mat-form-field> -->
+
+              <mat-form-field appearance="outline">
+                <mat-label>Telefon</mat-label>
+                <input matInput type="text" />
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Parola</mat-label>
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+
+            <div mat-dialog-actions align="center">
+              <button mat-button [disabled]="!registerFormGroup.valid">
+                Sign up
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- </mat-card>  -->
+</div>
+
+<!-- onSignup(email.value,passwordSignup.value) -->
+
+<!-- <app-header *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-header> -->
+
+<!-- <div mat-dialog-actions  *ngIf="!isSignedIn"> 
+  <button  mat-button (click)="onSignup(emailSignup.value,passwordSignup.value)">Sign up</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</div> -->

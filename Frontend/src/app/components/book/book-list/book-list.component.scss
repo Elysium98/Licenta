@@ -1,0 +1,34 @@
+.content {
+  padding: 36px;
+}
+
+.content > mat-card {
+  margin-bottom: 16px;
+}
+
+mat-card {
+  max-width: 220px;
+  height: auto;
+}
+.column-label {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+// .buttons {
+//   padding-top: 40px;
+// }
+mat-card img {
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+  height: 80%;
+  padding-left: 15%;
+}
+
+mat-card-title {
+  text-align: center;
+}
+
+mat-card-content {
+  text-align: center;
+}

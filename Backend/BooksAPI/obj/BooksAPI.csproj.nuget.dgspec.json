@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj": {}
+    "D:\\Facultate\\Licenta_Github_New\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj": {}
   },
   "projects": {
-    "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj": {
+    "D:\\Facultate\\Licenta_Github_New\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj",
+        "projectUniqueName": "D:\\Facultate\\Licenta_Github_New\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj",
         "projectName": "BooksAPI",
-        "projectPath": "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj",
+        "projectPath": "D:\\Facultate\\Licenta_Github_New\\Licenta\\Backend\\BooksAPI\\BooksAPI.csproj",
         "packagesPath": "C:\\Users\\Paul\\.nuget\\packages\\",
-        "outputPath": "D:\\Facultate\\Licenta_Github\\Licenta\\Backend\\BooksAPI\\obj\\",
+        "outputPath": "D:\\Facultate\\Licenta_Github_New\\Licenta\\Backend\\BooksAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Paul\\AppData\\Roaming\\NuGet\\NuGet.Config",

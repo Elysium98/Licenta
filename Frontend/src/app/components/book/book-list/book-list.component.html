@@ -1,0 +1,24 @@
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutGap="36px grid">
+    <div *ngFor="let book of books$ | async">
+      <mat-card class="mat-elevation-z4">
+        <mat-card-header>
+          <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title>
+        </mat-card-header>
+
+        <img
+          mat-card-image
+          src="./../assets/img/01.jpg"
+          fxLayoutAlign="center"
+        />
+
+        <mat-card-content>
+          <p>Mihai Eminescu</p>
+        </mat-card-content>
+        <mat-card-actions class="buttons">
+          <button mat-raised-button color="accent">Detalii</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
