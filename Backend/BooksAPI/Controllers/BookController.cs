@@ -94,7 +94,7 @@ namespace BooksAPI.Controllers
         }
 
         [HttpPost("saveFile")]
-        public async Task<IActionResult> SaveStudentWithPhoto()
+        public async Task<IActionResult> UploadPhoto()
         {
             try
             {

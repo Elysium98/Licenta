@@ -1,0 +1,85 @@
+<div class="container">
+  <mat-card class="example-card">
+    <mat-tab-group>
+      <mat-tab label="Details">
+        <div class="img_container">
+          <img
+            class="avatar_img"
+            src="../../../assets/img/eu.jpeg"
+            mat-card-avatar
+          />
+        </div>
+        <mat-card-content>
+          <mat-card-title>Paul</mat-card-title>
+          <form>
+            <mat-form-field appearance="outline">
+              <mat-label>Nume</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Prenume</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Telefon</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Studii</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <div mat-dialog-actions align="center">
+              <button mat-raised-button color="accent">Update</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-tab>
+      <mat-tab label="Security">
+        <div class="img_container">
+          <img
+            class="avatar_img"
+            src="../../../assets/img/eu.jpeg"
+            mat-card-avatar
+          />
+        </div>
+        <mat-card-content>
+          <mat-card-title>Paul</mat-card-title>
+          <form>
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Parolă curentă</mat-label>
+                <input matInput type="text" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Parolă nouă</mat-label>
+                <input matInput type="text" />
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirmare parolă nouă</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+
+            <div mat-dialog-actions align="center">
+              <button mat-raised-button color="accent">Update</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+
+  <div class="home-img">
+    <img id="logo" src="../../../assets/img/login.png" />
+  </div>
+</div>

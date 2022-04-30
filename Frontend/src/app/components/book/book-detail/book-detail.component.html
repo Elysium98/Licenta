@@ -1,0 +1,33 @@
+<div class="book_detail" *ngIf="book" fxLayout="row" fxLayoutGap="16px grid">
+  <div>
+    <img
+      class="img"
+      mat-card-image
+      [src]="createImgPath(book.image)"
+      fxLayoutAlign="center"
+    />
+  </div>
+  <div class="container">
+    <mat-card>
+      <mat-card-title
+        ><b>{{ book.title }}</b></mat-card-title
+      >
+      <mat-card-content>
+        <p>{{ book.author }}</p>
+      </mat-card-content>
+    </mat-card>
+    <div>
+      <mat-card class="mat_card_details">
+        <mat-card-content class="mat_card_content">
+          <p>Editura: {{ book.publishing }}</p>
+          <p>Numar pagini: {{ book.page }}</p>
+          <p>Limba: {{ book.language }}</p>
+          <p>Data aparitiei:</p>
+          <p>Categorie: {{ book.category.name }}</p>
+          <p>Stare: {{ book.status }}</p>
+          <p>Vândută de {{ book.user.userName }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

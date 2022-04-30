@@ -1,4 +1,5 @@
 import { Category } from './category';
+import { IUser } from './user';
 
 export class Book {
   id: string = '';
@@ -14,6 +15,7 @@ export class Book {
   status: string = '';
   image: string = '';
   category: Category = new Category();
+  user: IUser = new IUser();
   // category: string = '';
   constructor(init?: Partial<Book>) {
     Object.assign(this, init);

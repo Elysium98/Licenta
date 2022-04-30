@@ -27,10 +27,8 @@ export class BookService {
       .pipe(map((books) => books.filter((book) => book.title.includes(title))));
   }
 
-  async getBookById$(id: string) {
-    return await this.httpClient
-      .get<Book>(this.baseUrl + '/id/' + id, this.httpOptions)
-      .toPromise();
+  getBookById$(id: string): Observable<Book> {
+    return this.httpClient.get<Book>(this.baseUrl + id, this.httpOptions);
   }
 
   addBook$(

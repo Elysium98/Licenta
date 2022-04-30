@@ -1,15 +1,12 @@
 .add-item-container {
   height: fit-content;
+  display: flex;
 }
 .add-item-container form {
-  padding-top: 0;
   margin-top: 0;
   margin-left: 15vw;
 }
-hr.line {
-  border: 1px solid white;
-  width: 93vw;
-}
+
 form {
   margin-top: 50px;
   margin-left: 5%;
@@ -41,4 +38,41 @@ form {
 }
 .form-input {
   grid-area: theInput;
+}
+
+.home-img {
+  display: flex;
+  justify-content: center;
+}
+
+#logo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: 850px;
+  //padding-top: 30px;
+}
+.add_form {
+  padding-top: 30px;
+}
+
+.form-field {
+  padding-bottom: 5px;
+  font-size: 18px;
+}
+
+.upload {
+  font-weight: bold;
+  color: #28a745;
+  text-align: center;
+  line-height: 36px;
+}
+
+.add_img_btn {
+  width: 100%;
+}
+
+.add_img_div {
+  //margin-top: 10px;
+  margin-bottom: 15px;
 }

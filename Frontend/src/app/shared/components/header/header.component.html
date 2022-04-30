@@ -60,13 +60,15 @@
   <span class="example-spacer"></span>
   <div class="search-bar">
     <form class="search-form">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="searchedTitle(title.value)"
-      >
-        Search
-      </button>
+      <!-- <mat-form-field class="form-field-book" appearance="fill">
+        <mat-label>Alege starea cărții</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let state of states" [value]="state">
+            {{ state }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Caută după titlu, autor sau editură</mat-label>
         <input
@@ -79,6 +81,15 @@
         />
         <mat-autocomplete #auto="matAutocomplete"> </mat-autocomplete>
       </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="search_btn"
+        (click)="searchedTitle(title.value)"
+      >
+        Search
+      </button>
     </form>
   </div>
   <!-- <button
@@ -94,7 +105,7 @@
     Adauga carte
   </button> -->
 
-  <button mat-raised-button class="book_btn" routerLink="/add-book">
+  <button mat-raised-button class="book_btn" routerLink="/book-list">
     Cărți
   </button>
 
@@ -107,7 +118,7 @@
     <!-- <span class="aligned-with-icon">Contul meu</span> -->
   </a>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/user-profile">
+    <button mat-menu-item routerLink="/edit-profile">
       <span>My profile</span>
     </button>
     <button mat-menu-item>

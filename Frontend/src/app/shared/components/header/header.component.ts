@@ -16,6 +16,9 @@ import {
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { IUser } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
 import { AuthenticationComponent } from '../authentication/authentication.component';
@@ -33,6 +36,13 @@ export class HeaderComponent implements AfterViewChecked {
   @ViewChild('toolBara', { static: true }) toolbar: MatToolbar;
 
   @Output() emitSearchedTitle = new EventEmitter<string>();
+  states: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
+  // user: Observable<IUser>;
+  currentUser: IUser;
+  currentUser$: Observable<IUser> = this.userService.currentUser$;
+  userLogged: IUser = this.userService.decodeToken(
+    localStorage.getItem('token')
+  );
 
   searchedTitle(title: string) {
     this.emitSearchedTitle.emit(title);

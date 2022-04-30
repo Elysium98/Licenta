@@ -164,7 +164,7 @@
 }
 
 .example-full-width {
-  width: 90%;
+  width: 70%;
   text-align: center;
   font-size: 0.85vw;
   margin-top: 20px;
@@ -227,4 +227,16 @@
 
   top: 0;
   z-index: 5;
+}
+
+.search_btn {
+  margin-left: 20px;
+}
+
+.book_btn {
+  right: 30px;
+}
+
+.form-field-book {
+  font-size: 15px;
 }

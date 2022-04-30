@@ -37,11 +37,19 @@ export class AuthenticationComponent implements OnInit {
     this.registerFormGroup = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
-      password: ['', Validators.required],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$'
+          ),
+        ],
+      ],
     });
 
     this.loginFormGroup = this.fb.group({
-      email: ['', [Validators.email, Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', Validators.required],
     });
 
@@ -52,6 +60,14 @@ export class AuthenticationComponent implements OnInit {
     });
 
     console.log(this.roles);
+  }
+
+  hasErrorRegister(controlName: string, errorName: string) {
+    return this.registerFormGroup.controls[controlName].hasError(errorName);
+  }
+
+  hasErrorLogin(controlName: string, errorName: string) {
+    return this.loginFormGroup.controls[controlName].hasError(errorName);
   }
 
   onSubmitLogin() {

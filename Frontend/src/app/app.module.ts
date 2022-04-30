@@ -42,6 +42,9 @@ import { AdminPanelComponent } from './components/admin-panel/admin-panel.compon
 import { MatMenuModule } from '@angular/material/menu';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { BookListComponent } from './components/book/book-list/book-list.component';
+import { BookDetailComponent } from './components/book/book-detail/book-detail.component';
+import { SortPipePipe } from './components/pipes/sort-pipe.pipe';
+import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
 export function initializeApp(userService: UserService) {
   return (): Promise<any> => {
     return userService.initializeUser();
@@ -58,6 +61,9 @@ export function initializeApp(userService: UserService) {
     AdminPanelComponent,
     UserProfileComponent,
     BookListComponent,
+    BookDetailComponent,
+    SortPipePipe,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,

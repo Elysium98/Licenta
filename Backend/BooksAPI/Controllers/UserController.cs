@@ -1,4 +1,5 @@
 ﻿using BooksAPI.Data.Entities;
+using BooksAPI.Models;
 using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using BooksAPI.ViewModels.DTO;
@@ -149,16 +150,28 @@ namespace BooksAPI.Controllers
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
+          
             try
             {
                 var foundUser = await _userManager.FindByIdAsync(id);
 
+                var role = (await _userManager.GetRolesAsync(foundUser)).FirstOrDefault();
+
+                var userDTO = new UserDTO(
+                           foundUser.Id,
+                           foundUser.FullName,
+                           foundUser.Email,
+                           foundUser.UserName,
+                           foundUser.DateCreated,
+                           role
+                       );
+                
                 if (foundUser == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(foundUser);
+                return Ok(userDTO);
             }
             catch (Exception ex)
             {
@@ -311,5 +324,29 @@ namespace BooksAPI.Controllers
             }
             return BadRequest();
         }
+
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.RefreshSignInAsync(user);
+                    return Ok(model);
+                }
+               
+            }
+            return BadRequest();
+        }
+
+
+
+
     }
 }

@@ -1,95 +1,53 @@
-<body class="add-item-container">
-  <form [formGroup]="addBookFormGroup" (ngSubmit)="onSubmit()">
-    <p>
+<div class="add-item-container">
+  <div>
+    <form
+      class="add_form"
+      [formGroup]="addBookFormGroup"
+      fxLayout="column"
+      (ngSubmit)="onSubmit()"
+    >
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Titlu: </mat-label>
-        <input
-          matInput
-          placeholder="Name of the book"
-          formControlName="title"
-        />
+        <mat-label>Titlu </mat-label>
+        <input matInput placeholder="Titlul cărții" formControlName="title" />
         <!-- <mat-error *ngIf="hasError('title', 'required')"
           >Title is required!</mat-error
         > -->
       </mat-form-field>
-    </p>
-    <p>
+
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Autor: </mat-label>
-        <input
-          matInput
-          placeholder="Author of the book"
-          formControlName="author"
-        />
+        <mat-label>Autor </mat-label>
+        <input matInput placeholder="Autorul cărții" formControlName="author" />
         <!-- <mat-error *ngIf="hasError('author', 'required')"
           >Author is required!</mat-error
         > -->
       </mat-form-field>
-    </p>
 
-    <p>
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Image: </mat-label>
+        <mat-label>Editura </mat-label>
         <input
           matInput
-          placeholder="Image of the book"
-          formControlName="image"
-        />
-        <!-- <mat-error *ngIf="hasError('author', 'required')"
-          >Author is required!</mat-error
-        > -->
-      </mat-form-field>
-    </p>
-
-    <p>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Editura: </mat-label>
-        <input
-          matInput
-          placeholder="Publishing of the book"
+          placeholder="Editura cărții"
           formControlName="publishing"
         />
         <!-- <mat-error *ngIf="hasError('author', 'required')"
           >Publishing is required!</mat-error
         > -->
       </mat-form-field>
-    </p>
-    <p>
+
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Limba: </mat-label>
-        <input
-          matInput
-          placeholder="Language of the book"
-          formControlName="language"
-        />
+        <mat-label>Limba </mat-label>
+        <input matInput placeholder="Limba cărții" formControlName="language" />
         <!-- <mat-error *ngIf="hasError('author', 'required')"
           >Publishing is required!</mat-error
         > -->
       </mat-form-field>
-    </p>
 
-    <p>
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Status: </mat-label>
+        <mat-label>Pagini </mat-label>
         <input
-          matInput
-          placeholder="Language of the book"
-          formControlName="status"
-        />
-        <!-- <mat-error *ngIf="hasError('author', 'required')"
-          >Status is required!</mat-error
-        > -->
-      </mat-form-field>
-    </p>
-
-    <p>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Pages: </mat-label>
-        <input
-          [readonly]="editMode"
           [min]="0"
           matInput
-          placeholder="Inventory number of the item"
+          placeholder="Numărul de pagini al cărții"
           type="number"
           formControlName="page"
         />
@@ -97,23 +55,47 @@
           >Page number required!</mat-error
         > -->
       </mat-form-field>
-    </p>
 
-    <!-- <p>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Category: </mat-label>
-        <input
-          matInput
-          placeholder="Category of the book"
-          formControlName="category"
-        />
+      <!-- <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Data apariției </mat-label>
+        <input matInput type="date" formControlName="image" />
+   
+      </mat-form-field> -->
 
-      </mat-form-field>
-    </p>
-     -->
-    <p>
+      <input
+        #file
+        (change)="uploadFile(file.files)"
+        formControlName="image"
+        type="file"
+        style="display: none"
+      />
+      <!-- <mat-error *ngIf="hasError('author', 'required')"
+    >Author is required!</mat-error
+  > -->
+      <div class="add_img_div">
+        <button
+          class="add_img_btn"
+          type="button"
+          mat-raised-button
+          color="warn"
+          (click)="file.click()"
+        >
+          Adaugă imaginea cărții
+        </button>
+
+        <span class="upload" *ngIf="message"> {{ message }} </span>
+      </div>
       <mat-form-field class="form-field" appearance="fill">
-        <mat-label>Choose a category</mat-label>
+        <mat-label>Alege starea cărții</mat-label>
+        <mat-select formControlName="state" (selectionChange)="change($event)">
+          <mat-option *ngFor="let state of states" [value]="state">
+            {{ state }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Alege categoria cărții</mat-label>
         <mat-select
           formControlName="category"
           (selectionChange)="change($event)"
@@ -123,15 +105,18 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </p>
 
-    <button
-      mat-raised-button
-      class="submitButton"
-      type="submit"
-      [disabled]="!addBookFormGroup.valid"
-    >
-      Submit
-    </button>
-  </form>
-</body>
+      <button
+        mat-raised-button
+        class="submitButton"
+        type="submit"
+        [disabled]="!addBookFormGroup.valid"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+  <div class="home-img">
+    <img id="logo" src="../../../assets/img/books.png" />
+  </div>
+</div>

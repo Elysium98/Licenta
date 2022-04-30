@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEventType,
+} from '@angular/common/http';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -27,10 +32,47 @@ export class AddBookComponent implements OnInit {
   //currentCategory: Category = new Category();
   selectedCategory: string = '';
   selectedUser: string = '';
+  states: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
   helper = new JwtHelperService();
+  public message: string;
+  public progress: number;
+  public response: { dbPath: '' };
+  @Output() public onUploadFinished = new EventEmitter();
+  formData = new FormData();
+  bodyData: any;
+
+  uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+
+    let fileToUpload = <File>files[0];
+
+    this.formData.append('file', fileToUpload, fileToUpload.name);
+    this.http
+      .post('https://localhost:7295/books/saveFile', this.formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .subscribe({
+        next: (event) => {
+          if (event.type === HttpEventType.UploadProgress)
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          else if (event.type === HttpEventType.Response) {
+            this.message = 'Upload success.';
+            this.bodyData = event.body;
+            console.log(this.bodyData);
+            console.log(typeof this.bodyData);
+            this.onUploadFinished.emit(event.body);
+          }
+        },
+        error: (err: HttpErrorResponse) => console.log(err),
+      });
+  };
 
   constructor(
     private fb: FormBuilder,
+    private http: HttpClient,
     private bookService: BookService,
     private categoryService: CategoryService,
     private router: Router,
@@ -46,7 +88,7 @@ export class AddBookComponent implements OnInit {
       category: ['', Validators.required],
       page: ['', Validators.required],
       language: ['', Validators.required],
-      status: ['', Validators.required],
+      state: ['', Validators.required],
       image: ['', Validators.required],
     });
 
@@ -62,8 +104,8 @@ export class AddBookComponent implements OnInit {
     this.book.category = this.addBookFormGroup.value.category;
     this.book.page = this.addBookFormGroup.value.page;
     this.book.language = this.addBookFormGroup.value.language;
-    this.book.status = this.addBookFormGroup.value.status;
-    this.book.image = this.addBookFormGroup.value.image;
+    this.book.status = this.addBookFormGroup.value.state;
+    this.book.image = this.bodyData.dbPath;
 
     var userLogged = this.userService.decodeToken(
       localStorage.getItem('token')

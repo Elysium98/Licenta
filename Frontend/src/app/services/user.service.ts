@@ -80,6 +80,24 @@ export class UserService {
     return this.httpClient.get<Role[]>('https://localhost:7295/roles');
   }
 
+  // getUserById(id: string): Observable<IUser> {
+  //   return this.httpClient.get<IUser>(
+  //     this.baseUrl + '/user/' + id,
+  //     this.httpOptions
+  //   );
+  // }
+  getUserById$(id: string): Observable<IUser> {
+    return this.httpClient.get<IUser>(
+      'https://localhost:7295/users/user/' + id
+    );
+  }
+
+  async getUserByIdAsync(id: string) {
+    return await this.httpClient
+      .get<IUser>(this.baseUrl + '/user/' + id, this.httpOptions)
+      .toPromise();
+  }
+
   // getUsers$() {
   //   return this.httpClient.get<Response>(this.baseUrl).pipe(
   //     map((res: Response) => {
@@ -126,7 +144,7 @@ export class UserService {
   }
 
   setCurrentUser(user: IUser) {
-    this._currentUserSubject.next(user);
+    return this._currentUserSubject.next(user);
   }
 
   checkUserLogin(): Observable<boolean> {
