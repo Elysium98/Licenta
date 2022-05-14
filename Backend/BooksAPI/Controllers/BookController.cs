@@ -21,6 +21,7 @@ namespace BooksAPI.Controllers
             _webHostEnviroment = webHostEnvironment;
         }
 
+    
         /// <summary>
         /// Gets all books
         /// </summary>
@@ -31,6 +32,28 @@ namespace BooksAPI.Controllers
             try
             {
                 List<BookModel> books = await _bookService.GetAll();
+                if (books.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets all books
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("books/{status}")]
+        public async Task<IActionResult> GetBooksByStatus(string status)
+        {
+            try
+            {
+                List<BookModel> books = await _bookService.GetAllByStatus(status);
                 if (books.Count == 0)
                 {
                     return NoContent();
@@ -100,7 +123,7 @@ namespace BooksAPI.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = Path.Combine("Resources", "Images");
+                var folderName = Path.Combine("Resources", "Images","Books");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (file.Length > 0)
@@ -135,7 +158,7 @@ namespace BooksAPI.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookModel book)
+        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookModel book)
         {
             try
             {
@@ -143,7 +166,36 @@ namespace BooksAPI.Controllers
                 {
                     return BadRequest();
                 }
-                if (!await _bookService.Update(id, book))
+                if (!await _bookService.Update2(id, book))
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Update the book
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="book"></param>
+        /// <returns></returns>
+        [HttpPut("book/updatePhoto/{id}")]
+        public async Task<IActionResult> UpdatePhoto(Guid id, [FromBody] ImageModel model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return BadRequest();
+                }
+                if (!await _bookService.UpdatePhoto(id, model))
                 {
                     return NotFound();
                 }

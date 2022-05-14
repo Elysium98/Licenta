@@ -10,15 +10,18 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IUser } from 'src/app/models/user';
+import { User } from 'src/app/models/user';
+import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
 
 import { AuthenticationComponent } from '../authentication/authentication.component';
@@ -36,17 +39,30 @@ export class HeaderComponent implements AfterViewChecked {
   @ViewChild('toolBara', { static: true }) toolbar: MatToolbar;
 
   @Output() emitSearchedTitle = new EventEmitter<string>();
+  @Output() emitSearchedProperty = new EventEmitter<string>();
+  @Output() editMode = new EventEmitter<boolean>(false);
   states: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
-  // user: Observable<IUser>;
-  currentUser: IUser;
-  currentUser$: Observable<IUser> = this.userService.currentUser$;
-  userLogged: IUser = this.userService.decodeToken(
+  message: string = '';
+  properties: Array<string> = ['Titlu', 'Autor', 'Editura'];
+  searchProperty: string = '';
+
+  // user: Observable<User>;
+  currentUser: User = new User();
+  currentUser$: Observable<User> = this.userService.currentUser$;
+  userLogged: User = this.userService.decodeToken(
     localStorage.getItem('token')
   );
+  searchFormGroup: FormGroup;
 
   searchedTitle(title: string) {
     this.emitSearchedTitle.emit(title);
+    this.emitSearchedProperty.emit(this.searchProperty);
+
+    this.bookService.setCurrentProperty(this.searchProperty);
+    this.bookService.setCurrentValue(title);
     console.log('searchedTitle() is ' + title);
+    console.log('searched property ' + this.searchProperty);
+    this.router.navigate(['/book-list']);
   }
 
   constructor(
@@ -55,8 +71,15 @@ export class HeaderComponent implements AfterViewChecked {
     private cdr: ChangeDetectorRef,
     private scrollDispatcher: ScrollDispatcher,
     private zone: NgZone,
-    private loaderService: LoaderService
-  ) {}
+    private loaderService: LoaderService,
+    private fb: FormBuilder,
+    private bookService: BookService,
+    private router: Router
+  ) {
+    this.currentUser$.subscribe((data) => (this.currentUser = data));
+    //this.message = 'Salut  ' + this.currentUser.firstName;
+    //   console.log('DAAA' + this.currentUser);
+  }
   isOnTop = true;
   isLoggedIn$ = this.userService.isLoggedIn$;
   isLoading$ = this.loaderService.isLoading$;
@@ -98,7 +121,11 @@ export class HeaderComponent implements AfterViewChecked {
   //   });
   // }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.searchFormGroup = this.fb.group({
+      property: '',
+    });
+  }
 
   // ngOnInit(): void {
   //   this.scrollDispatcher.scrolled().subscribe((event: CdkScrollable) => {
@@ -125,10 +152,20 @@ export class HeaderComponent implements AfterViewChecked {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AuthenticationComponent, {
-      width: '500px',
-      height: '750px',
+      width: '530px',
+      height: '850px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+  checkEditMode() {
+    let value: boolean = true;
+    this.editMode.emit(value);
+  }
+
+  change(event) {
+    console.log(event.source.value);
+
+    this.searchProperty = event.source.value;
   }
 }

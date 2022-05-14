@@ -1,0 +1,61 @@
+<div class="title">Carti Vandute</div>
+<div class="content">
+  <div class="buttons_top">
+    <form [formGroup]="sortFormGroup" class="sortForm">
+      <mat-form-field class="form-field-sort" appearance="fill">
+        <mat-label>Sortează</mat-label>
+        <mat-select
+          formControlName="sorting"
+          (selectionChange)="change($event)"
+        >
+          <mat-option *ngFor="let sorting of sortings" [value]="sorting">
+            {{ sorting }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field-sort" appearance="fill">
+        <mat-label>Filtrează</mat-label>
+        <mat-select
+          formControlName="category"
+          (selectionChange)="changeCategory($event)"
+        >
+          <mat-option
+            *ngFor="let category of categories"
+            [value]="category.name"
+          >
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
+    <div *ngFor="let book of books">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title
+            ><b>{{ book.title }}</b></mat-card-title
+          >
+          <!-- <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title> -->
+        </mat-card-header>
+
+        <img
+          class="img"
+          mat-card-image
+          src="../../../assets/img/margaret.jpeg"
+          fxLayoutAlign="center"
+        />
+
+        <mat-card-content>
+          <p>Mihai Eminescu</p>
+        </mat-card-content>
+        <mat-card-actions class="buttons">
+          <button mat-raised-button color="accent" (click)="getBookById(book)">
+            Detalii
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

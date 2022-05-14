@@ -25,7 +25,18 @@
           <p>Data aparitiei:</p>
           <p>Categorie: {{ book.category.name }}</p>
           <p>Stare: {{ book.status }}</p>
-          <p>Vândută de {{ book.user.userName }}</p>
+          <p>
+            Vândută de
+            {{ book.user.userName }}
+            <mat-icon
+              class="red_eye"
+              #tooltip="matTooltip"
+              matTooltip="Vizualizează profilul"
+              matTooltipPosition="above"
+              matTooltipHideDelay="100"
+              >remove_red_eye</mat-icon
+            >
+          </p>
         </mat-card-content>
       </mat-card>
     </div>

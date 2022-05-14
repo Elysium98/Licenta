@@ -25,4 +25,10 @@ export class CategoryService {
       .get<Category>(this.baseUrl + name, this.httpOptions)
       .toPromise();
   }
+
+  async getCategoryByIdAsync$(id: string) {
+    return await this.httpClient
+      .get<Category>(this.baseUrl + '/' + id, this.httpOptions)
+      .toPromise();
+  }
 }

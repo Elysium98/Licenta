@@ -1,8 +1,30 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEventType,
+} from '@angular/common/http';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IUser } from 'src/app/models/user';
+import { Image } from 'src/app/models/image';
+import { Password } from 'src/app/models/password';
+import { UpdateUser } from 'src/app/models/updateUser';
+import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -12,51 +34,190 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class EditProfileComponent implements OnInit {
   updateUserFormGroup!: FormGroup;
+  securityFormGroup!: FormGroup;
+  educationForms: Array<string> = ['Liceu', 'Facultate'];
+  // @Output() public onUploadFinished = new EventEmitter();
+
+  image: string = '';
+  private _imageSubject = new BehaviorSubject(this.image);
+  image$ = this._imageSubject.asObservable();
+
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) {
     this.userLogged = this.userService.decodeToken(
       localStorage.getItem('token')
     )['nameid'];
   }
-  currentUser$: Observable<IUser> = this.userService.currentUser$;
-  user: IUser;
-  user22: IUser;
+  currentUser$: Observable<User> = this.userService.currentUser$;
+  //user: User;
+  user: User = new User();
+  userEmail: UpdateUser = new UpdateUser();
   userLogged: string;
+  password: Password = new Password();
+  formData = new FormData();
+  // user22: User = new User();
+  // image22;
 
-  ngOnInit() {
-    this.currentUser$.subscribe((data) => (this.user = data));
+  bodyData: any;
+  imgUrl: string = '';
+  public response: { dbPath: '' };
+  async ngOnInit() {
+    // this.currentUser$.subscribe((data) => (this.user = data));
+    // console.log(this.user);
+    //this.getUser(this.userLogged);
+    this.userService.getUserByIdAsync(this.userLogged);
+    this.user = await this.userService.getUserByIdAsync(this.userLogged);
+    this.imgUrl = await this.createImgPath2();
+    // this.createImgPath2();
     console.log(this.user);
+    this._imageSubject.next(this.imgUrl);
 
-    console.log(this.userLogged);
-    console.log(typeof this.userLogged);
+    // console.log(this.userLogged);
+    // console.log(typeof this.userLogged);
 
-    console.log(this.user22);
-    this.userService
-      .getUserById$(this.userLogged)
-      .subscribe((data) => (this.user22 = data));
+    // this.userService
+    //   .getUserById$(this.userLogged)
+    //   .subscribe((data) => (this.user22 = data));
 
-    this.userService
-      .getUserById$(this.userLogged)
-      .pipe(tap((data) => console.log(data)));
+    this.updateUserFormGroup = this.fb.group({
+      email: [this.user.email, Validators.email],
+      firstName: [this.user.firstName],
+      lastName: [this.user.lastName],
+      phoneNumber: [this.user.phoneNumber],
+      study: [this.user.study],
+      image: '',
+    });
 
-    this.getUser(this.userLogged);
-
-    //   this.updateUserFormGroup = this.fb.group({
-    //     email: [''],
-    //     password: [
-    //       '',
-    //       Validators.pattern(
-    //         '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$'
-    //       ),
-    //     ],
-    //   });
+    this.securityFormGroup = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      confirmNewPassword: ['', Validators.required],
+    });
   }
 
   async getUser(id: string) {
-    this.user22 = await this.userService.getUserByIdAsync(id);
-    console.log(this.user22);
+    this.user = await this.userService.getUserByIdAsync(id);
+    console.log(this.user.email);
+  }
+
+  createImgPath = (serverPath: string) => {
+    return `https://localhost:7295/${serverPath}`;
+  };
+  get newPassword(): AbstractControl {
+    return this.securityFormGroup.controls['newPassword'];
+  }
+
+  get confirmNewPassword(): AbstractControl {
+    return this.securityFormGroup.controls['confirmNewPassword'];
+  }
+
+  async createImgPath2() {
+    return await `https://localhost:7295/${this.user.image}`;
+  }
+
+  onPasswordChange() {
+    if (this.confirmNewPassword.value == this.newPassword.value) {
+      this.confirmNewPassword.setErrors(null);
+    } else {
+      this.confirmNewPassword.setErrors({ mismatch: true });
+      this.securityFormGroup.invalid;
+    }
+  }
+
+  uploadFile(files) {
+    if (files.length === 0) {
+      return;
+    }
+
+    let imageToUpload = <File>files[0];
+
+    this.userService.uploadImage$(imageToUpload).subscribe({
+      next: (event) => {
+        if (event.type === HttpEventType.Response) {
+          this.bodyData = event.body;
+          this.updateUser();
+        }
+      },
+      error: (err: HttpErrorResponse) => console.log(err),
+    });
+  }
+
+  updateUser() {
+    this.user.image = this.bodyData.dbPath;
+
+    let model: Image = {
+      image: this.user.image,
+    };
+    this.userService.updateUserPhoto$(this.user.id, model).subscribe(
+      async (data) => {
+        console.log('response', data);
+        console.log(this.user.image);
+        this.imgUrl = await this.createImgPath2();
+        this._imageSubject.next(this.imgUrl);
+        this.userService.getUsers$();
+      },
+      (error) => console.log('error', error)
+    );
+  }
+
+  onSubmitDetails() {
+    this.user.email = this.updateUserFormGroup.value.email;
+    this.user.firstName = this.updateUserFormGroup.value.firstName;
+    this.user.lastName = this.updateUserFormGroup.value.lastName;
+    this.user.phoneNumber = this.updateUserFormGroup.value.phoneNumber;
+    this.user.study = this.updateUserFormGroup.value.study;
+
+    let model: UpdateUser = {
+      email: this.user.email,
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      study: this.user.study,
+      phoneNumber: this.user.phoneNumber,
+      // image: this.user.image,
+    };
+
+    this.userService.changeUserDetails$(this.user.id, model).subscribe(
+      (data) => {
+        console.log('response', data);
+      },
+      (error) => console.log('error', error)
+    );
+  }
+
+  onSubmit() {
+    this.password.newPassword = this.securityFormGroup.value.newPassword;
+
+    this.password.currentPassword =
+      this.securityFormGroup.value.currentPassword;
+
+    let model: Password = {
+      currentPassword: this.password.currentPassword,
+      newPassword: this.password.newPassword,
+    };
+
+    this.userService.changePassword$(model).subscribe(
+      (data) => {
+        console.log('response', data);
+        this.userService.logout();
+      },
+      (error) => console.log('error', error)
+    );
+  }
+
+  hasErrorSecurity(controlName: string, errorName: string) {
+    return this.securityFormGroup.controls[controlName].hasError(errorName);
+  }
+  hasErrorDetails(controlName: string, errorName: string) {
+    return this.updateUserFormGroup.controls[controlName].hasError(errorName);
+  }
+
+  change(event) {
+    if (event.isUserInput) {
+      console.log(event.source.value, event.source.selected);
+    }
   }
 }

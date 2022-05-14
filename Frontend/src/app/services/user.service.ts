@@ -1,10 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { IUser } from '../models/user';
+import { User } from '../models/user';
 // import jwt_decode from 'jwt-decode';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Role } from '../models/role';
+import { Password } from '../models/password';
+import { UpdateUser } from '../models/updateUser';
+import { Image } from '../models/image';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +21,8 @@ export class UserService {
     }),
   };
 
-  users: IUser[] = [];
-  currentUser: IUser = {} as IUser;
+  users: User[] = [];
+  currentUser: User = {} as User;
   private _currentUserSubject = new BehaviorSubject(this.currentUser);
   currentUser$ = this._currentUserSubject.asObservable();
 
@@ -29,31 +33,52 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) {}
 
+  deleteUser(id: string) {
+    return this.httpClient.delete<User>(
+      this.baseUrl + '/' + id,
+      this.httpOptions
+    );
+  }
+
   register$(
-    fullName: string,
+    // fullName: string,
+    firstName: string,
+    lastName: string,
+    study: string,
+    image: string,
+    city: string,
+    birthDate: string,
+    phoneNumber: string,
     email: string,
     password: string,
     role: string
-  ): Observable<IUser> {
+  ): Observable<User> {
     let user = {
-      fullName: fullName,
+      // fullName: fullName,
+      firstName: firstName,
+      lastName: lastName,
+      study: study,
+      image: image,
+      city: city,
+      birthDate: birthDate,
+      phoneNumber: phoneNumber,
       password: password,
       email: email,
       role: role,
     };
-    return this.httpClient.post<IUser>(
+    return this.httpClient.post<User>(
       this.baseUrl + '/register',
       user,
       this.httpOptions
     );
   }
 
-  login$(email: string, password: string): Observable<IUser> {
+  login$(email: string, password: string): Observable<User> {
     let user = {
       email: email,
       password: password,
     };
-    return this.httpClient.post<IUser>(
+    return this.httpClient.post<User>(
       this.baseUrl + '/login',
       user,
       this.httpOptions
@@ -72,40 +97,127 @@ export class UserService {
     localStorage.removeItem('token');
   }
 
-  getUsers$(): Observable<IUser[]> {
-    return this.httpClient.get<IUser[]>(this.baseUrl);
+  getUsers$(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.baseUrl);
   }
 
+  changePassword$(model: Password): Observable<Password> {
+    let password: Password = {
+      currentPassword: model.currentPassword,
+      newPassword: model.newPassword,
+    };
+    return this.httpClient.post<Password>(
+      this.baseUrl + '/changePassword',
+      password,
+      this.getHttpOptions()
+    );
+  }
+
+  updateUserPhoto$(id: string, model: Image): Observable<Image> {
+    let img: Image = {
+      image: model.image,
+    };
+    return this.httpClient.put<Image>(
+      this.baseUrl + '/user/updatePhoto/' + id,
+      img
+    );
+  }
+
+  uploadImage$(image: File): Observable<HttpEvent<Response>> {
+    const formData = new FormData();
+
+    formData.append('image', image, image.name);
+
+    return this.httpClient.post<Response>(
+      this.baseUrl + '/savePhoto',
+      formData,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
+  }
+
+  changeUserDetails$(id: string, model: UpdateUser): Observable<UpdateUser> {
+    let user: UpdateUser = {
+      email: model.email,
+      firstName: model.firstName,
+      lastName: model.lastName,
+      study: model.study,
+      phoneNumber: model.phoneNumber,
+      // image: model.image,
+    };
+    return this.httpClient.put<UpdateUser>(
+      this.baseUrl + '/update/' + id,
+      user
+    );
+  }
+
+  // changeUserDetails$(id: string, email: string): Observable<UpdateUser> {
+  //   let user = {
+  //     email: email,
+  //   };
+  //   return this.httpClient.put<UpdateUser>(
+  //     this.baseUrl + '/update/' + id,
+  //     user
+  //   );
+  // }
+  // changePassword$(
+  //   currentPassword: string,
+  //   newPassword: string
+  // ): Observable<Password> {
+  //   let password = {
+  //     currentPassword: currentPassword,
+  //     newPassword: newPassword,
+  //   };
+
+  //   return this.httpClient.post<Password>(
+  //     this.baseUrl + '/changePassword',
+  //     password,
+  //     this.getHttpOptions()
+  //   );
+  // }
   getRoles$(): Observable<Role[]> {
     return this.httpClient.get<Role[]>('https://localhost:7295/roles');
   }
 
-  // getUserById(id: string): Observable<IUser> {
-  //   return this.httpClient.get<IUser>(
+  // getUserById(id: string): Observable<User> {
+  //   return this.httpClient.get<User>(
   //     this.baseUrl + '/user/' + id,
   //     this.httpOptions
   //   );
   // }
-  getUserById$(id: string): Observable<IUser> {
-    return this.httpClient.get<IUser>(
-      'https://localhost:7295/users/user/' + id
+  getUserById$(id: string): Observable<User> {
+    return this.httpClient.get<User>(
+      'https://localhost:7295/users/user/' + id,
+      this.httpOptions
     );
   }
 
   async getUserByIdAsync(id: string) {
     return await this.httpClient
-      .get<IUser>(this.baseUrl + '/user/' + id, this.httpOptions)
+      .get<User>(this.baseUrl + '/user/' + id, this.httpOptions)
       .toPromise();
+  }
+
+  getHttpOptions() {
+    const httpOptionsJWT = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+      }),
+    };
+
+    return httpOptionsJWT;
   }
 
   // getUsers$() {
   //   return this.httpClient.get<Response>(this.baseUrl).pipe(
   //     map((res: Response) => {
-  //       let userList = new Array<IUser>();
+  //       let userList = new Array<User>();
   //       if (res.responseCode == ResponseCode.OK) {
   //         if (res.dataSet) {
-  //           res.dataSet.map((user: IUser) => {
-  //             userList.push(new IUser(user));
+  //           res.dataSet.map((user: User) => {
+  //             userList.push(new User(user));
   //             console.log(userList);
   //           });
   //         }
@@ -143,7 +255,7 @@ export class UserService {
     return this.helper.decodeToken(token);
   }
 
-  setCurrentUser(user: IUser) {
+  setCurrentUser(user: User) {
     return this._currentUserSubject.next(user);
   }
 
@@ -158,28 +270,27 @@ export class UserService {
   }
 
   initializeUser(): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       console.log(this._currentUserSubject.getValue());
 
       if (localStorage.getItem('token') !== null) {
-        var user = this.helper.decodeToken(localStorage.getItem('token'));
-
+        var token = this.helper.decodeToken(localStorage.getItem('token'));
+        let userId = JSON.stringify(token['nameid']);
+        let user: User;
+        console.log('idul este' + userId);
+        var id: string = '';
+        id = JSON.parse(userId);
+        console.log(id);
+        // this.getUserById$(id).subscribe((data) => (user = data));
+        user = await this.getUserByIdAsync(id);
         if (this._currentUserSubject.getValue() !== null) {
           this.setCurrentUser(user);
+          console.log('IN SERVICIU ' + user);
         }
       }
 
       resolve(null);
     });
-  }
-
-  getHttpOptions() {
-    const httpOptions2 = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
-      }),
-    };
-    return httpOptions2;
   }
 }
 
@@ -208,7 +319,7 @@ export class UserService {
 //       map((res: any) => {
 //         if (res.responseCode == ResponseCode.OK) {
 //           if (res.dateSet) {
-//             res.dateSet.map((x: IUser) => {
+//             res.dateSet.map((x: User) => {
 //               this.users.push(x);
 //             });
 //           }

@@ -1,55 +1,59 @@
-<!-- 
-<div class="img1">
-    <img id="logo" src="../../../assets/img/img1.jpg">
-</div> -->
-<div class="container">
-  <!-- <div class="home-img">
-    <img id="logo" src="../../../assets/img/img2.jpg" />
-  </div> -->
-  <div class="carousel">
-    <mat-carousel
-      timings="450ms ease-in"
-      [autoplay]="true"
-      color="accent"
-      maxWidth="auto"
-      [interval]="5000"
-      [proportion]="55"
-      [maintainAspectRatio]="true"
-      [loop]="true"
-      [hideArrows]="false"
-      [hideIndicators]="false"
-      [useKeyboard]="true"
-      [useMouseWheel]="false"
-      orientation="ltr"
+<div class="carousel">
+  <mat-carousel
+    timings="450ms ease-in"
+    [autoplay]="true"
+    color="accent"
+    maxWidth="auto"
+    [interval]="5000"
+    [maintainAspectRatio]="true"
+    [loop]="true"
+    [proportion]="55"
+    [hideArrows]="false"
+    [hideIndicators]="false"
+    [useKeyboard]="true"
+    [useMouseWheel]="false"
+    orientation="ltr"
+  >
+    <mat-carousel-slide
+      #matCarouselSlide
+      *ngFor="let slide of slides; let i = index"
+      [image]="slide.image"
+      overlayColor="#00000040"
+      [hideOverlay]="false"
     >
-      <mat-carousel-slide
-        #matCarouselSlide
-        *ngFor="let slide of slides; let i = index"
-        [image]="slide.image"
-        overlayColor="#00000040"
-        [hideOverlay]="false"
-      ></mat-carousel-slide>
-    </mat-carousel>
-  </div>
+    </mat-carousel-slide>
+  </mat-carousel>
+</div>
 
-  <div class="title">Ultimele cărți adăugate</div>
-  <div class="books">
-    <!-- <div *ngFor="let book of books$ | async">
-      <mat-card class="note">
-        <mat-card-header>
-          <mat-card-title>
-            {{ book.title }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="content-note">
-          <p>Autor: {{ book.author }}</p>
-          <p>Editura: {{ book.publishing }}</p>
-          <p>Numar pagini: {{ book.page }}</p>
-          <p>Limba: {{ book.language }}</p>
-          <p>Categorie: {{ book.category.name }}</p>
-        </mat-card-content>
-      </mat-card>
+<div class="title">Mai jos veti putea gasi ultimele carti adaugate</div>
+
+<div class="main-container-shelf">
+  <mat-card class="container-card">
+    <div class="content">
+      <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
+        <div *ngFor="let book of books.slice(0, 4)">
+          <mat-card-title
+            ><b>{{ book.title }}</b></mat-card-title
+          >
+
+          <!-- <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title> -->
+
+          <img
+            class="img_book"
+            mat-card-image
+            src="../../../assets/img/margaret.jpeg"
+            fxLayoutAlign="center"
+          />
+
+          <p>Mihai Eminescu</p>
+        </div>
+      </div>
+
+      <img
+        class="img_shelf"
+        src="../../../assets/img/book-shelf-clipart-xl_222.png"
+        fxLayoutAlign="center"
+      />
     </div>
-  </div> -->
-  </div>
+  </mat-card>
 </div>

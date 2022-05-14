@@ -41,7 +41,10 @@ namespace BooksAPI.Services
 
         public async Task<BookModel> Get(Guid id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(x => x.Category)
+                 .Include(y => y.User)
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             return book;
         }
@@ -51,22 +54,88 @@ namespace BooksAPI.Services
             var result = await _context.Books
                 .Include(x => x.Category)
                 .Include(y => y.User)
+
                 .ToListAsync();
 
             return result;
         }
 
-        public async Task<bool> Update(Guid id, BookModel model)
+    
+        public async Task<List<BookModel>> GetAllByStatus(string status)
+        {
+            var result = await _context.Books
+            
+                .Where(x => x.Status == status)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public Task<bool> Update(Guid id, BookModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> Update2(Guid id, UpdateBookModel model)
         {
             if (model.Id == null)
             {
                 return false;
             }
-            _context.Entry(model).State = EntityState.Modified;
+            var book = await _context.Books.FindAsync(id);
+
+            //_context.Entry(model).State = EntityState.Modified;
+
+            // var entry = _context.Entry(model); 
+            //  entry.State = EntityState.Modified;
+            // _context.Books.Attach(model);
+
+         //   var book = _context.Books.AsNoTracking().Single(i => i.Id == id);
+
+           // _context.Entry(model).State = EntityState.Detached;
+
+            book.Title = model.Title;
+            book.Author = model.Author;
+            book.Publishing = model.Publishing;
+            book.Page = model.Page;
+
+
+
+         //   _context.Entry(model).Property(x => x.Title).IsModified = true;
+          //  _context.Entry(model).Property(x => x.Author).IsModified = true;
+          //  _context.Entry(model).Property(x => x.Publishing).IsModified = true;
+          //  _context.Entry(model).Property(x => x.Page).IsModified = true;
+
+
+            // book.Publishing = model.Publishing;
+            //  book.Page = model.Page;
+            // user.Image = model.Image;
+            //  book.Language = model.Language;
+            //    book.Status = model.Status;
+
+
 
             await _context.SaveChangesAsync();
 
             return true;
         }
+
+
+        public async Task<bool> UpdatePhoto(Guid id, ImageModel model)
+        {
+           
+            var book = await _context.Books.FindAsync(id);
+
+
+            book.Image = model.Image;
+
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+
+
     }
 }

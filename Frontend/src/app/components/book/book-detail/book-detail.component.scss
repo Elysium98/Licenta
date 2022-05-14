@@ -2,13 +2,17 @@
 }
 
 .img {
-  width: 300px;
-  height: 410px;
-  border: 2px solid #555;
+  width: 400px;
+  height: 615px;
+  //  border: 2px solid #555;
+  box-shadow: 10px 10px 5px #ccc;
+  -moz-box-shadow: 10px 10px 5px #ccc;
+  -webkit-box-shadow: 10px 10px 5px #ccc;
+  -khtml-box-shadow: 10px 10px 5px #ccc;
 }
 
 .mat_card_details {
-  margin-top: 85px;
+  margin-top: 25px;
   width: 350px;
   // height: 250px;
 }
@@ -19,7 +23,7 @@
 }
 
 .container {
-  margin-left: 20px;
+  margin-left: 25px;
 }
 
 .book_detail {
@@ -27,4 +31,19 @@
 .mat-card-image:first-child {
   margin-top: 0px !important;
   margin-left: 10px;
+}
+
+.red_eye {
+  //margin: auto;
+  cursor: pointer;
+
+  font-size: 1.3vw !important;
+  bottom: 20px;
+}
+.red_eye:hover {
+  color: rgb(212, 146, 116) !important;
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 13px;
 }

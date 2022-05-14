@@ -1,12 +1,13 @@
 mat-form-field,
 mat-checkbox {
   width: 40%;
+
   //display: block;
   margin: 25px 25px 0px 25px;
   font-size: 16px;
 }
 mat-card-content {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -16,15 +17,8 @@ mat-card-content {
   margin-top: 2%;
 }
 
-// .example-card {
-//   width: 70%;
-//   height: 60%;
-//   margin-left: 3%;
-// }
-
 mat-card {
   width: 900px;
-  // height: 500px;
   margin-left: 3%;
 }
 .home-img {
@@ -37,8 +31,6 @@ mat-card {
   max-height: 100%;
   width: auto;
   height: 600px;
-  //object-fit: cover;
-  //padding-top: 30px;
 }
 
 .avatar_img {
@@ -69,4 +61,12 @@ mat-card {
 
 .mat-card-title {
   text-align: center;
+}
+
+.add_img_div {
+  margin-top: 10px;
+}
+
+.submit-btn {
+  margin: 0px 0px;
 }

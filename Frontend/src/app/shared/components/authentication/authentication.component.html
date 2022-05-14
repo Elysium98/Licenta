@@ -1,152 +1,194 @@
 <div class="login-page">
-  <!-- <mat-card class="mat-elevation-z12"> -->
-  <!-- <div
-    fxLayout="row wrap"
-    fxLayoutGap="10px"
-    fxLayoutAlign="flex-start"
-    style="background-color: #c19b1e; padding-top: 66px"
-  ></div> -->
-
   <mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
     <mat-tab label="Sign In">
-      <mat-card-content>
-        <div mat-dialog-content id="login" class="input-group">
-          <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmitLogin()">
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input
-                matInput
-                type="email"
-                placeholder="Enter your email"
-                formControlName="email"
-              />
-              <mat-error *ngIf="hasErrorLogin('email', 'required')"
-                >Email is required!</mat-error
-              >
-            </mat-form-field>
+      <form
+        class="formGroup"
+        [formGroup]="loginFormGroup"
+        (ngSubmit)="onSubmitLogin()"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="Introduceți emailul"
+            formControlName="email"
+          />
+          <mat-error *ngIf="hasErrorLogin('email', 'required')"
+            >Email is required!</mat-error
+          >
+        </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input
-                matInput
-                type="password"
-                placeholder="Enter your password"
-                formControlName="password"
-              />
-              <mat-error *ngIf="hasErrorLogin('password', 'required')"
-                >Password is required!</mat-error
-              >
-            </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            placeholder="Introduceți parola"
+            formControlName="password"
+          />
+          <mat-error *ngIf="hasErrorLogin('password', 'required')"
+            >Password is required!</mat-error
+          >
+        </mat-form-field>
 
-            <div mat-dialog-actions align="center">
-              <button mat-button [disabled]="!loginFormGroup.valid">
-                Sign in
-              </button>
-            </div>
-          </form>
+        <div mat-dialog-actions align="center">
+          <button mat-button [disabled]="!loginFormGroup.valid">Sign in</button>
         </div>
-      </mat-card-content>
+      </form>
+
       <img id="logo" src="../../../assets/img/login-img.png" />
     </mat-tab>
 
     <mat-tab label="Sign Up">
-      <mat-card-content>
-        <div mat-dialog-content id="register" class="input-group">
-          <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmitRegister()">
-            <mat-form-field appearance="outline">
-              <mat-label>Nume</mat-label>
-              <input
-                matInput
-                type="text"
-                placeholder="Enter your name"
-                formControlName="fullName"
-              />
-              <mat-error *ngIf="hasErrorRegister('fullName', 'required')"
-                >FullName is required!</mat-error
-              >
-            </mat-form-field>
+      <form
+        class="formGroup"
+        [formGroup]="registerFormGroup"
+        (ngSubmit)="onSubmitRegister()"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Nume</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Introduceți numele"
+            formControlName="lastName"
+          />
+          <mat-error *ngIf="hasErrorRegister('lastName', 'required')"
+            >LastName is required!</mat-error
+          >
+        </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline">
-              <mat-label>Prenume</mat-label>
-              <input matInput type="text" />
-              <mat-error *ngIf="hasErrorRegister('fullName', 'required')"
-                >FullName is required!</mat-error
-              >
-            </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Prenume</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Introduceți prenumele"
+            formControlName="firstName"
+          />
+          <mat-error *ngIf="hasErrorRegister('firstName', 'required')"
+            >FirstName is required!</mat-error
+          >
+        </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Oras</mat-label>
-              <input matInput type="text" />
-              <mat-error *ngIf="hasErrorRegister('city', 'required')"
-                >City is required!</mat-error
-              >
-            </mat-form-field>
+        <div class="register-row" fxLayout="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Oras</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Introduceți orașul"
+              formControlName="city"
+            />
+            <mat-error *ngIf="hasErrorRegister('city', 'required')"
+              >City is required!</mat-error
+            >
+          </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Data nasterii</mat-label>
-              <input matInput type="date" />
-            </mat-form-field> -->
+          <mat-form-field appearance="outline">
+            <mat-label>Data nașterii</mat-label>
+            <input matInput type="date" formControlName="birthDate" />
+            <mat-error *ngIf="hasErrorRegister('birthDate', 'required')"
+              >Câmp obligatoriu !</mat-error
+            >
+          </mat-form-field>
+        </div>
 
-            <!-- <mat-form-field appearance="outline">
-              <mat-label>Studii</mat-label>
-              <input matInput type="text" />
-            </mat-form-field> -->
-
-            <div fxLayout="row">
-              <!-- <mat-form-field appearance="outline">
+        <!-- <mat-form-field appearance="outline">
                 <mat-label>ID Student</mat-label>
                 <input matInput type="text" />
               </mat-form-field> -->
 
-              <!-- <mat-form-field appearance="outline">
-                <mat-label>Telefon</mat-label>
-                <input matInput type="text" />
-                <mat-error *ngIf="hasErrorRegister('phone', 'required')"
-                  >Phone is required!</mat-error
-                >
-              </mat-form-field> -->
-            </div>
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input
-                matInput
-                type="email"
-                placeholder="Enter your email"
-                formControlName="email"
-              />
-              <mat-error *ngIf="hasErrorLogin('email', 'required')"
-                >Email is required!</mat-error
-              >
-              <mat-error *ngIf="hasErrorRegister('email', 'email')"
-                >Email must contain @</mat-error
-              >
-            </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Alege ultima formă de învățământ </mat-label>
+          <mat-select
+            formControlName="study"
+            (selectionChange)="change($event)"
+          >
+            <mat-option
+              *ngFor="let educationForm of educationForms"
+              [value]="educationForm"
+            >
+              {{ educationForm }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Parola</mat-label>
-              <input
-                matInput
-                type="password"
-                placeholder="Enter your password"
-                formControlName="password"
-              />
-              <mat-error *ngIf="hasErrorRegister('password', 'required')"
-                >Password is required!</mat-error
-              >
-              <mat-error *ngIf="hasErrorRegister('password', 'pattern')"
-                >Password must contain 1 upper case, 1 lower case and 1 special
-                character</mat-error
-              >
-            </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Telefon</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Introduceți numărul de telefon"
+            formControlName="phoneNumber"
+          />
+          <mat-error *ngIf="hasErrorRegister('phoneNumber', 'required')"
+            >Phone is required!</mat-error
+          >
+        </mat-form-field>
 
-            <div mat-dialog-actions align="center">
-              <button mat-button [disabled]="!registerFormGroup.valid">
-                Sign up
-              </button>
-            </div>
-          </form>
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>Image</mat-label>
+          <input matInput type="text" formControlName="image" />
+        </mat-form-field> -->
+        <input
+          #file
+          (change)="uploadFile(file.files)"
+          formControlName="image"
+          type="file"
+          style="display: none"
+        />
+        <div class="add_img_div">
+          <button
+            class="add_img_btn"
+            type="button"
+            mat-raised-button
+            color="warn"
+            (click)="file.click()"
+          >
+            Adăugați poza de profil
+          </button>
         </div>
-      </mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="Introduceți emailul"
+            formControlName="email"
+          />
+          <mat-error *ngIf="hasErrorLogin('email', 'required')"
+            >Email is required!</mat-error
+          >
+          <mat-error *ngIf="hasErrorRegister('email', 'email')"
+            >Email must contain @</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Parola</mat-label>
+          <input
+            matInput
+            type="password"
+            placeholder="Introduceți parola"
+            formControlName="password"
+          />
+          <mat-error *ngIf="hasErrorRegister('password', 'required')"
+            >Password is required!</mat-error
+          >
+          <mat-error *ngIf="hasErrorRegister('password', 'pattern')"
+            >Password must contain 1 upper case, 1 lower case and 1 special
+            character</mat-error
+          >
+        </mat-form-field>
+
+        <div mat-dialog-actions align="center">
+          <button mat-button [disabled]="!registerFormGroup.valid">
+            Sign up
+          </button>
+        </div>
+      </form>
     </mat-tab>
   </mat-tab-group>
 </div>

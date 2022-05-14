@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Net.Http.Headers;
 using System.Web;
 
 namespace BooksAPI.Controllers
@@ -66,7 +67,14 @@ namespace BooksAPI.Controllers
                 }
                 var user = new ApplicationUser()
                 {
-                    FullName = model.FullName,
+                    //FullName = model.FullName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Study = model.Study,
+                    Image = model.Image,
+                    City = model.City,
+                    BirthDate = model.BirthDate,
+                    PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
                     UserName = model.Email,
                     DateCreated = DateTime.UtcNow,
@@ -122,7 +130,14 @@ namespace BooksAPI.Controllers
                     UserDTO.Add(
                         new UserDTO(
                             user.Id,
-                            user.FullName,
+                            //user.FullName,
+                            user.FirstName,
+                            user.LastName,
+                            user.Study,
+                            user.Image,
+                            user.City,
+                            user.BirthDate,
+                            user.PhoneNumber,
                             user.Email,
                             user.UserName,
                             user.DateCreated,
@@ -150,7 +165,6 @@ namespace BooksAPI.Controllers
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-          
             try
             {
                 var foundUser = await _userManager.FindByIdAsync(id);
@@ -158,14 +172,21 @@ namespace BooksAPI.Controllers
                 var role = (await _userManager.GetRolesAsync(foundUser)).FirstOrDefault();
 
                 var userDTO = new UserDTO(
-                           foundUser.Id,
-                           foundUser.FullName,
-                           foundUser.Email,
-                           foundUser.UserName,
-                           foundUser.DateCreated,
-                           role
-                       );
-                
+                    foundUser.Id,
+                     //  foundUser.FullName,
+                     foundUser.FirstName,
+                            foundUser.LastName,
+                            foundUser.Study,
+                            foundUser.Image,
+                            foundUser.City,
+                            foundUser.BirthDate,
+                            foundUser.PhoneNumber,
+                    foundUser.Email,
+                    foundUser.UserName,
+                    foundUser.DateCreated,
+                    role
+                );
+
                 if (foundUser == null)
                 {
                     return NotFound();
@@ -198,7 +219,14 @@ namespace BooksAPI.Controllers
                         allUserDTO.Add(
                             new UserDTO(
                                 user.Id,
-                                user.FullName,
+                                     //  user.FullName,
+                                     user.FirstName,
+                            user.LastName,
+                            user.Study,
+                            user.Image,
+                            user.City,
+                            user.BirthDate,
+                            user.PhoneNumber,
                                 user.Email,
                                 user.UserName,
                                 user.DateCreated,
@@ -231,7 +259,7 @@ namespace BooksAPI.Controllers
                         model.Email,
                         model.Password,
                         false,
-                        false
+                       false
                     );
 
                     if (result.Succeeded)
@@ -240,7 +268,14 @@ namespace BooksAPI.Controllers
                         var role = (await _userManager.GetRolesAsync(appUser)).FirstOrDefault();
                         var user = new UserDTO(
                             appUser.Id,
-                            appUser.FullName,
+                            // appUser.FullName
+                               appUser.FirstName,
+                               appUser.LastName,
+                               appUser.Study,
+                               appUser.Image,
+                               appUser.City,
+                               appUser.BirthDate,
+                               appUser.PhoneNumber,
                             appUser.Email,
                             appUser.UserName,
                             appUser.DateCreated,
@@ -252,6 +287,74 @@ namespace BooksAPI.Controllers
                     }
                 }
                 return BadRequest("Invalid email or password");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [HttpPut("user/updatePhoto/{id}")]
+        public async Task<IActionResult> UpdatePhoto(string id,  ImageModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    user.Image = model.Image;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.RefreshSignInAsync(user);
+                        return Ok(user);
+                    }
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update(string id, UpdateUserModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    user.Email = model.Email;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Study = model.Study;
+                   // user.Image = model.Image;
+                    user.PhoneNumber = model.PhoneNumber;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.RefreshSignInAsync(user);
+                        return Ok(user);
+                    }
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -277,6 +380,41 @@ namespace BooksAPI.Controllers
                 await _userManager.DeleteAsync(user);
 
                 return Ok("User deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("savePhoto")]
+        public async Task<IActionResult> UploadPhoto()
+        {
+            try
+            {
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                var folderName = Path.Combine("Resources", "Images", "Users");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
             catch (Exception ex)
             {
@@ -325,7 +463,6 @@ namespace BooksAPI.Controllers
             return BadRequest();
         }
 
-
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
@@ -333,20 +470,19 @@ namespace BooksAPI.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                var result = await _userManager.ChangePasswordAsync(
+                    user,
+                    model.CurrentPassword,
+                    model.NewPassword
+                );
 
                 if (result.Succeeded)
                 {
                     await _signInManager.RefreshSignInAsync(user);
                     return Ok(model);
                 }
-               
             }
             return BadRequest();
         }
-
-
-
-
     }
 }

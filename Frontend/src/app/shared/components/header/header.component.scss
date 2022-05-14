@@ -8,6 +8,7 @@
 #logo {
   padding-top: 5px;
   width: 45px;
+  cursor: pointer;
 }
 
 /*change color of underline when hover*/
@@ -179,6 +180,8 @@
 
 .search-bar {
   width: 60%;
+  padding-right: 5%;
+  padding-left: 5%;
 }
 
 // ::ng-deep .mat-toolbar.mat-primary {
@@ -231,12 +234,23 @@
 
 .search_btn {
   margin-left: 20px;
+  // margin-right: 200px;
 }
 
 .book_btn {
-  right: 30px;
+  // right: 30px;
+  margin-left: 100px;
 }
 
 .form-field-book {
   font-size: 15px;
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 18px;
+}
+
+.search-sort {
+  font-size: 15px;
+  margin-right: 20px;
 }

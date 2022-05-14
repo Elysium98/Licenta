@@ -10,6 +10,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BooksAPI.Controllers.BookController.GetBooksByStatus(System.String)">
+            <summary>
+            Gets all books
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:BooksAPI.Controllers.BookController.GetBookById(System.Guid)">
             <summary>
             Gets a book with a certain id
@@ -24,7 +30,15 @@
             <param name="book"></param>
             <returns></returns>
         </member>
-        <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.BookModel)">
+        <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.UpdateBookModel)">
+            <summary>
+            Update the book
+            </summary>
+            <param name="id"></param>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.UpdatePhoto(System.Guid,BooksAPI.Models.ImageModel)">
             <summary>
             Update the book
             </summary>

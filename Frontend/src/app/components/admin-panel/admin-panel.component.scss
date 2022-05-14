@@ -3,11 +3,25 @@
   justify-content: center;
 }
 
-table {
-  width: calc(70% - 24px);
+// table {
+//   width: calc(90% - 24px);
+//   margin: 12px;
+// }
+
+.mat-table-users {
+  width: calc(50% - 24px);
   margin: 12px;
 }
 
+.mat-table-books {
+  width: calc(80% - 24px);
+  margin: 12px;
+}
+
+.mat-table-categories {
+  width: calc(20% - 24px);
+  margin: 12px;
+}
 .mat-cell:last-child {
   border-right: 0px;
 }

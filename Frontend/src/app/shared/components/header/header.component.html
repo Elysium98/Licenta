@@ -56,10 +56,12 @@
         routerLink="/home"
       /> </a
   ></span>
+
   <!-- <span>My App</span> -->
   <span class="example-spacer"></span>
+  <!-- <form [formGroup]="searchFormGroup"></form> -->
   <div class="search-bar">
-    <form class="search-form">
+    <form class="search-form" [formGroup]="searchFormGroup">
       <!-- <mat-form-field class="form-field-book" appearance="fill">
         <mat-label>Alege starea cărții</mat-label>
         <mat-select>
@@ -68,11 +70,21 @@
           </mat-option>
         </mat-select>
       </mat-form-field> -->
-
+      <mat-form-field class="search-sort" appearance="fill">
+        <mat-label>Alege</mat-label>
+        <mat-select
+          formControlName="property"
+          (selectionChange)="change($event)"
+        >
+          <mat-option *ngFor="let property of properties" [value]="property">
+            {{ property }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Caută după titlu, autor sau editură</mat-label>
         <input
-          #title
+          #search
           type="text"
           placeholder="Titlu, Autor sau Editură"
           aria-label="Number"
@@ -86,7 +98,7 @@
         mat-raised-button
         color="primary"
         class="search_btn"
-        (click)="searchedTitle(title.value)"
+        (click)="searchedTitle(search.value)"
       >
         Search
       </button>
@@ -114,16 +126,30 @@
   </a>
 
   <a [matMenuTriggerFor]="menu" *ngIf="isLoggedIn$ | async">
-    <mat-icon class="account_btn" matSuffi x>perm_identity</mat-icon>
+    <mat-icon
+      *ngIf="currentUser$ | async as user"
+      class="account_btn"
+      matSuffi
+      x
+      #tooltip="matTooltip"
+      matTooltip="salut  {{ user.firstName }}"
+      matTooltipPosition="above"
+      matTooltipHideDelay="100"
+      >perm_identity</mat-icon
+    >
     <!-- <span class="aligned-with-icon">Contul meu</span> -->
   </a>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/edit-profile">
+    <button mat-menu-item routerLink="/edit-profile" (click)="checkEditMode()">
       <span>My profile</span>
     </button>
-    <button mat-menu-item>
-      <span>History</span>
+    <button mat-menu-item routerLink="/my-books">
+      <span>My books</span>
     </button>
+    <button mat-menu-item routerLink="/history-books">
+      <span>History </span>
+    </button>
+
     <button mat-menu-item (click)="logout()">
       <span>Logout</span>
     </button>

@@ -11,7 +11,7 @@ namespace BooksAPI.Models
 
         // [KeyAttribute]
         // [ForeignKeyAttribute("User")]
-
+       
         public string Title { get; set; }
 
         public string Author { get; set; }
@@ -26,6 +26,7 @@ namespace BooksAPI.Models
 
         public string Status { get; set; }
 
+      
         public string Image { get; set; }
 
         public Guid CategoryId { get; set; }

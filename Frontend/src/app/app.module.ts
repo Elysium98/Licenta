@@ -45,6 +45,12 @@ import { BookListComponent } from './components/book/book-list/book-list.compone
 import { BookDetailComponent } from './components/book/book-detail/book-detail.component';
 import { SortPipePipe } from './components/pipes/sort-pipe.pipe';
 import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommonService } from './shared/common.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MyBooksComponent } from './components/user/my-books/my-books.component';
+import { HistoryBooksComponent } from './components/user/history-books/history-books.component';
+
 export function initializeApp(userService: UserService) {
   return (): Promise<any> => {
     return userService.initializeUser();
@@ -64,6 +70,8 @@ export function initializeApp(userService: UserService) {
     BookDetailComponent,
     SortPipePipe,
     EditProfileComponent,
+    MyBooksComponent,
+    HistoryBooksComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +99,8 @@ export function initializeApp(userService: UserService) {
     FlexLayoutModule,
     MatTableModule,
     MatMenuModule,
+    MatSnackBarModule,
+    MatTooltipModule,
   ],
   providers: [
     {
@@ -99,6 +109,7 @@ export function initializeApp(userService: UserService) {
       deps: [UserService],
       multi: true,
     },
+    CommonService,
     LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
   ],

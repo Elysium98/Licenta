@@ -2,76 +2,170 @@
   <mat-card class="example-card">
     <mat-tab-group>
       <mat-tab label="Details">
-        <div class="img_container">
-          <img
-            class="avatar_img"
-            src="../../../assets/img/eu.jpeg"
-            mat-card-avatar
-          />
+        <div class="img_container" *ngIf="image$ | async as image">
+          <img class="avatar_img" mat-card-avatar [src]="image" />
         </div>
         <mat-card-content>
-          <mat-card-title>Paul</mat-card-title>
-          <form>
+          <mat-card-title>{{ user.firstName }}</mat-card-title>
+
+          <form
+            [formGroup]="updateUserFormGroup"
+            (ngSubmit)="onSubmitDetails()"
+            *ngIf="updateUserFormGroup"
+          >
+            <input
+              #file
+              (change)="uploadFile(file.files)"
+              formControlName="image"
+              type="file"
+              style="display: none"
+            />
+            <div class="add_img_div">
+              <button
+                class="add_img_btn"
+                type="button"
+                mat-raised-button
+                color="warn"
+                (click)="file.click()"
+              >
+                Schimbați poza de profil
+              </button>
+            </div>
+
             <mat-form-field appearance="outline">
               <mat-label>Nume</mat-label>
-              <input matInput type="text" />
+              <input
+                matInput
+                type="text"
+                placeholder="Introduceți numele"
+                formControlName="lastName"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Prenume</mat-label>
-              <input matInput type="text" />
+              <input
+                matInput
+                type="text"
+                placeholder="Introduceți numele"
+                formControlName="firstName"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
-              <input matInput type="text" />
+              <input
+                matInput
+                type="email"
+                placeholder="Introduceți emailul"
+                formControlName="email"
+              />
+
+              <mat-error *ngIf="hasErrorDetails('email', 'email')"
+                >Email must contain @</mat-error
+              >
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Telefon</mat-label>
-              <input matInput type="text" />
+              <input
+                matInput
+                type="text"
+                placeholder="Introduceți numărul de telefon"
+                formControlName="phoneNumber"
+              />
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Studii</mat-label>
-              <input matInput type="text" />
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Alege ultima formă de învățământ </mat-label>
+              <mat-select
+                formControlName="study"
+                (selectionChange)="change($event)"
+              >
+                <mat-option
+                  *ngFor="let educationForm of educationForms"
+                  [value]="educationForm"
+                >
+                  {{ educationForm }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
-            <div mat-dialog-actions align="center">
-              <button mat-raised-button color="accent">Update</button>
+            <div align="center">
+              <button
+                class="submit-btn"
+                mat-raised-button
+                color="accent"
+                type="submit"
+                [disabled]="!updateUserFormGroup.valid"
+              >
+                Update
+              </button>
             </div>
           </form>
         </mat-card-content>
       </mat-tab>
       <mat-tab label="Security">
-        <div class="img_container">
-          <img
-            class="avatar_img"
-            src="../../../assets/img/eu.jpeg"
-            mat-card-avatar
-          />
+        <div class="img_container" *ngIf="image$ | async as image">
+          <img class="avatar_img" mat-card-avatar [src]="image" />
         </div>
         <mat-card-content>
-          <mat-card-title>Paul</mat-card-title>
-          <form>
-            <div>
-              <mat-form-field appearance="outline">
-                <mat-label>Parolă curentă</mat-label>
-                <input matInput type="text" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Parolă nouă</mat-label>
-                <input matInput type="text" />
-              </mat-form-field>
-            </div>
+          <mat-card-title>{{ user.firstName }}</mat-card-title>
+          <form
+            [formGroup]="securityFormGroup"
+            (ngSubmit)="onSubmit()"
+            *ngIf="securityFormGroup"
+          >
             <mat-form-field appearance="outline">
-              <mat-label>Confirmare parolă nouă</mat-label>
-              <input matInput type="text" />
+              <mat-label>Parolă curentă</mat-label>
+              <input matInput type="text" formControlName="currentPassword" />
+              <mat-error *ngIf="hasErrorSecurity('currentPassword', 'required')"
+                >Current Password is required!</mat-error
+              >
             </mat-form-field>
 
-            <div mat-dialog-actions align="center">
-              <button mat-raised-button color="accent">Update</button>
+            <mat-form-field appearance="outline">
+              <mat-label>Parolă nouă</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="newPassword"
+                (change)="onPasswordChange()"
+              />
+              <mat-error *ngIf="hasErrorSecurity('newPassword', 'required')"
+                >New password is required!</mat-error
+              >
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Confirmare parolă nouă</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="confirmNewPassword"
+                (change)="onPasswordChange()"
+              />
+              <mat-error
+                *ngIf="hasErrorSecurity('confirmNewPassword', 'required')"
+                >Confirm password is required!</mat-error
+              >
+              <mat-error *ngIf="confirmNewPassword.hasError('mismatch')"
+                >Password do not match.</mat-error
+              >
+              <!-- <mat-error *ngIf="securityFormGroup.hasError('notSame')">
+                your new passwords are not match
+              </mat-error> -->
+            </mat-form-field>
+
+            <div align="center">
+              <button
+                mat-raised-button
+                color="accent"
+                type="submit"
+                [disabled]="!securityFormGroup.valid"
+              >
+                Update
+              </button>
             </div>
           </form>
         </mat-card-content>

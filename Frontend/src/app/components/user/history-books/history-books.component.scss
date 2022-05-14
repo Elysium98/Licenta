@@ -1,0 +1,100 @@
+.content {
+  padding: 36px;
+}
+
+.content > mat-card {
+  margin-bottom: 16px;
+}
+
+mat-card {
+  // width: 400px;
+  // height: 700px;
+  // max-width: 220px;
+  max-width: 100%;
+  max-height: 100%;
+  width: 250px;
+  height: 450px;
+  // height: auto;
+}
+.column-label {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+mat-card img {
+  object-fit: cover;
+  // width: 100%;
+  //  height: 80%;
+  padding-left: 10%;
+  padding-right: 10%;
+  // margin-left: 2%;
+}
+
+.img {
+  width: 280px;
+  height: 322px;
+  //  border: 2px solid #555;
+}
+
+.mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+mat-card-content {
+  text-align: center;
+}
+
+.book_btn {
+  margin-bottom: 20px;
+  font-size: 15px;
+  height: 50px;
+}
+
+.main-container {
+  margin-left: 130px !important;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-form-field,
+mat-checkbox {
+  width: 70%;
+  //display: block;
+  //font-size: 20px;
+  margin: 25px 25px 0px 25px;
+}
+
+.form-field-sort {
+  font-size: 18px;
+}
+
+::ng-deep .mat-select-panel {
+  //background: rgb(119, 112, 112);
+}
+
+::ng-deep .mat-select-value {
+  padding-left: 5px;
+}
+
+.sortForm {
+  display: flex;
+}
+
+.title {
+  color: black;
+  padding-top: 25px;
+
+  text-align: center;
+
+  margin: 1% !important;
+  font-size: var(--h1-font-size) !important;
+}
