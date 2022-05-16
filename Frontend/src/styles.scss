@@ -18,7 +18,14 @@ body {
   font-size: var(--normal-font-size);
 }
 body {
-  background-color: var(--body-color);
+  // background-color: var(--body-color);
+
+  background: rgb(63, 94, 251);
+  background: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(251, 219, 172, 1) 100%
+  );
   margin: 0;
   font-family: "Inconsolata", monospace;
   padding: 0 0px;

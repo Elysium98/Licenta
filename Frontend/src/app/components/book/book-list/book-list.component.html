@@ -16,11 +16,26 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="form-field-sort" appearance="fill">
+      <!-- <mat-form-field class="form-field-sort" appearance="fill">
         <mat-label>Filtrează</mat-label>
         <mat-select
           formControlName="category"
           (selectionChange)="changeCategory($event)"
+        >
+          <mat-option
+            *ngFor="let category of categories"
+            [value]="category.name"
+          >
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field class="form-field-sort" appearance="fill">
+        <mat-label>Filtrează</mat-label>
+        <mat-select
+          formControlName="category"
+          (selectionChange)="changeCategorySearch($event)"
         >
           <mat-option
             *ngFor="let category of categories"
@@ -39,16 +54,18 @@
           <mat-card-title
             ><b>{{ book.title }}</b></mat-card-title
           >
+
           <!-- <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title> -->
         </mat-card-header>
 
         <img
-          class="img"
+          class="img_card"
           mat-card-image
           src="../../../assets/img/margaret.jpeg"
           fxLayoutAlign="center"
         />
-        <div *ngIf="searchedProperty$ | async as property">{{ property }}</div>
+        <!-- <div *ngIf="searchedProperty$ | async as property">{{ property }}</div> -->
+
         <mat-card-content>
           <p>Mihai Eminescu</p>
         </mat-card-content>

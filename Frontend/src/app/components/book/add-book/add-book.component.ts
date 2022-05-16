@@ -17,6 +17,7 @@ import { BookService } from 'src/app/services/book.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { UserService } from 'src/app/services/user.service';
 import { Image } from 'src/app/models/image';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
@@ -34,13 +35,16 @@ export class AddBookComponent implements OnInit {
   currentCategory: Category;
   selectedCategory: string = '';
   selectedUser: string = '';
-  states: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
+  conditions: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
+  states: Array<string> = ['Activa', 'Vanduta'];
+  state: any;
   helper = new JwtHelperService();
   public message: string;
   public progress: number;
   public response: { dbPath: '' };
   @Output() public onUploadFinished = new EventEmitter();
   formData = new FormData();
+  convertedDate: any;
   bodyData: any;
   test60: boolean = false;
   currentBook: Book;
@@ -92,6 +96,23 @@ export class AddBookComponent implements OnInit {
     });
   }
 
+  addBookPhoto(files) {
+    if (files.length === 0) {
+      return;
+    }
+
+    let imageToUpload = <File>files[0];
+
+    this.userService.uploadImage$(imageToUpload).subscribe({
+      next: (event) => {
+        if (event.type === HttpEventType.Response) {
+          this.bodyData = event.body;
+        }
+      },
+      error: (err: HttpErrorResponse) => console.log(err),
+    });
+  }
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -99,7 +120,8 @@ export class AddBookComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private datePipe: DatePipe
   ) {
     this.route.params.subscribe((params) => {
       this.bookId = params['id'] ? params['id'] : 0;
@@ -109,14 +131,17 @@ export class AddBookComponent implements OnInit {
 
     if (this.editMode === true) {
       this.addBookFormGroup = this.fb.group({
-        title: ['', Validators.required],
+        isbn: [''],
+        title: [''],
         author: ['', Validators.maxLength(100)],
-        publishing: ['', Validators.required],
-        category: ['', Validators.required],
-        page: ['', Validators.required],
-        language: ['', Validators.required],
-        state: ['', Validators.required],
-        image: ['', Validators.required],
+        publisher: [''],
+        publicationDate: [''],
+        category: [''],
+        page: [''],
+        language: [''],
+        condition: [''],
+        image: [''],
+        state: [''],
       });
       this.categoryService.getCategories$().subscribe((categories) => {
         this.categories = categories;
@@ -136,13 +161,15 @@ export class AddBookComponent implements OnInit {
 
     if (this.editMode === false) {
       this.addBookFormGroup = this.fb.group({
+        isbn: ['', Validators.required],
         title: ['', Validators.required],
         author: ['', Validators.maxLength(100)],
-        publishing: ['', Validators.required],
+        publisher: ['', Validators.required],
+        publicationDate: ['', Validators.required],
         category: ['', Validators.required],
         page: ['', Validators.required],
         language: ['', Validators.required],
-        state: ['', Validators.required],
+        condition: ['', Validators.required],
         image: ['', Validators.required],
       });
 
@@ -167,16 +194,30 @@ export class AddBookComponent implements OnInit {
         'categoria este' +
           JSON.parse(JSON.stringify(this.currentBook.category.name))
       );
+      this.convertedDate = this.datePipe.transform(
+        this.currentBook.publicationDate,
+        'yyyy-MM-dd'
+      );
+      console.log('DATA ESTE' + this.convertedDate);
+
       this.currentCategory = this.currentBook.category;
       console.log(this.currentCategory.name);
+      if (this.currentBook.isSold === false) {
+        this.state = 'Activa';
+      } else {
+        this.state = 'Vanduta';
+      }
       this.addBookFormGroup = await this.fb.group({
-        title: [this.currentBook.title, Validators.required],
+        isbn: [this.currentBook.isbn],
+        title: [this.currentBook.title],
         author: [this.currentBook.author, Validators.maxLength(100)],
-        publishing: [this.currentBook.publishing, Validators.required],
-        category: [this.currentCategory.name, Validators.required],
-        page: [this.currentBook.page, Validators.required],
-        language: [this.currentBook.language, Validators.required],
-        state: [this.currentBook.status, Validators.required],
+        publisher: [this.currentBook.publisher],
+        publicationDate: [this.convertedDate],
+        category: [this.currentCategory.name],
+        page: [this.currentBook.page],
+        language: [this.currentBook.language],
+        condition: [this.currentBook.condition],
+        state: [this.state],
       });
     }
   }
@@ -204,22 +245,35 @@ export class AddBookComponent implements OnInit {
 
   onSubmit() {
     if (this.editMode === false) {
+      this.book.isbn = this.addBookFormGroup.value.isbn;
       this.book.title = this.addBookFormGroup.value.title;
       this.book.author = this.addBookFormGroup.value.author;
-      this.book.publishing = this.addBookFormGroup.value.publishing;
+      this.book.publisher = this.addBookFormGroup.value.publisher;
+      this.book.publicationDate = this.addBookFormGroup.value.publicationDate;
       this.book.category = this.addBookFormGroup.value.category;
       this.book.page = this.addBookFormGroup.value.page;
       this.book.language = this.addBookFormGroup.value.language;
-      this.book.status = this.addBookFormGroup.value.state;
+      this.book.condition = this.addBookFormGroup.value.condition;
       this.book.image = this.bodyData.dbPath;
     } else {
+      if (this.addBookFormGroup.value.state === 'Activa') {
+        this.addBookFormGroup.value.state = false;
+      }
+      if (this.addBookFormGroup.value.state === 'Vanduta') {
+        this.addBookFormGroup.value.state = true;
+      }
+      console.log(this.addBookFormGroup.value.state);
+
+      this.book.isbn = this.addBookFormGroup.value.isbn;
       this.book.title = this.addBookFormGroup.value.title;
       this.book.author = this.addBookFormGroup.value.author;
-      this.book.publishing = this.addBookFormGroup.value.publishing;
+      this.book.publisher = this.addBookFormGroup.value.publisher;
+      this.book.publicationDate = this.addBookFormGroup.value.publicationDate;
       this.book.category = this.addBookFormGroup.value.category;
       this.book.page = this.addBookFormGroup.value.page;
       this.book.language = this.addBookFormGroup.value.language;
-      this.book.status = this.addBookFormGroup.value.state;
+      this.book.condition = this.addBookFormGroup.value.condition;
+      this.book.isSold = this.addBookFormGroup.value.state;
     }
 
     var userLogged = this.userService.decodeToken(
@@ -229,36 +283,44 @@ export class AddBookComponent implements OnInit {
     if (this.editMode === false) {
       this.bookService
         .addBook$(
-          this.generateUUID(),
+          this.book.isbn,
+          // this.generateUUID(),
           userLogged['nameid'],
           this.book.title,
           this.book.author,
-          this.book.publishing,
+          this.book.publisher,
+          this.book.publicationDate,
           this.book.page,
           this.book.language,
-          this.book.status,
+          this.book.condition,
           this.book.category.categoryId,
-          this.book.image
+          this.book.image,
+          false
         )
         .subscribe(
           (data) => {
             console.log('response', data);
+            this.router.navigate(['/my-books']);
           },
           (error) => console.log('error', error)
         );
     } else {
       let model: UpdateBook = {
+        isbn: this.book.isbn,
         title: this.book.title,
         author: this.book.author,
-        publishing: this.book.publishing,
+        publisher: this.book.publisher,
+        publicationDate: this.book.publicationDate,
         page: this.book.page,
         language: this.book.language,
-        status: this.book.status,
+        condition: this.book.condition,
+        isSold: this.book.isSold,
       };
 
       this.bookService.updateBook$(this.bookId, model).subscribe(
         (data) => {
           console.log('response', data);
+          this.router.navigate(['/my-books']);
         },
         (error) => console.log('error', error)
       );
@@ -276,120 +338,3 @@ export class AddBookComponent implements OnInit {
     return this.uuidValue;
   }
 }
-
-//     this.addBookFormGroup = Object();
-//     this.currentCategory = new Category();
-
-//     this.route.params.subscribe((params) => {
-//       this.bookId = params['id'] ? params['id'] : 0;
-//     });
-//     this.book = new Book();
-//     this.addBookFormGroup = this.fb.group({
-//       name: [this.book.title, Validators.required],
-//       author: [this.book.author, Validators.maxLength(100)],
-//       publishing: [this.book.publishing, Validators.required],
-//       category: [this.book.category.name, Validators.required],
-//       page: [this.book.page, Validators.required],
-//       language: [this.book.language, Validators.required],
-//       status: [this.book.status, Validators.required],
-//     });
-
-//     this.categoryService.getCategories$().subscribe((categories) => {
-//       this.categories = categories;
-//     });
-//   }
-
-//   selectedUserHandler(selected: any) {
-//     this.selectedUser = selected.value;
-//   }
-
-//   selectedCategoryHandler(selected: any) {
-//     this.selectedCategory = selected.value;
-//   }
-
-//   generateUUID() {
-//     this.uuidValue = UUID.UUID();
-//     return this.uuidValue;
-//   }
-
-//   async ngOnInit(): Promise<void> {
-//     if (this.bookId == '0') {
-//       this.book = new Book();
-//     } else {
-//       const currentItem = await this.getBookById();
-//     }
-//     this.editMode = this.bookId != '0' ? true : false;
-
-//     this.addBookFormGroup = this.fb.group({
-//       title: [this.book.title, Validators.required],
-//       author: [this.book.author, Validators.maxLength(100)],
-//       publishing: [this.book.publishing, Validators.required],
-//       category: [this.book.category.name, Validators.required],
-//       page: [this.book.page, Validators.required],
-//       language: [this.book.language, Validators.required],
-//       status: [this.book.status, Validators.required],
-//     });
-//   }
-//   async getBookById() {
-//     this.book = await this.bookService.getBookById$(this.bookId);
-//     return this.book;
-//   }
-
-//   onFormSubmit(form: NgForm) {
-//     console.log(form);
-//   }
-//   async getCategory(name: string) {
-//     this.currentCategory = await this.categoryService.getCategoryByName$(name);
-//     return this.currentCategory;
-//   }
-
-//   async onSubmit() {
-//     this.book.id = '';
-//     this.book.title = this.addBookFormGroup.value.name;
-//     this.book.author = this.addBookFormGroup.value.author;
-//     this.book.publishing = this.addBookFormGroup.value.publishing;
-//     this.book.category.name = this.addBookFormGroup.value.category;
-//     this.book.page = this.addBookFormGroup.value.page;
-//     this.book.language = this.addBookFormGroup.value.language;
-//     this.book.status = this.addBookFormGroup.value.status;
-
-//     const selectedCategory = await this.getCategory(this.book.category.name);
-//     this.currentCategory = selectedCategory;
-//     console.log('Categorie curenta' + this.currentCategory.name);
-//     console.log('Categorie selectata ' + selectedCategory.name);
-
-//     if (this.bookId == '0') {
-//       this.book = new Book(this.addBookFormGroup.value);
-//       let test = this.bookService.addBook$(
-//         this.generateUUID(),
-//         this.book.title,
-//         this.book.author,
-//         this.book.publishing,
-//         this.book.page,
-//         this.book.language,
-//         this.book.status,
-//         this.currentCategory
-//       );
-
-//       console.log();
-
-//       this.router.navigate(['**']);
-//     } else {
-//       const bookToUpdate = {
-//         id: this.bookId,
-//         title: this.book.title,
-//         author: this.book.author,
-//         publishing: this.book.publishing,
-//         page: this.book.page,
-//         language: this.book.language,
-//         status: this.book.status,
-//         category: this.book.category,
-//       } as Book;
-//       this.bookService.editBook$(bookToUpdate).subscribe();
-//       this.router.navigate(['**']);
-//     }
-//   }
-//   hasError(controlName: string, errorName: string) {
-//     return this.addBookFormGroup.controls[controlName].hasError(errorName);
-//   }
-// }

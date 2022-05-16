@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Book } from '../models/book';
 import { UpdateBook } from '../models/updateBook';
 import { Image } from '../models/image';
@@ -26,7 +26,7 @@ export class BookService {
     responseType: 'text',
   };
 
-  private _searchPropertySubject = new BehaviorSubject<string>('');
+  public _searchPropertySubject = new BehaviorSubject<string>('');
   searchProperty$ = this._searchPropertySubject.asObservable();
   //searchProperty$ = this._searchPropertySubject.toPromise();
   private _searchValueSubject = new BehaviorSubject<string>('');
@@ -35,7 +35,18 @@ export class BookService {
   constructor(private httpClient: HttpClient) {}
 
   setCurrentProperty(property: string) {
-    return this._searchPropertySubject.next(property);
+    this._searchPropertySubject.next(property);
+
+    // let test34;
+    // console.log(
+    //   'In serviciu subject-ul e  ' + this._searchPropertySubject.getValue()
+    // );
+    // this.searchProperty$.subscribe((data) => (test34 = data));
+    // console.log('searchProperty$ este  ' + test34);
+  }
+
+  async getProfileObs() {
+    return await this._searchPropertySubject.getValue();
   }
 
   setCurrentValue(value: string) {
@@ -43,9 +54,7 @@ export class BookService {
   }
 
   async asyncExample() {
-    const result = await this.searchProperty$;
-
-    return result;
+    return await this._searchPropertySubject;
   }
 
   getBooks$(): Observable<Book[]> {
@@ -61,6 +70,24 @@ export class BookService {
   async getBooksAsync$() {
     return await this.httpClient
       .get<Book[]>(this.baseUrl, this.httpOptions)
+      .toPromise();
+  }
+
+  async getBooksByUserAndStatusAsync$(userId: string, isSold: boolean) {
+    return await this.httpClient
+      .get<Book[]>(this.baseUrl + '/' + userId + '/' + isSold, this.httpOptions)
+      .toPromise();
+  }
+
+  async getBooksByStatusAsync$(isSold: boolean) {
+    return await this.httpClient
+      .get<Book[]>(this.baseUrl + '/status/' + isSold, this.httpOptions)
+      .toPromise();
+  }
+
+  async getBooksByCategoryAsync$(categoryName: string) {
+    return await this.httpClient
+      .get<Book[]>(this.baseUrl + '/category/' + categoryName, this.httpOptions)
       .toPromise();
   }
 
@@ -81,28 +108,34 @@ export class BookService {
   }
 
   addBook$(
-    uid: string,
+    isbn: string,
+    // uid: string,
     userId: string,
     title: string,
     author: string,
-    publishing: string,
+    publisher: string,
+    publicationDate: Date,
     page: number,
     language: string,
-    status: string,
+    condition: string,
     categoryId: string,
-    image: string
+    image: string,
+    isSold: boolean
   ): Observable<Book> {
     let book = {
-      id: uid,
+      isbn: isbn,
+      // id: uid,
       userId: userId,
       title: title,
       author: author,
-      publishing: publishing,
+      publisher: publisher,
+      publicationDate: publicationDate,
       page: page,
       language: language,
-      status: status,
+      condition: condition,
       categoryId: categoryId,
       image: image,
+      isSold: isSold,
     };
     return this.httpClient.post<Book>(this.baseUrl, book, this.httpOptions);
   }
@@ -114,12 +147,15 @@ export class BookService {
 
   updateBook$(id: string, model): Observable<UpdateBook> {
     let book: UpdateBook = {
+      isbn: model.isbn,
       title: model.title,
       author: model.author,
-      publishing: model.publishing,
+      publisher: model.publisher,
+      publicationDate: model.publicationDate,
       page: model.page,
       language: model.language,
-      status: model.status,
+      condition: model.condition,
+      isSold: model.isSold,
     };
     return this.httpClient.put<UpdateBook>(this.baseUrl + '/' + id, book);
   }

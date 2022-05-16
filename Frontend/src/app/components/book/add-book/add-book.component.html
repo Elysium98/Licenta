@@ -137,6 +137,11 @@
         (ngSubmit)="onSubmit()"
       >
         <mat-form-field class="form-field" appearance="outline">
+          <mat-label>ISBN </mat-label>
+          <input matInput placeholder="ISBN-ul cărții" formControlName="isbn" />
+        </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="outline">
           <mat-label>Titlu </mat-label>
           <input matInput placeholder="Titlul cărții" formControlName="title" />
         </mat-form-field>
@@ -155,7 +160,7 @@
           <input
             matInput
             placeholder="Editura cărții"
-            formControlName="publishing"
+            formControlName="publisher"
           />
         </mat-form-field>
 
@@ -191,11 +196,14 @@
         <mat-form-field class="form-field" appearance="fill">
           <mat-label>Alege starea cărții</mat-label>
           <mat-select
-            formControlName="state"
+            formControlName="condition"
             (selectionChange)="change($event)"
           >
-            <mat-option *ngFor="let state of states" [value]="state">
-              {{ state }}
+            <mat-option
+              *ngFor="let condition of conditions"
+              [value]="condition"
+            >
+              {{ condition }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -225,9 +233,31 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Data Aparitiei </mat-label>
+          <input
+            matInput
+            type="date"
+            placeholder="Data publicatiei"
+            formControlName="publicationDate"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="fill" *ngIf="editMode">
+          <mat-label>Schimbă statusul cărții</mat-label>
+          <mat-select
+            formControlName="state"
+            (selectionChange)="change($event)"
+          >
+            <mat-option *ngFor="let state of states" [value]="state">
+              {{ state }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <input
           #file
-          (change)="uploadFile(file.files)"
+          (change)="addBookPhoto(file.files)"
           formControlName="image"
           type="file"
           style="display: none"

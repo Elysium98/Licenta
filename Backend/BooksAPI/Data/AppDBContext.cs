@@ -17,12 +17,14 @@ namespace BooksAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
             base.OnModelCreating(modelBuilder);
-           // modelBuilder.Entity<CategoryModel>()
-           //.HasMany(c => c.Books)
-           //.WithOne(e => e.Category)
-           //.OnDelete(DeleteBehavior.ClientCascade);
+            // modelBuilder.Entity<CategoryModel>()
+            //.HasMany(c => c.Books)
+            //.WithOne(e => e.Category)
+            //.OnDelete(DeleteBehavior.ClientCascade);
 
-            //modelBuilder.Entity<User>(e =>
+        
+
+            //modelBuilder.Entity<ApplicationUser>(e =>
             //{
             //    e.HasMany(p => p.Books)
             //    .WithOne(p => p.User)

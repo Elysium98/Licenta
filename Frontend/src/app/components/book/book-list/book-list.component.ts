@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -27,6 +32,7 @@ export class BookListComponent implements OnInit {
   test12: string = 'desc';
   books: Book[] = [];
   booksFiltered: Book[] = [];
+  booksFilteredCategory: Book[] = [];
   showEditBtn: boolean = false;
   userLogged: any;
   sortFormGroup: FormGroup;
@@ -34,6 +40,7 @@ export class BookListComponent implements OnInit {
   categories: Category[] = [];
   property: string = '';
   searchedValue: string = '';
+  onSearch: boolean = false;
   searchedProperty$: Observable<string> = this.bookService.searchProperty$;
   searchedValue$: Observable<string> = this.bookService.searchValue$;
   constructor(
@@ -44,37 +51,73 @@ export class BookListComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private categoryService: CategoryService
-  ) {}
-
-  async ngOnInit(): Promise<void> {
+  ) {
     this.sortFormGroup = this.fb.group({
       sorting: '',
-      category: this.books.map((book) => book.category.name),
+      category: '',
     });
+  }
+
+  async ngOnInit(): Promise<void> {
+    // this.books = await this.bookService.getBooksAsync$();
+    this.books = await this.bookService.getBooksByStatusAsync$(false);
+    this.booksFiltered = this.books;
+    this.bookService.searchProperty$.subscribe((data) => {
+      this.property = data;
+
+      this.bookService.searchValue$.subscribe(async (res) => {
+        (this.searchedValue = res), console.log(data, res);
+        if (this.searchedValue === '') {
+          this.sortFormGroup.reset();
+          this.books = await this.bookService.getBooksByStatusAsync$(false);
+        }
+        // this.books = await this.bookService.getBooksAsync$();
+        // this.booksFiltered = this.books;
+
+        if (this.property === 'Titlu') {
+          this.onSearch = true;
+          this.books = this.booksFiltered.filter((t) =>
+            t.title.toLowerCase().includes(this.searchedValue.toLowerCase())
+          );
+        }
+
+        this.booksFilteredCategory = this.books;
+      });
+    });
+
+    // this.searchedProperty$.subscribe((data) => (this.property = data));
+    //   this.property = await this.bookService.getProfileObs();
+    // this.bookService
+    //   .getProfileObs()
+    //   .subscribe((data) => (this.property = data));
+    console.log('PROPRIETATEA ESTE ' + this.property);
 
     this.categoryService.getCategories$().subscribe((categories) => {
       this.categories = categories;
+    });
+    this.sortFormGroup = this.fb.group({
+      sorting: '',
+      // category: this.books.map((book) => book.category.name),
+      category: '',
     });
 
     console.log(this.sortFormGroup.value.category);
     // this.searchedValue = await this.bookService.searchProperty$;
 
     //  this.bookService.getBooks$().subscribe((data) => (this.books = data));
-    this.books = await this.bookService.getBooksAsync$();
-    this.booksFiltered = this.books;
-    this.getBooks();
+
+    // this.getBooks();
     console.log(this.sortFormGroup.value.sorting);
 
-    this.searchedProperty$.subscribe((data) => (this.property = data));
     //this.property = await this.bookService.asyncExample();
     // this.property = await this.bookService.setCurrentValues();
-    console.log('PROPRIETATEA ESTE ' + this.property);
-    this.searchedValue$.subscribe((data) => (this.searchedValue = data));
+
+    // this.searchedValue$.subscribe((data) => (this.searchedValue = data));
     //  this.books = this.books.filter((t) => t.title === 'marexa');
   }
 
   getBooks() {
-    // this.books$ = this.bookService.getBooks$();
+    this.books$ = this.bookService.getBooks$();
 
     console.log(this.books);
     this.userLogged = this.userService.decodeToken(
@@ -113,10 +156,24 @@ export class BookListComponent implements OnInit {
     }
   }
 
-  changeCategory(event) {
+  async changeCategory(event) {
     console.log(event.source.value);
 
-    this.books = this.booksFiltered.filter(
+    this.books = await this.bookService.getBooksByCategoryAsync$(
+      event.source.value
+    );
+
+    // this.books = this.booksFiltered.filter(
+    //   (t) => t.category.name == event.source.value
+    // );
+
+    console.log(this.books);
+  }
+
+  changeCategorySearch(event) {
+    console.log(event.source.value);
+
+    this.books = this.booksFilteredCategory.filter(
       (t) => t.category.name == event.source.value
     );
 

@@ -2,22 +2,22 @@ import { Category } from './category';
 import { User } from './user';
 
 export class Book {
+  isbn: string = '';
   id: string = '';
   userId: string = '';
-  // userId: string;
   title: string = '';
   author: string = '';
-  publishing: string = '';
-  // publicationDate: Date;
+  publisher: string = '';
+  publicationDate: Date = new Date();
+  // publicationDate: string = '';
   page: number = 0;
-  // ISBN: string
   language: string = '';
-  status: string = '';
+  condition: string = '';
+  isSold: boolean = false;
   image: string = '';
-  // categoryId: string = '';
   category: Category = new Category();
   user: User = new User();
-  // category: string = '';
+
   constructor(init?: Partial<Book>) {
     Object.assign(this, init);
   }

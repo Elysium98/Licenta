@@ -10,10 +10,24 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:BooksAPI.Controllers.BookController.GetBooksByStatus(System.String)">
+        <member name="M:BooksAPI.Controllers.BookController.GetBooksByUserAndStatus(System.String,System.Boolean)">
             <summary>
-            Gets all books
+            Gets all books by user and status
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.GetBooksByStatus(System.Boolean)">
+            <summary>
+            Gets all books by  status
+            </summary>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.BookController.GetBooksByCategory(System.String)">
+            <summary>
+            Gets all books by category
+            </summary>
+            <param name="categoryName"></param>
             <returns></returns>
         </member>
         <member name="M:BooksAPI.Controllers.BookController.GetBookById(System.Guid)">
@@ -30,6 +44,13 @@
             <param name="book"></param>
             <returns></returns>
         </member>
+        <member name="M:BooksAPI.Controllers.BookController.UploadPhoto">
+            <summary>
+            Add a photo of book
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
         <member name="M:BooksAPI.Controllers.BookController.UpdateBook(System.Guid,BooksAPI.Models.UpdateBookModel)">
             <summary>
             Update the book
@@ -40,7 +61,7 @@
         </member>
         <member name="M:BooksAPI.Controllers.BookController.UpdatePhoto(System.Guid,BooksAPI.Models.ImageModel)">
             <summary>
-            Update the book
+            Update the photo of book
             </summary>
             <param name="id"></param>
             <param name="book"></param>

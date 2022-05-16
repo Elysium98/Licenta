@@ -45,15 +45,61 @@ namespace BooksAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all books
+        /// Gets all books by user and status
         /// </summary>
         /// <returns></returns>
-        [HttpGet("books/{status}")]
-        public async Task<IActionResult> GetBooksByStatus(string status)
+        [HttpGet("{userId}/{status}")]
+        public async Task<IActionResult> GetBooksByUserAndStatus(string userId, bool status)
         {
             try
             {
-                List<BookModel> books = await _bookService.GetAllByStatus(status);
+                List<BookModel> books = await _bookService.GetAllByUserAndStatus(userId, status);
+                if (books.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets all books by  status
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpGet("status/{status}")]
+        public async Task<IActionResult> GetBooksByStatus( bool status)
+        {
+            try
+            {
+                List<BookModel> books = await _bookService.GetAllByStatus( status);
+                if (books.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets all books by category
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        [HttpGet("category/{categoryName}")]
+        public async Task<IActionResult> GetBooksByCategory(string categoryName)
+        {
+            try
+            {
+                List<BookModel> books = await _bookService.GetAllByCategory(categoryName);
                 if (books.Count == 0)
                 {
                     return NoContent();
@@ -116,6 +162,11 @@ namespace BooksAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a photo of book
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
         [HttpPost("saveFile")]
         public async Task<IActionResult> UploadPhoto()
         {
@@ -181,7 +232,7 @@ namespace BooksAPI.Controllers
 
 
         /// <summary>
-        /// Update the book
+        /// Update the photo of book
         /// </summary>
         /// <param name="id"></param>
         /// <param name="book"></param>

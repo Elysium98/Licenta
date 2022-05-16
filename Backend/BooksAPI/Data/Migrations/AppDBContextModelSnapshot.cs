@@ -129,6 +129,14 @@ namespace BooksAPI.Data.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -140,11 +148,10 @@ namespace BooksAPI.Data.Migrations
                     b.Property<int>("Page")
                         .HasColumnType("int");
 
-                    b.Property<string>("Publishing")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("PublicationDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("Publisher")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -155,6 +162,9 @@ namespace BooksAPI.Data.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isSold")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

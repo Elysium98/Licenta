@@ -29,6 +29,7 @@ export class AdminPanelComponent implements OnInit {
   ];
 
   displayedBooksColumns: string[] = [
+    'isbn',
     'title',
     'author',
     'publishing',
@@ -41,6 +42,9 @@ export class AdminPanelComponent implements OnInit {
   ];
 
   displayedCategoriesColumns: string[] = ['name', 'actions'];
+  header_books: string[] = ['header_books'];
+  header_users: string[] = ['header_users'];
+  header_categories: string[] = ['header_categories'];
   orderByProp: string = '';
   orderByDirection: string = '';
   constructor(

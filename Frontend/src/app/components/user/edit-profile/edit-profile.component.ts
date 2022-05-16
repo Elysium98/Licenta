@@ -19,6 +19,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Image } from 'src/app/models/image';
@@ -26,6 +27,7 @@ import { Password } from 'src/app/models/password';
 import { UpdateUser } from 'src/app/models/updateUser';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { CommonService } from 'src/app/shared/common.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -46,7 +48,9 @@ export class EditProfileComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router,
+    private commonService: CommonService
   ) {
     this.userLogged = this.userService.decodeToken(
       localStorage.getItem('token')
@@ -203,6 +207,13 @@ export class EditProfileComponent implements OnInit {
       (data) => {
         console.log('response', data);
         this.userService.logout();
+        this.router.navigate(['/home']);
+        this.commonService.showSnackBarMessage(
+          'Parola schimbata cu succes !',
+          'right',
+          'top',
+          3000
+        );
       },
       (error) => console.log('error', error)
     );

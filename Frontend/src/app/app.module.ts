@@ -50,6 +50,8 @@ import { CommonService } from './shared/common.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MyBooksComponent } from './components/user/my-books/my-books.component';
 import { HistoryBooksComponent } from './components/user/history-books/history-books.component';
+import { DatePipe } from '@angular/common';
+import { SearchComponent } from './shared/components/search/search.component';
 
 export function initializeApp(userService: UserService) {
   return (): Promise<any> => {
@@ -72,6 +74,7 @@ export function initializeApp(userService: UserService) {
     EditProfileComponent,
     MyBooksComponent,
     HistoryBooksComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +112,7 @@ export function initializeApp(userService: UserService) {
       deps: [UserService],
       multi: true,
     },
+    DatePipe,
     CommonService,
     LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

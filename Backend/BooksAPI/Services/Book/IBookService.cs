@@ -9,7 +9,10 @@ namespace BooksAPI.Services
 
         //Task<List<BookModel>> GetAllv2(string status);
 
-        Task<List<BookModel>> GetAllByStatus(string status);
+        Task<List<BookModel>> GetAllByUserAndStatus(string userId, bool isSold);
+
+        Task<List<BookModel>> GetAllByStatus( bool isSold);
+        Task<List<BookModel>> GetAllByCategory(string categoryName);
         Task<bool> UpdatePhoto(Guid id, ImageModel model);
     }
 }

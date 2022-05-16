@@ -19,12 +19,12 @@
     <div>
       <mat-card class="mat_card_details">
         <mat-card-content class="mat_card_content">
-          <p>Editura: {{ book.publishing }}</p>
+          <p>Editura: {{ book.publisher }}</p>
           <p>Numar pagini: {{ book.page }}</p>
           <p>Limba: {{ book.language }}</p>
-          <p>Data aparitiei:</p>
+          <p>Data aparitiei:{{ book.publicationDate | date }}</p>
           <p>Categorie: {{ book.category.name }}</p>
-          <p>Stare: {{ book.status }}</p>
+          <p>Stare: {{ book.condition }}</p>
           <p>
             Vândută de
             {{ book.user.userName }}

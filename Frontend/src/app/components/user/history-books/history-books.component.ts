@@ -30,6 +30,10 @@ export class HistoryBooksComponent implements OnInit {
   sortFormGroup: FormGroup;
   sortings: Array<string> = ['A-Z', 'Z-A'];
   categories: Category[] = [];
+
+  currentUser$: Observable<User> = this.userService.currentUser$;
+  currentUser: User;
+
   constructor(
     private bookService: BookService,
     public dialog: MatDialog,
@@ -38,9 +42,12 @@ export class HistoryBooksComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private categoryService: CategoryService
-  ) {}
+  ) {
+    this.currentUser$.subscribe((data) => (this.currentUser = data));
+  }
 
   async ngOnInit() {
+    console.log(this.currentUser);
     this.sortFormGroup = this.fb.group({
       sorting: '',
       category: this.books.map((book) => book.category.name),
@@ -54,7 +61,11 @@ export class HistoryBooksComponent implements OnInit {
     // this.searchedValue = await this.bookService.searchProperty$;
 
     //  this.bookService.getBooks$().subscribe((data) => (this.books = data));
-    this.books = await this.bookService.getBooksAsync$();
+    //this.books = await this.bookService.getBooksAsync$();
+    this.books = await this.bookService.getBooksByUserAndStatusAsync$(
+      this.currentUser.id,
+      true
+    );
     this.booksFiltered = this.books;
   }
 
@@ -81,11 +92,14 @@ export class HistoryBooksComponent implements OnInit {
     }
   }
 
-  changeCategory(event) {
+  async changeCategory(event) {
     console.log(event.source.value);
 
-    this.books = this.booksFiltered.filter(
-      (t) => t.category.name == event.source.value
+    // this.books = this.booksFiltered.filter(
+    //   (t) => t.category.name == event.source.value
+    // );
+    this.books = await this.bookService.getBooksByCategoryAsync$(
+      event.source.value
     );
 
     console.log(this.books);

@@ -41,35 +41,26 @@
         </div>
       </ul>
     </div> -->
-  <button
+  <!-- <button
     mat-icon-button
     class="example-icon"
     aria-label="Example icon-button with menu icon"
   >
     <mat-icon>menu</mat-icon>
-  </button>
+  </button> -->
   <span>
     <a class="app-logo">
       <img
         id="logo"
         src="../../../assets/img/books.ico"
-        routerLink="/home"
+        (click)="goToHomePage()"
       /> </a
   ></span>
 
-  <!-- <span>My App</span> -->
   <span class="example-spacer"></span>
-  <!-- <form [formGroup]="searchFormGroup"></form> -->
+
   <div class="search-bar">
     <form class="search-form" [formGroup]="searchFormGroup">
-      <!-- <mat-form-field class="form-field-book" appearance="fill">
-        <mat-label>Alege starea cărții</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let state of states" [value]="state">
-            {{ state }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
       <mat-form-field class="search-sort" appearance="fill">
         <mat-label>Alege</mat-label>
         <mat-select
@@ -84,6 +75,7 @@
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Caută după titlu, autor sau editură</mat-label>
         <input
+          formControlName="searchValue"
           #search
           type="text"
           placeholder="Titlu, Autor sau Editură"
@@ -104,6 +96,7 @@
       </button>
     </form>
   </div>
+
   <!-- <button
     mat-raised-button
     id="logout-btn"
@@ -117,7 +110,7 @@
     Adauga carte
   </button> -->
 
-  <button mat-raised-button class="book_btn" routerLink="/book-list">
+  <button mat-raised-button class="book_btn" (click)="goToBookList()">
     Cărți
   </button>
 
@@ -148,6 +141,10 @@
     </button>
     <button mat-menu-item routerLink="/history-books">
       <span>History </span>
+    </button>
+
+    <button mat-menu-item routerLink="/admin-panel">
+      <span>Admin panel </span>
     </button>
 
     <button mat-menu-item (click)="logout()">

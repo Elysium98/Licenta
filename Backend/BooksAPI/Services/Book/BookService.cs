@@ -61,11 +61,39 @@ namespace BooksAPI.Services
         }
 
     
-        public async Task<List<BookModel>> GetAllByStatus(string status)
+        public async Task<List<BookModel>> GetAllByUserAndStatus(string userId, bool isSold)
         {
             var result = await _context.Books
-            
-                .Where(x => x.Status == status)
+                .Where(c => c.UserId == userId)
+                .Where(x => x.isSold == isSold)
+                .Include(x => x.Category)
+                .Include(y => y.User)
+                .ToListAsync();
+
+            return result;
+        }
+
+
+    
+
+        public async Task<List<BookModel>> GetAllByStatus( bool isSold)
+        {
+            var result = await _context.Books
+                .Where(x => x.isSold == isSold)
+                .Include(x => x.Category)
+                .Include(y => y.User)
+                .ToListAsync();
+
+            return result;
+        }
+
+
+        public async Task<List<BookModel>> GetAllByCategory(string categoryName)
+        {
+            var result = await _context.Books
+                .Where(c => c.Category.Name == categoryName)
+                 .Include(x => x.Category)
+                .Include(y => y.User)
                 .ToListAsync();
 
             return result;
@@ -90,14 +118,18 @@ namespace BooksAPI.Services
             //  entry.State = EntityState.Modified;
             // _context.Books.Attach(model);
 
-         //   var book = _context.Books.AsNoTracking().Single(i => i.Id == id);
+            //   var book = _context.Books.AsNoTracking().Single(i => i.Id == id);
 
-           // _context.Entry(model).State = EntityState.Detached;
-
+            // _context.Entry(model).State = EntityState.Detached;
+            book.ISBN = model.ISBN;
             book.Title = model.Title;
             book.Author = model.Author;
-            book.Publishing = model.Publishing;
+            book.Publisher = model.Publisher;
+            book.PublicationDate = model.PublicationDate;
             book.Page = model.Page;
+            book.Language = model.Language;
+            book.Condition = model.Condition;
+            book.isSold = model.isSold;
 
 
 

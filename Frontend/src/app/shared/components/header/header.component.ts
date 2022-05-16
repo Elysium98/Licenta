@@ -5,6 +5,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Input,
   NgZone,
   OnInit,
   Output,
@@ -45,7 +46,7 @@ export class HeaderComponent implements AfterViewChecked {
   message: string = '';
   properties: Array<string> = ['Titlu', 'Autor', 'Editura'];
   searchProperty: string = '';
-
+  test12: string = '';
   // user: Observable<User>;
   currentUser: User = new User();
   currentUser$: Observable<User> = this.userService.currentUser$;
@@ -55,8 +56,8 @@ export class HeaderComponent implements AfterViewChecked {
   searchFormGroup: FormGroup;
 
   searchedTitle(title: string) {
-    this.emitSearchedTitle.emit(title);
-    this.emitSearchedProperty.emit(this.searchProperty);
+    // this.emitSearchedTitle.emit(title);
+    // this.emitSearchedProperty.emit(this.searchProperty);
 
     this.bookService.setCurrentProperty(this.searchProperty);
     this.bookService.setCurrentValue(title);
@@ -123,10 +124,25 @@ export class HeaderComponent implements AfterViewChecked {
 
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({
+      searchValue: '',
       property: '',
     });
   }
 
+  goToHomePage() {
+    this.searchFormGroup.reset();
+    this.bookService.setCurrentProperty('');
+    this.bookService.setCurrentValue('');
+
+    this.router.navigate(['/home']);
+  }
+  goToBookList() {
+    this.searchFormGroup.reset();
+    this.bookService.setCurrentProperty('');
+    this.bookService.setCurrentValue('');
+
+    this.router.navigate(['/book-list']);
+  }
   // ngOnInit(): void {
   //   this.scrollDispatcher.scrolled().subscribe((event: CdkScrollable) => {
   //     const scroll = event.measureScrollOffset('top');

@@ -11,6 +11,7 @@ import {
   HttpEventType,
 } from '@angular/common/http';
 import { CommonService } from '../../common.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authentication',
@@ -35,6 +36,7 @@ export class AuthenticationComponent implements OnInit {
   bodyData: any;
   public response: { dbPath: '' };
   @Output() public onUploadFinished = new EventEmitter();
+
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<AuthenticationComponent>,
