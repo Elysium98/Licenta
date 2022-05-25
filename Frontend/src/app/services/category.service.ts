@@ -14,6 +14,25 @@ export class CategoryService {
     }),
   };
 
+  getHttpOptionsBearer() {
+    const httpOptionsJWT = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+      }),
+    };
+
+    return httpOptionsJWT;
+  }
+
+  getHttpOptionsBearerTextResponse() {
+    const httpOptionsJWT = {
+      responseType: 'text' as 'json',
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+      }),
+    };
+    return httpOptionsJWT;
+  }
   constructor(private httpClient: HttpClient) {}
 
   getCategories$(): Observable<Category[]> {
@@ -30,5 +49,34 @@ export class CategoryService {
     return await this.httpClient
       .get<Category>(this.baseUrl + '/' + id, this.httpOptions)
       .toPromise();
+  }
+
+  addCategory$(name: string): Observable<Category> {
+    let category = {
+      name: name,
+    };
+    return this.httpClient.post<Category>(
+      this.baseUrl,
+      category,
+      this.getHttpOptionsBearer()
+    );
+  }
+
+  updateCategory$(id: string, model): Observable<Category> {
+    let category = {
+      name: model.name,
+    };
+    return this.httpClient.put<Category>(
+      this.baseUrl + '/' + id,
+      category,
+      this.getHttpOptionsBearer()
+    );
+  }
+
+  deleteCategory(id: string) {
+    return this.httpClient.delete<Category>(
+      this.baseUrl + '/' + id,
+      this.getHttpOptionsBearerTextResponse()
+    );
   }
 }

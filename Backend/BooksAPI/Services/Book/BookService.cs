@@ -43,7 +43,7 @@ namespace BooksAPI.Services
         {
             var book = await _context.Books
                 .Include(x => x.Category)
-                 .Include(y => y.User)
+                .Include(y => y.User)
                 .FirstOrDefaultAsync(i => i.Id == id);
 
             return book;
@@ -54,13 +54,11 @@ namespace BooksAPI.Services
             var result = await _context.Books
                 .Include(x => x.Category)
                 .Include(y => y.User)
-
                 .ToListAsync();
 
             return result;
         }
 
-    
         public async Task<List<BookModel>> GetAllByUserAndStatus(string userId, bool isSold)
         {
             var result = await _context.Books
@@ -73,10 +71,7 @@ namespace BooksAPI.Services
             return result;
         }
 
-
-    
-
-        public async Task<List<BookModel>> GetAllByStatus( bool isSold)
+        public async Task<List<BookModel>> GetAllByStatus(bool isSold)
         {
             var result = await _context.Books
                 .Where(x => x.isSold == isSold)
@@ -87,12 +82,11 @@ namespace BooksAPI.Services
             return result;
         }
 
-
         public async Task<List<BookModel>> GetAllByCategory(string categoryName)
         {
             var result = await _context.Books
                 .Where(c => c.Category.Name == categoryName)
-                 .Include(x => x.Category)
+                .Include(x => x.Category)
                 .Include(y => y.User)
                 .ToListAsync();
 
@@ -114,7 +108,7 @@ namespace BooksAPI.Services
 
             //_context.Entry(model).State = EntityState.Modified;
 
-            // var entry = _context.Entry(model); 
+            // var entry = _context.Entry(model);
             //  entry.State = EntityState.Modified;
             // _context.Books.Attach(model);
 
@@ -131,12 +125,10 @@ namespace BooksAPI.Services
             book.Condition = model.Condition;
             book.isSold = model.isSold;
 
-
-
-         //   _context.Entry(model).Property(x => x.Title).IsModified = true;
-          //  _context.Entry(model).Property(x => x.Author).IsModified = true;
-          //  _context.Entry(model).Property(x => x.Publishing).IsModified = true;
-          //  _context.Entry(model).Property(x => x.Page).IsModified = true;
+            //   _context.Entry(model).Property(x => x.Title).IsModified = true;
+            //  _context.Entry(model).Property(x => x.Author).IsModified = true;
+            //  _context.Entry(model).Property(x => x.Publishing).IsModified = true;
+            //  _context.Entry(model).Property(x => x.Page).IsModified = true;
 
 
             // book.Publishing = model.Publishing;
@@ -152,22 +144,15 @@ namespace BooksAPI.Services
             return true;
         }
 
-
         public async Task<bool> UpdatePhoto(Guid id, ImageModel model)
         {
-           
             var book = await _context.Books.FindAsync(id);
 
-
             book.Image = model.Image;
-
 
             await _context.SaveChangesAsync();
 
             return true;
         }
-
-
-
     }
 }

@@ -26,9 +26,29 @@ export class BookService {
     responseType: 'text',
   };
 
+  getHttpOptionsBearerTextResponse() {
+    const httpOptionsJWT = {
+      responseType: 'text' as 'json',
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+      }),
+    };
+    return httpOptionsJWT;
+  }
+
+  getHttpOptionsBearer() {
+    const httpOptionsJWT = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
+      }),
+    };
+
+    return httpOptionsJWT;
+  }
+
   public _searchPropertySubject = new BehaviorSubject<string>('');
   searchProperty$ = this._searchPropertySubject.asObservable();
-  //searchProperty$ = this._searchPropertySubject.toPromise();
+
   private _searchValueSubject = new BehaviorSubject<string>('');
   searchValue$ = this._searchValueSubject.asObservable();
 
@@ -36,35 +56,14 @@ export class BookService {
 
   setCurrentProperty(property: string) {
     this._searchPropertySubject.next(property);
-
-    // let test34;
-    // console.log(
-    //   'In serviciu subject-ul e  ' + this._searchPropertySubject.getValue()
-    // );
-    // this.searchProperty$.subscribe((data) => (test34 = data));
-    // console.log('searchProperty$ este  ' + test34);
-  }
-
-  async getProfileObs() {
-    return await this._searchPropertySubject.getValue();
   }
 
   setCurrentValue(value: string) {
     return this._searchValueSubject.next(value);
   }
 
-  async asyncExample() {
-    return await this._searchPropertySubject;
-  }
-
   getBooks$(): Observable<Book[]> {
     return this.httpClient.get<Book[]>(this.baseUrl, this.httpOptions);
-  }
-
-  deleteBook(id: string) {
-    return this.httpClient.delete<Book>('https://localhost:7295/books/' + id, {
-      responseType: 'text' as 'json',
-    });
   }
 
   async getBooksAsync$() {
@@ -116,6 +115,7 @@ export class BookService {
     publisher: string,
     publicationDate: Date,
     page: number,
+    price: number,
     language: string,
     condition: string,
     categoryId: string,
@@ -124,26 +124,25 @@ export class BookService {
   ): Observable<Book> {
     let book = {
       isbn: isbn,
-      // id: uid,
       userId: userId,
       title: title,
       author: author,
       publisher: publisher,
       publicationDate: publicationDate,
       page: page,
+      price: price,
       language: language,
       condition: condition,
       categoryId: categoryId,
       image: image,
       isSold: isSold,
     };
-    return this.httpClient.post<Book>(this.baseUrl, book, this.httpOptions);
+    return this.httpClient.post<Book>(
+      this.baseUrl,
+      book,
+      this.getHttpOptionsBearer()
+    );
   }
-
-  // updateBook$(book: Book): Observable<Book> {
-  //   console.log(book);
-  //   return this.httpClient.put<Book>(this.baseUrl, book, this.httpOptions);
-  // }
 
   updateBook$(id: string, model): Observable<UpdateBook> {
     let book: UpdateBook = {
@@ -157,7 +156,11 @@ export class BookService {
       condition: model.condition,
       isSold: model.isSold,
     };
-    return this.httpClient.put<UpdateBook>(this.baseUrl + '/' + id, book);
+    return this.httpClient.put<UpdateBook>(
+      this.baseUrl + '/' + id,
+      book,
+      this.getHttpOptionsBearer()
+    );
   }
 
   saveImageBook$(image: File): Observable<HttpEvent<Response>> {
@@ -181,7 +184,15 @@ export class BookService {
     };
     return this.httpClient.put<Image>(
       this.baseUrl + '/book/updatePhoto/' + id,
-      img
+      img,
+      this.getHttpOptionsBearer()
+    );
+  }
+
+  deleteBook(id: string) {
+    return this.httpClient.delete<Book>(
+      this.baseUrl + '/' + id,
+      this.getHttpOptionsBearerTextResponse()
     );
   }
 }

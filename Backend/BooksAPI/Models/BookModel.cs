@@ -21,6 +21,8 @@ namespace BooksAPI.Models
         public DateTime PublicationDate { get; set; }
         public int Page { get; set; }
 
+        public int Price { get; set; }
+
         public string Language { get; set; }
 
         public string Condition { get; set; }
@@ -32,7 +34,6 @@ namespace BooksAPI.Models
 
         public CategoryModel? Category { get; set; }
 
-        //[ForeignKey("User")]
         public string UserId { get; set; }
 
         public ApplicationUser? User { get; set; }

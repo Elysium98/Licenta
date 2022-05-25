@@ -1,4 +1,4 @@
-<div class="title">Cartile mele</div>
+<div class="title">Cărțile mele</div>
 
 <div class="content">
   <div class="buttons_top">
@@ -6,38 +6,34 @@
       Adaugă o carte
     </button>
 
-    <mat-card class="card_buttons">
-      <mat-card-content>
-        <form [formGroup]="sortFormGroup" class="sortForm">
-          <mat-form-field class="form-field-sort" appearance="outline">
-            <mat-label>Sortează</mat-label>
-            <mat-select
-              formControlName="sorting"
-              (selectionChange)="change($event)"
-            >
-              <mat-option *ngFor="let sorting of sortings" [value]="sorting">
-                {{ sorting }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+    <form [formGroup]="sortFormGroup" class="sortForm">
+      <mat-form-field class="form-field-sort" appearance="outline">
+        <mat-label>Sortează</mat-label>
+        <mat-select
+          formControlName="sorting"
+          (selectionChange)="change($event)"
+        >
+          <mat-option *ngFor="let sorting of sortings" [value]="sorting">
+            {{ sorting }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-          <mat-form-field class="form-field-sort" appearance="outline">
-            <mat-label>Filtrează</mat-label>
-            <mat-select
-              formControlName="category"
-              (selectionChange)="changeCategory($event)"
-            >
-              <mat-option
-                *ngFor="let category of categories"
-                [value]="category.name"
-              >
-                {{ category.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
-      </mat-card-content>
-    </mat-card>
+      <mat-form-field class="form-field-sort" appearance="outline">
+        <mat-label>Filtrează</mat-label>
+        <mat-select
+          formControlName="category"
+          (selectionChange)="changeCategory($event)"
+        >
+          <mat-option
+            *ngFor="let category of categories"
+            [value]="category.name"
+          >
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
   </div>
   <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
     <div *ngFor="let book of books">

@@ -18,6 +18,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { UserService } from 'src/app/services/user.service';
 import { Image } from 'src/app/models/image';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/shared/common.service';
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
@@ -29,6 +30,7 @@ export class AddBookComponent implements OnInit {
   bookId: string = '0';
   editMode: boolean = false;
   matTitle: string = '';
+  buttonName: string = '';
   categories: Category[] = [];
   users: User[] = [];
   // categorySelected: Category = new Category();
@@ -58,26 +60,6 @@ export class AddBookComponent implements OnInit {
     this.test60 = !this.test60;
   }
 
-  // getImage(files) {
-  //   if (files.length === 0) {
-  //     return;
-  //   }
-
-  //   this.imageToUpload = <File>files[0];
-  //   console.log(this.imageToUpload);
-  // }
-
-  // uploadFile() {
-  //   this.bookService.saveImageBook$(this.imageToUpload).subscribe({
-  //     next: (event) => {
-  //       if (event.type === HttpEventType.Response) {
-  //         //this.message = 'Upload success.';
-  //         this.bodyData = event.body;
-  //       }
-  //     },
-  //     error: (err: HttpErrorResponse) => console.log(err),
-  //   });
-  // }
   uploadFile(files) {
     if (files.length === 0) {
       return;
@@ -89,7 +71,7 @@ export class AddBookComponent implements OnInit {
         if (event.type === HttpEventType.Response) {
           //this.message = 'Upload success.';
           this.bodyData = event.body;
-          this.updateBook();
+          this.updateImageBook();
         }
       },
       error: (err: HttpErrorResponse) => console.log(err),
@@ -103,7 +85,7 @@ export class AddBookComponent implements OnInit {
 
     let imageToUpload = <File>files[0];
 
-    this.userService.uploadImage$(imageToUpload).subscribe({
+    this.bookService.saveImageBook$(imageToUpload).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           this.bodyData = event.body;
@@ -121,7 +103,8 @@ export class AddBookComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private commonService: CommonService
   ) {
     this.route.params.subscribe((params) => {
       this.bookId = params['id'] ? params['id'] : 0;
@@ -138,6 +121,7 @@ export class AddBookComponent implements OnInit {
         publicationDate: [''],
         category: [''],
         page: [''],
+        price: [''],
         language: [''],
         condition: [''],
         image: [''],
@@ -154,20 +138,23 @@ export class AddBookComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (this.editMode === false) {
-      this.matTitle = 'Adaugă o carte';
+      this.matTitle = 'Adăugați o carte';
+      this.buttonName = 'Adăugați';
     } else {
-      this.matTitle = 'Editeaza o carte';
+      this.matTitle = 'Editați informațiile cărții';
+      this.buttonName = 'Actualizați';
     }
 
     if (this.editMode === false) {
       this.addBookFormGroup = this.fb.group({
         isbn: ['', Validators.required],
         title: ['', Validators.required],
-        author: ['', Validators.maxLength(100)],
+        author: ['', [Validators.required, Validators.maxLength(30)]],
         publisher: ['', Validators.required],
         publicationDate: ['', Validators.required],
         category: ['', Validators.required],
         page: ['', Validators.required],
+        price: ['', Validators.required],
         language: ['', Validators.required],
         condition: ['', Validators.required],
         image: ['', Validators.required],
@@ -215,6 +202,7 @@ export class AddBookComponent implements OnInit {
         publicationDate: [this.convertedDate],
         category: [this.currentCategory.name],
         page: [this.currentBook.page],
+        price: [this.currentBook.price],
         language: [this.currentBook.language],
         condition: [this.currentBook.condition],
         state: [this.state],
@@ -225,7 +213,11 @@ export class AddBookComponent implements OnInit {
     return await `https://localhost:7295/${this.currentBook.image}`;
   }
 
-  updateBook() {
+  hasAddError(controlName: string, errorName: string) {
+    return this.addBookFormGroup.controls[controlName].hasError(errorName);
+  }
+
+  updateImageBook() {
     this.currentBook.image = this.bodyData.dbPath;
 
     let model: Image = {
@@ -252,6 +244,7 @@ export class AddBookComponent implements OnInit {
       this.book.publicationDate = this.addBookFormGroup.value.publicationDate;
       this.book.category = this.addBookFormGroup.value.category;
       this.book.page = this.addBookFormGroup.value.page;
+      this.book.price = this.addBookFormGroup.value.price;
       this.book.language = this.addBookFormGroup.value.language;
       this.book.condition = this.addBookFormGroup.value.condition;
       this.book.image = this.bodyData.dbPath;
@@ -271,6 +264,7 @@ export class AddBookComponent implements OnInit {
       this.book.publicationDate = this.addBookFormGroup.value.publicationDate;
       this.book.category = this.addBookFormGroup.value.category;
       this.book.page = this.addBookFormGroup.value.page;
+      this.book.price = this.addBookFormGroup.value.price;
       this.book.language = this.addBookFormGroup.value.language;
       this.book.condition = this.addBookFormGroup.value.condition;
       this.book.isSold = this.addBookFormGroup.value.state;
@@ -291,6 +285,7 @@ export class AddBookComponent implements OnInit {
           this.book.publisher,
           this.book.publicationDate,
           this.book.page,
+          this.book.price,
           this.book.language,
           this.book.condition,
           this.book.category.categoryId,
@@ -301,6 +296,14 @@ export class AddBookComponent implements OnInit {
           (data) => {
             console.log('response', data);
             this.router.navigate(['/my-books']);
+
+            this.commonService.showSnackBarMessage(
+              'Cartea a fost adăugată cu succes',
+              'right',
+              'bottom',
+              4000,
+              'notif-success'
+            );
           },
           (error) => console.log('error', error)
         );
@@ -319,8 +322,13 @@ export class AddBookComponent implements OnInit {
 
       this.bookService.updateBook$(this.bookId, model).subscribe(
         (data) => {
-          console.log('response', data);
-          this.router.navigate(['/my-books']);
+          this.commonService.showSnackBarMessage(
+            'Cartea a fost actualizată cu succes',
+            'right',
+            'bottom',
+            4000,
+            'notif-success'
+          );
         },
         (error) => console.log('error', error)
       );

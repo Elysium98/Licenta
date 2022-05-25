@@ -18,8 +18,12 @@
 }
 
 .mat_card_content {
-  font-size: 20px;
+  font-size: 22px;
   //margin-top: 40px;
+}
+
+.mat_card_title {
+  font-size: 35px;
 }
 
 .container {
@@ -32,7 +36,9 @@
   margin-top: 0px !important;
   margin-left: 10px;
 }
-
+p {
+  margin-bottom: 15px;
+}
 .red_eye {
   //margin: auto;
   cursor: pointer;
@@ -42,8 +48,4 @@
 }
 .red_eye:hover {
   color: rgb(212, 146, 116) !important;
-}
-
-::ng-deep .mat-tooltip {
-  font-size: 13px;
 }

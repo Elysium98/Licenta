@@ -1,5 +1,6 @@
 ﻿using BooksAPI.Models;
 using BooksAPI.Services.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksAPI.Controllers
@@ -73,7 +74,7 @@ namespace BooksAPI.Controllers
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        //      [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpPost()]
         public async Task<IActionResult> CreateCategory(CategoryModel category)
         {
@@ -100,6 +101,7 @@ namespace BooksAPI.Controllers
         /// <param name="id"></param>
         /// <param name="category"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryModel category)
         {
@@ -126,6 +128,7 @@ namespace BooksAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {

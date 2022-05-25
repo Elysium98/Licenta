@@ -2,13 +2,16 @@
 // @import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
 
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&family=Kalam:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Charm&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap");
 @import "css/colors.scss";
 @import "css/fonts.scss";
+//Kalam
 
 @import "~@angular/material/theming";
 $custom-typography: mat-typography-config(
-  $font-family: "Inconsolata",
+  $font-family: "Kalam",
 );
 
 @include angular-material-typography($custom-typography);
@@ -27,7 +30,7 @@ body {
     rgba(251, 219, 172, 1) 100%
   );
   margin: 0;
-  font-family: "Inconsolata", monospace;
+  font-family: "Petit Formal Script";
   padding: 0 0px;
   // overflow:  scroll;
 }
@@ -57,18 +60,56 @@ h3 {
 //   ////font-family: "Inconsolata", monospace !important;
 // }
 
-::ng-deep .mat-snack-bar-container {
-  // min-width: 840px;
-  color: rgb(245, 245, 245);
-  background-color: green;
+// ::ng-deep .mat-snack-bar-container {
+
+//   color: rgb(245, 245, 245);
+//   background-color: green;
+// }
+
+::ng-deep .info {
+  background-color: #2196f3;
 }
 
-// .mat-tooltip {
-//   // making the font size on the mat-tooltip 1.5rem globally
-//   font-size: 1.5rem;
-//   &.exaggerated-tooltip {
-//     // to modify the tooltip create a class like this
-//     font-size: 2.5rem; // and use it like this: *matTooltipClass="exaggerated-tooltip"* in the
-//     color: red; // component in which you are putting the tooltip
-//   }
+.notif-success {
+  color: #000000b3 !important; // green
+  background-color: #71d28e !important;
+  border-color: #000000 !important;
+  .mat-simple-snackbar {
+    line-height: 0px !important;
+    font-size: 20px;
+  }
+
+  .mat-simple-snackbar-action {
+    color: #000000 !important;
+  }
+}
+
+.notif-error {
+  color: #ffffff !important;
+  background-color: #ba1c00 !important;
+  border-color: #c3e6cb !important;
+  .mat-simple-snackbar-action {
+    color: #fcfcfc !important;
+  }
+}
+
+.mat-simple-snack-bar-content {
+  font-size: 30px;
+}
+// ::ng-deep .success {
+//   background-color: #1de9b6;
 // }
+
+.mat-tooltip {
+  // making the font size on the mat-tooltip 1.5rem globally
+  font-size: 1.2rem;
+  &.exaggerated-tooltip {
+    // to modify the tooltip create a class like this
+    font-size: 2.5rem; // and use it like this: *matTooltipClass="exaggerated-tooltip"* in the
+    color: red; // component in which you are putting the tooltip
+  }
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  font-size: 90%;
+}

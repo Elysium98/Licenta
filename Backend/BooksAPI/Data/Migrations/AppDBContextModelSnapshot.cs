@@ -148,6 +148,9 @@ namespace BooksAPI.Data.Migrations
                     b.Property<int>("Page")
                         .HasColumnType("int");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 

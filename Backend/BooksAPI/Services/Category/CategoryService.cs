@@ -58,7 +58,11 @@ namespace BooksAPI.Services.Category
             {
                 return false;
             }
-            _context.Entry(model).State = EntityState.Modified;
+
+            var category = await _context.Categories.FindAsync(id);
+
+            category.Name = model.Name;
+            // _context.Entry(model).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 

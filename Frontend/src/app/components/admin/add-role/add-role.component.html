@@ -1,0 +1,30 @@
+<div class="container">
+  <mat-card-content>
+    <mat-card-title>{{ matTitle }}</mat-card-title>
+
+    <form
+      class="add_form"
+      [formGroup]="addRoleFormGroup"
+      (ngSubmit)="onSubmit()"
+    >
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Nume </mat-label>
+        <input matInput placeholder="Numele rolului" formControlName="name" />
+        <mat-error *ngIf="hasAddError('name', 'required')"
+          >Nume obligatoriu</mat-error
+        >
+      </mat-form-field>
+
+      <div align="center">
+        <button
+          mat-raised-button
+          class="submitButton"
+          type="submit"
+          [disabled]="!addRoleFormGroup.valid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</div>

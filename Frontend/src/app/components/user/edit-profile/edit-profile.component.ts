@@ -98,7 +98,15 @@ export class EditProfileComponent implements OnInit {
 
     this.securityFormGroup = this.fb.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', Validators.required],
+      newPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$'
+          ),
+        ],
+      ],
       confirmNewPassword: ['', Validators.required],
     });
   }
@@ -158,11 +166,16 @@ export class EditProfileComponent implements OnInit {
     };
     this.userService.updateUserPhoto$(this.user.id, model).subscribe(
       async (data) => {
-        console.log('response', data);
-        console.log(this.user.image);
         this.imgUrl = await this.createImgPath2();
         this._imageSubject.next(this.imgUrl);
-        this.userService.getUsers$();
+        // this.userService.getUsers$();
+        this.commonService.showSnackBarMessage(
+          'Poză actualizată cu succes !',
+          'right',
+          'bottom',
+          4000,
+          'notif-success'
+        );
       },
       (error) => console.log('error', error)
     );
@@ -181,12 +194,17 @@ export class EditProfileComponent implements OnInit {
       lastName: this.user.lastName,
       study: this.user.study,
       phoneNumber: this.user.phoneNumber,
-      // image: this.user.image,
     };
 
     this.userService.changeUserDetails$(this.user.id, model).subscribe(
       (data) => {
-        console.log('response', data);
+        this.commonService.showSnackBarMessage(
+          'Informații actualizate cu succes !',
+          'right',
+          'bottom',
+          4000,
+          'notif-success'
+        );
       },
       (error) => console.log('error', error)
     );
@@ -209,10 +227,11 @@ export class EditProfileComponent implements OnInit {
         this.userService.logout();
         this.router.navigate(['/home']);
         this.commonService.showSnackBarMessage(
-          'Parola schimbata cu succes !',
+          'Parolă schimbată cu succes !',
           'right',
-          'top',
-          3000
+          'bottom',
+          3000,
+          'notif-success'
         );
       },
       (error) => console.log('error', error)

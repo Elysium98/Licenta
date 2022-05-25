@@ -1,6 +1,5 @@
 ﻿using BooksAPI.Data.Entities;
 using BooksAPI.Models;
-using BooksAPI.Services.Email;
 using BooksAPI.ViewModels;
 using BooksAPI.ViewModels.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,7 +31,6 @@ namespace BooksAPI.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
 
         private readonly IConfiguration _config;
-        private readonly IEmailSender _emailSender;
 
         public UserController(
             ILogger<UserController> logger,
@@ -40,8 +38,7 @@ namespace BooksAPI.Controllers
             SignInManager<ApplicationUser> signManager,
             IOptions<JWTConfig> jwtConfig,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration config,
-            IEmailSender emailSender
+            IConfiguration config
         )
         {
             _userManager = userManager;
@@ -50,7 +47,6 @@ namespace BooksAPI.Controllers
             _logger = logger;
             _jWTConfig = jwtConfig.Value;
             _config = config;
-            _emailSender = emailSender;
         }
 
         ///<summary>
@@ -67,7 +63,6 @@ namespace BooksAPI.Controllers
                 }
                 var user = new ApplicationUser()
                 {
-                    //FullName = model.FullName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Study = model.Study,
@@ -85,21 +80,6 @@ namespace BooksAPI.Controllers
                 {
                     var tempUser = await _userManager.FindByEmailAsync(model.Email);
 
-                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-
-                    //var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
-                    //var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-                    //query["token"] = token;
-                    //query["userid"] = tempUser.Id;
-                    //uriBuilder.Query = query.ToString();
-                    //var urlString = uriBuilder.ToString();
-
-                    //var senderEmail = _config["ReturnPaths:SenderEmail"];
-
-                    //await _emailSender.SendEmailAsync(senderEmail, tempUser.Email, "Confirm your email address", urlString);
-
-
                     await _userManager.AddToRoleAsync(tempUser, model.Role);
 
                     return Ok(tempUser);
@@ -115,7 +95,7 @@ namespace BooksAPI.Controllers
         ///<summary>
         ///Gets all users
         ///</summary>
-        // [Authorize(Roles = "User")]
+
         // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet()]
         public async Task<IActionResult> GetUsers()
@@ -130,7 +110,6 @@ namespace BooksAPI.Controllers
                     UserDTO.Add(
                         new UserDTO(
                             user.Id,
-                            //user.FullName,
                             user.FirstName,
                             user.LastName,
                             user.Study,
@@ -149,12 +128,11 @@ namespace BooksAPI.Controllers
                 {
                     return NoContent();
                 }
-                //  return await Task.FromResult(allUserDTO);
+
                 return Ok(UserDTO);
             }
             catch (Exception ex)
             {
-                // return await Task.FromResult(ex.Message);
                 return StatusCode(500, ex.Message);
             }
         }
@@ -173,14 +151,13 @@ namespace BooksAPI.Controllers
 
                 var userDTO = new UserDTO(
                     foundUser.Id,
-                     //  foundUser.FullName,
-                     foundUser.FirstName,
-                            foundUser.LastName,
-                            foundUser.Study,
-                            foundUser.Image,
-                            foundUser.City,
-                            foundUser.BirthDate,
-                            foundUser.PhoneNumber,
+                    foundUser.FirstName,
+                    foundUser.LastName,
+                    foundUser.Study,
+                    foundUser.Image,
+                    foundUser.City,
+                    foundUser.BirthDate,
+                    foundUser.PhoneNumber,
                     foundUser.Email,
                     foundUser.UserName,
                     foundUser.DateCreated,
@@ -219,14 +196,13 @@ namespace BooksAPI.Controllers
                         allUserDTO.Add(
                             new UserDTO(
                                 user.Id,
-                                     //  user.FullName,
-                                     user.FirstName,
-                            user.LastName,
-                            user.Study,
-                            user.Image,
-                            user.City,
-                            user.BirthDate,
-                            user.PhoneNumber,
+                                user.FirstName,
+                                user.LastName,
+                                user.Study,
+                                user.Image,
+                                user.City,
+                                user.BirthDate,
+                                user.PhoneNumber,
                                 user.Email,
                                 user.UserName,
                                 user.DateCreated,
@@ -259,7 +235,7 @@ namespace BooksAPI.Controllers
                         model.Email,
                         model.Password,
                         false,
-                       false
+                        false
                     );
 
                     if (result.Succeeded)
@@ -268,14 +244,13 @@ namespace BooksAPI.Controllers
                         var role = (await _userManager.GetRolesAsync(appUser)).FirstOrDefault();
                         var user = new UserDTO(
                             appUser.Id,
-                            // appUser.FullName
-                               appUser.FirstName,
-                               appUser.LastName,
-                               appUser.Study,
-                               appUser.Image,
-                               appUser.City,
-                               appUser.BirthDate,
-                               appUser.PhoneNumber,
+                            appUser.FirstName,
+                            appUser.LastName,
+                            appUser.Study,
+                            appUser.Image,
+                            appUser.City,
+                            appUser.BirthDate,
+                            appUser.PhoneNumber,
                             appUser.Email,
                             appUser.UserName,
                             appUser.DateCreated,
@@ -294,9 +269,12 @@ namespace BooksAPI.Controllers
             }
         }
 
-
+        ///<summary>
+        /// Update user photo
+        ///</summary>
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("user/updatePhoto/{id}")]
-        public async Task<IActionResult> UpdatePhoto(string id,  ImageModel model)
+        public async Task<IActionResult> UpdatePhoto(string id, ImageModel model)
         {
             try
             {
@@ -326,6 +304,10 @@ namespace BooksAPI.Controllers
             }
         }
 
+        ///<summary>
+        /// Update a user
+        ///</summary>
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(string id, UpdateUserModel model)
         {
@@ -344,7 +326,7 @@ namespace BooksAPI.Controllers
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.Study = model.Study;
-                   // user.Image = model.Image;
+
                     user.PhoneNumber = model.PhoneNumber;
 
                     var result = await _userManager.UpdateAsync(user);
@@ -365,6 +347,7 @@ namespace BooksAPI.Controllers
         ///<summary>
         ///Delete a user by id
         ///</summary>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string Id)
         {
@@ -387,6 +370,10 @@ namespace BooksAPI.Controllers
             }
         }
 
+        ///<summary>
+        /// Save user photo
+        ///</summary>
+        //  [Authorize(Roles = "User,Admin")]
         [HttpPost("savePhoto")]
         public async Task<IActionResult> UploadPhoto()
         {
@@ -449,20 +436,10 @@ namespace BooksAPI.Controllers
             return jwtTokenHandler.WriteToken(token);
         }
 
-        [HttpPost("confirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailModel model)
-        {
-            var user = await _userManager.FindByIdAsync(model.UserId);
-
-            var result = await _userManager.ConfirmEmailAsync(user, model.Token);
-
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            return BadRequest();
-        }
-
+        ///<summary>
+        /// Change user password
+        ///</summary>
+        [Authorize(Roles = "User,Admin")]
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {

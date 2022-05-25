@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { AddPropertyComponent } from './components/admin/add-property/add-property.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { AddBookComponent } from './components/book/add-book/add-book.component';
 import { BookDetailComponent } from './components/book/book-detail/book-detail.component';
 import { BookListComponent } from './components/book/book-list/book-list.component';
@@ -13,8 +14,10 @@ import { UserProfileComponent } from './components/user/user-profile/user-profil
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'add-book', component: AddBookComponent },
+  { path: 'add-property', component: AddPropertyComponent },
   { path: 'edit-book/:id', component: AddBookComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
+  { path: 'admin-panel/:model', component: AdminPanelComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'edit-profile', component: EditProfileComponent },
   { path: 'my-books', component: MyBooksComponent },

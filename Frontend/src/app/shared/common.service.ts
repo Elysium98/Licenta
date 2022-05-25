@@ -5,20 +5,23 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class CommonService {
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {}
 
   showSnackBarMessage(
     message: string,
     horizontalPosition: MatSnackBarHorizontalPosition,
     verticalPosition: MatSnackBarVerticalPosition,
-    duration
+    duration,
+    type: string
   ): void {
     this.snackBar.open(message, 'close', {
       horizontalPosition,
       verticalPosition,
       duration,
+      panelClass: [type],
     });
   }
 }

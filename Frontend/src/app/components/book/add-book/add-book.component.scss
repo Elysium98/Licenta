@@ -17,11 +17,20 @@
 //   height: 8.5vh;
 //   max-width: 400px;
 // }
-// .submitButton {
-//   margin-left: 25%;
-//   width: 200px;
-//   height: 45px;
-// }
+.submitButton {
+  // margin-left: 25%;
+  margin-top: 4%;
+  width: 200px;
+  height: 45px;
+  font-size: 20px;
+}
+
+.edit_img_btn {
+  margin-top: 14%;
+  width: 230px;
+  height: 45px;
+  font-size: 20px;
+}
 // .onlineMarket {
 //   width: 700px;
 //   height: 600px;
@@ -67,9 +76,9 @@
 //   line-height: 36px;
 // }
 
-// .add_img_btn {
-//   width: 100%;
-// }
+.add_img_btn {
+  font-size: 20px;
+}
 
 .add_img_div {
   //margin-top: 10px;
@@ -78,6 +87,9 @@
   margin-top: 20px;
 }
 
+.mat_title {
+  font-size: 33px;
+}
 // .img {
 //   width: 400px;
 //   height: 615px;
@@ -105,7 +117,7 @@ mat-checkbox {
   font-size: 16px;
 }
 mat-card-content {
-  margin-top: 10px;
+  margin-top: 10px !important;
   text-align: center;
 }
 
@@ -145,4 +157,8 @@ mat-card {
 .img_div {
   display: flex;
   justify-content: center;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  font-size: 90%;
 }

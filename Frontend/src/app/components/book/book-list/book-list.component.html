@@ -1,7 +1,7 @@
 <div class="content">
   <div class="buttons_top">
     <button mat-raised-button class="book_btn" routerLink="/add-book">
-      Adaugă o carte
+      Adăugați o carte
     </button>
     <form [formGroup]="sortFormGroup" class="sortForm">
       <mat-form-field class="form-field-sort" appearance="fill">
@@ -15,21 +15,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
-      <!-- <mat-form-field class="form-field-sort" appearance="fill">
-        <mat-label>Filtrează</mat-label>
-        <mat-select
-          formControlName="category"
-          (selectionChange)="changeCategory($event)"
-        >
-          <mat-option
-            *ngFor="let category of categories"
-            [value]="category.name"
-          >
-            {{ category.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
 
       <mat-form-field class="form-field-sort" appearance="fill">
         <mat-label>Filtrează</mat-label>
@@ -50,36 +35,36 @@
   <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
     <div *ngFor="let book of books">
       <mat-card>
-        <mat-card-header>
-          <mat-card-title
+        <mat-card-header class="header">
+          <mat-card-title class="title"
             ><b>{{ book.title }}</b></mat-card-title
           >
 
-          <!-- <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title> -->
+          <!-- <mat-card-title class="title"
+            ><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title
+          > -->
         </mat-card-header>
 
         <img
           class="img_card"
           mat-card-image
-          src="../../../assets/img/margaret.jpeg"
+          [src]="createImgPath(book.image)"
           fxLayoutAlign="center"
         />
         <!-- <div *ngIf="searchedProperty$ | async as property">{{ property }}</div> -->
 
         <mat-card-content>
-          <p>Mihai Eminescu</p>
+          <p>{{ book.author }}</p>
+          <p>{{ book.price }} LEI</p>
         </mat-card-content>
         <mat-card-actions class="buttons">
-          <button mat-raised-button color="accent" (click)="getBookById(book)">
-            Detalii
-          </button>
           <button
             mat-raised-button
             color="accent"
-            [routerLink]="['/edit-book', book.id]"
-            *ngIf="showEditBtn"
+            (click)="getBookById(book)"
+            class="details_btn"
           >
-            Edit
+            Detalii
           </button>
         </mat-card-actions>
       </mat-card>

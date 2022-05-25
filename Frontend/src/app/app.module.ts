@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HomeComponent } from './components/home/home.component';
 import { MatCarouselModule } from 'ng-mat-carousel';
@@ -38,7 +38,7 @@ import { InterceptorService } from './shared/components/loader/interceptor.servi
 import { LoaderService } from './shared/components/loader/loader.service';
 import { UserService } from './services/user.service';
 import { MatTableModule } from '@angular/material/table';
-import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { BookListComponent } from './components/book/book-list/book-list.component';
@@ -51,7 +51,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MyBooksComponent } from './components/user/my-books/my-books.component';
 import { HistoryBooksComponent } from './components/user/history-books/history-books.component';
 import { DatePipe } from '@angular/common';
-import { SearchComponent } from './shared/components/search/search.component';
+import { AddPropertyComponent } from './components/admin/add-property/add-property.component';
+import { EditImageComponent } from './components/admin/edit-image/edit-image.component';
+import { AddBookByAdminComponent } from './components/admin/add-book/add-book.component';
+import { AddUserByAdminComponent } from './components/admin/add-user/add-user.component';
+import { AddRoleByAdminComponent } from './components/admin/add-role/add-role.component';
+import { AddCategoryByAdminComponent } from './components/admin/add-category/add-category.component';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 export function initializeApp(userService: UserService) {
   return (): Promise<any> => {
@@ -74,7 +81,12 @@ export function initializeApp(userService: UserService) {
     EditProfileComponent,
     MyBooksComponent,
     HistoryBooksComponent,
-    SearchComponent,
+    AddPropertyComponent,
+    EditImageComponent,
+    AddBookByAdminComponent,
+    AddUserByAdminComponent,
+    AddRoleByAdminComponent,
+    AddCategoryByAdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +116,8 @@ export function initializeApp(userService: UserService) {
     MatMenuModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
   ],
   providers: [
     {

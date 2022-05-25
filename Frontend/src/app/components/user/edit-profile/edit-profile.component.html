@@ -1,12 +1,14 @@
 <div class="container">
   <mat-card class="example-card">
     <mat-tab-group>
-      <mat-tab label="Details">
+      <mat-tab label="Detalii">
         <div class="img_container" *ngIf="image$ | async as image">
           <img class="avatar_img" mat-card-avatar [src]="image" />
         </div>
         <mat-card-content>
-          <mat-card-title>{{ user.firstName }}</mat-card-title>
+          <mat-card-title>{{
+            user.lastName + " " + user.firstName
+          }}</mat-card-title>
 
           <form
             [formGroup]="updateUserFormGroup"
@@ -62,7 +64,7 @@
               />
 
               <mat-error *ngIf="hasErrorDetails('email', 'email')"
-                >Email must contain @</mat-error
+                >Email-ul trebuie să conțină @</mat-error
               >
             </mat-form-field>
 
@@ -99,18 +101,20 @@
                 type="submit"
                 [disabled]="!updateUserFormGroup.valid"
               >
-                Update
+                Actualizați
               </button>
             </div>
           </form>
         </mat-card-content>
       </mat-tab>
-      <mat-tab label="Security">
+      <mat-tab label="Securitate">
         <div class="img_container" *ngIf="image$ | async as image">
           <img class="avatar_img" mat-card-avatar [src]="image" />
         </div>
         <mat-card-content>
-          <mat-card-title>{{ user.firstName }}</mat-card-title>
+          <mat-card-title>{{
+            user.lastName + " " + user.firstName
+          }}</mat-card-title>
           <form
             [formGroup]="securityFormGroup"
             (ngSubmit)="onSubmit()"
@@ -120,7 +124,7 @@
               <mat-label>Parolă curentă</mat-label>
               <input matInput type="text" formControlName="currentPassword" />
               <mat-error *ngIf="hasErrorSecurity('currentPassword', 'required')"
-                >Current Password is required!</mat-error
+                >Parola curentă obligatorie</mat-error
               >
             </mat-form-field>
 
@@ -133,7 +137,12 @@
                 (change)="onPasswordChange()"
               />
               <mat-error *ngIf="hasErrorSecurity('newPassword', 'required')"
-                >New password is required!</mat-error
+                >Parola nouă obligatorie</mat-error
+              >
+
+              <mat-error *ngIf="hasErrorSecurity('newPassword', 'pattern')"
+                >Parola trebuie să conțină 1 literă mare, 1 literă mică și 1
+                caracter special</mat-error
               >
             </mat-form-field>
 
@@ -147,10 +156,10 @@
               />
               <mat-error
                 *ngIf="hasErrorSecurity('confirmNewPassword', 'required')"
-                >Confirm password is required!</mat-error
+                >Confirmare parolă nouă obligatorie</mat-error
               >
               <mat-error *ngIf="confirmNewPassword.hasError('mismatch')"
-                >Password do not match.</mat-error
+                >Parolele nu se potrivesc</mat-error
               >
               <!-- <mat-error *ngIf="securityFormGroup.hasError('notSame')">
                 your new passwords are not match
@@ -159,12 +168,13 @@
 
             <div align="center">
               <button
+                class="submit-btn"
                 mat-raised-button
                 color="accent"
                 type="submit"
                 [disabled]="!securityFormGroup.valid"
               >
-                Update
+                Actualizați
               </button>
             </div>
           </form>

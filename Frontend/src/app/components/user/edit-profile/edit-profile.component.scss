@@ -4,7 +4,7 @@ mat-checkbox {
 
   //display: block;
   margin: 25px 25px 0px 25px;
-  font-size: 16px;
+  font-size: 17px;
 }
 mat-card-content {
   margin-top: 10px;
@@ -14,7 +14,7 @@ mat-card-content {
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 2%;
+  margin-top: 3%;
 }
 
 mat-card {
@@ -54,19 +54,32 @@ mat-card {
 ::ng-deep .mat-tab-labels {
   justify-content: center;
 }
+::ng-deep .mat-tab-label {
+  font-size: 18px;
+}
 
 ::ng-deep .mat-tab-body-content {
-  height: 650px !important;
+  height: 700px !important;
 }
 
 .mat-card-title {
   text-align: center;
+  font-size: 29px;
+  margin-bottom: 30px;
 }
 
 .add_img_div {
   margin-top: 10px;
 }
-
+.add_img_btn {
+  font-size: 16px;
+}
 .submit-btn {
   margin: 0px 0px;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+}
+::ng-deep .mat-form-field-subscript-wrapper {
+  font-size: 90%;
 }

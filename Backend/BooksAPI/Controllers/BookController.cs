@@ -21,7 +21,6 @@ namespace BooksAPI.Controllers
             _webHostEnviroment = webHostEnvironment;
         }
 
-    
         /// <summary>
         /// Gets all books
         /// </summary>
@@ -72,11 +71,11 @@ namespace BooksAPI.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetBooksByStatus( bool status)
+        public async Task<IActionResult> GetBooksByStatus(bool status)
         {
             try
             {
-                List<BookModel> books = await _bookService.GetAllByStatus( status);
+                List<BookModel> books = await _bookService.GetAllByStatus(status);
                 if (books.Count == 0)
                 {
                     return NoContent();
@@ -141,7 +140,7 @@ namespace BooksAPI.Controllers
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-        //      [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpPost()]
         public async Task<IActionResult> CreateBook(BookModel book)
         {
@@ -167,6 +166,7 @@ namespace BooksAPI.Controllers
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
+        // [Authorize(Roles = "User,Admin")]
         [HttpPost("saveFile")]
         public async Task<IActionResult> UploadPhoto()
         {
@@ -174,7 +174,7 @@ namespace BooksAPI.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = Path.Combine("Resources", "Images","Books");
+                var folderName = Path.Combine("Resources", "Images", "Books");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (file.Length > 0)
@@ -208,6 +208,7 @@ namespace BooksAPI.Controllers
         /// <param name="id"></param>
         /// <param name="book"></param>
         /// <returns></returns>
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookModel book)
         {
@@ -229,14 +230,13 @@ namespace BooksAPI.Controllers
             }
         }
 
-
-
         /// <summary>
         /// Update the photo of book
         /// </summary>
         /// <param name="id"></param>
         /// <param name="book"></param>
         /// <returns></returns>
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("book/updatePhoto/{id}")]
         public async Task<IActionResult> UpdatePhoto(Guid id, [FromBody] ImageModel model)
         {
@@ -263,6 +263,7 @@ namespace BooksAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(Guid id)
         {

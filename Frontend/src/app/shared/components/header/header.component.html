@@ -1,53 +1,4 @@
 <mat-toolbar color="primary" class="sticky">
-  <!-- <div fxHide.gt-xs>
-      <button mat-icon-button (click)="onToggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
-    <div>
-      <a class="app-logo">
-        <img id="logo" src="../../../assets/img/books.ico" routerLink="/home" />
-      </a>
-    </div>
-  
-    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-      <div class="search-bar">
-        <form class="search-form">
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Caută după titlu, autor sau editură</mat-label>
-            <input
-              type="text"
-              placeholder="Titlu, Autor sau Editură"
-              aria-label="Number"
-              matInput
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete #auto="matAutocomplete"> </mat-autocomplete>
-          </mat-form-field>
-        </form>
-      </div>
-  
-      <ul class="navigation-items">
-        <div>
-          <a id="acc-btn">
-            <mat-icon matSuffi x>perm_identity</mat-icon>
-            <span class="aligned-with-icon">Contul meu</span>
-          </a>
-        </div>
-        <div>
-          <button mat-raised-button class="book_btn" routerLink="/add-book">
-            Adauga carte
-          </button>
-        </div>
-      </ul>
-    </div> -->
-  <!-- <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with menu icon"
-  >
-    <mat-icon>menu</mat-icon>
-  </button> -->
   <span>
     <a class="app-logo">
       <img
@@ -92,11 +43,10 @@
         class="search_btn"
         (click)="searchedTitle(search.value)"
       >
-        Search
+        <mat-icon>search</mat-icon>
       </button>
     </form>
   </div>
-
   <!-- <button
     mat-raised-button
     id="logout-btn"
@@ -111,7 +61,7 @@
   </button> -->
 
   <button mat-raised-button class="book_btn" (click)="goToBookList()">
-    Cărți
+    Vizualizare cărți
   </button>
 
   <a (click)="openDialog()" *ngIf="!(isLoggedIn$ | async)">
@@ -132,23 +82,59 @@
     >
     <!-- <span class="aligned-with-icon">Contul meu</span> -->
   </a>
+
   <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/edit-profile" (click)="checkEditMode()">
-      <span>My profile</span>
+    <button
+      mat-menu-item
+      routerLink="/edit-profile"
+      class="matMenu2_btn"
+      (click)="checkEditMode()"
+    >
+      <span>Contul meu</span>
     </button>
-    <button mat-menu-item routerLink="/my-books">
-      <span>My books</span>
+    <button
+      mat-menu-item
+      routerLink="/my-books"
+      class="matMenu2_btn"
+      *ngIf="currentRoleIsUser"
+    >
+      <span>Cărțile mele</span>
     </button>
-    <button mat-menu-item routerLink="/history-books">
-      <span>History </span>
+    <button
+      mat-menu-item
+      routerLink="/history-books"
+      class="matMenu2_btn"
+      *ngIf="currentRoleIsUser"
+    >
+      <span>Istoric cărți </span>
     </button>
 
-    <button mat-menu-item routerLink="/admin-panel">
-      <span>Admin panel </span>
+    <button
+      [matMenuTriggerFor]="menu2"
+      mat-menu-item
+      *ngIf="currentRoleIsAdmin"
+      class="matMenu2_btn"
+    >
+      <span>Panou admin </span>
     </button>
 
-    <button mat-menu-item (click)="logout()">
+    <button mat-menu-item (click)="logout()" class="matMenu2_btn">
       <span>Logout</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #menu2="matMenu">
+    <button mat-menu-item class="matMenu2_btn" (click)="goToAdminB()">
+      <span>Cărți </span>
+    </button>
+    <button mat-menu-item class="matMenu2_btn" (click)="goToAdminC()">
+      <span>Categori </span>
+    </button>
+    <button mat-menu-item class="matMenu2_btn" (click)="goToAdminU()">
+      <span>Utilizatori </span>
+    </button>
+    <button mat-menu-item class="matMenu2_btn" (click)="goToAdminR()">
+      <span>Roluri </span>
     </button>
   </mat-menu>
 </mat-toolbar>

@@ -34,6 +34,7 @@ export class AuthenticationComponent implements OnInit {
   formData = new FormData();
   message: string;
   bodyData: any;
+
   public response: { dbPath: '' };
   @Output() public onUploadFinished = new EventEmitter();
 
@@ -46,10 +47,7 @@ export class AuthenticationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.getUsers();
-
     this.registerFormGroup = this.fb.group({
-      //   fullName: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       study: ['', Validators.required],
@@ -73,17 +71,9 @@ export class AuthenticationComponent implements OnInit {
       email: ['', [Validators.required]],
       password: ['', Validators.required],
     });
-
-    console.log(this.roles);
-
-    this.userService.getRoles$().subscribe((roles) => {
-      this.roles = roles;
-    });
-
-    console.log(this.roles);
   }
 
-  hasErrorRegister(controlName: string, errorName: string) {
+  hasRegisterError(controlName: string, errorName: string) {
     return this.registerFormGroup.controls[controlName].hasError(errorName);
   }
 
@@ -106,46 +96,26 @@ export class AuthenticationComponent implements OnInit {
           'Bun venit' + ' ' + user.firstName,
           'right',
           'top',
-          7000
+          7000,
+          'notif-success'
         );
-        // this.router.navigate(['/user-management']);
+
         this.dialogRef.close();
       },
-      (error) => console.log('error', error)
+      (error) => {
+        console.log('error', error);
+        if ((error.error = 'Invalid email or password')) {
+          this.commonService.showSnackBarMessage(
+            'Email sau parolă greșită',
+            'right',
+            'bottom',
+            1000,
+            'notif-error'
+          );
+        }
+      }
     );
   }
-
-  // uploadFile = (files) => {
-  //   if (files.length === 0) {
-  //     return;
-  //   }
-
-  //   let fileToUpload = <File>files[0];
-
-  //   this.formData.append('file', fileToUpload, fileToUpload.name);
-  //   this.http
-  //     .post('https://localhost:7295/books/saveFile', this.formData, {
-  //       reportProgress: true,
-  //       observe: 'events',
-  //     })
-  //     .subscribe({
-  //       next: (event) => {
-  //         if (event.type === HttpEventType.Response) {
-  //           this.commonService.showSnackBarMessage(
-  //             'Image upload succes',
-  //             'right',
-  //             'bottom',
-  //             3000
-  //           );
-  //           this.bodyData = event.body;
-  //           console.log(this.bodyData);
-  //           console.log(typeof this.bodyData);
-  //           this.onUploadFinished.emit(event.body);
-  //         }
-  //       },
-  //       error: (err: HttpErrorResponse) => console.log(err),
-  //     });
-  // };
 
   uploadFile(files) {
     if (files.length === 0) {
@@ -161,7 +131,8 @@ export class AuthenticationComponent implements OnInit {
             'Image upload succes',
             'right',
             'bottom',
-            3000
+            3000,
+            'notif-success'
           );
           this.bodyData = event.body;
         }
@@ -170,13 +141,7 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
-  // test() {
-  //   this.user.phoneNumber = this.registerFormGroup.value.phoneNumber;
-  //   console.log(this.user.phoneNumber.toString());
-  // }
   onSubmitRegister() {
-    // this.user.fullName = this.registerFormGroup.value.fullName;
-    // this.user.userName = this.registerFormGroup.value.email;
     this.user.firstName = this.registerFormGroup.value.firstName;
     this.user.lastName = this.registerFormGroup.value.lastName;
     this.user.study = this.registerFormGroup.value.study;
@@ -190,7 +155,6 @@ export class AuthenticationComponent implements OnInit {
 
     this.userService
       .register$(
-        //   this.user.fullName,
         this.user.firstName,
         this.user.lastName,
         this.user.study,
@@ -208,19 +172,6 @@ export class AuthenticationComponent implements OnInit {
         },
         (error) => console.log('error', error)
       );
-
-    // this.userService.login$(this.user.email, this.user.password).subscribe(
-    //   (user: any) => {
-    //     let token = JSON.stringify(user.token);
-    //     this.isSignedIn = true;
-    //     localStorage.setItem('token', token);
-    //     this.userService.setCurrentUser(user.data);
-
-    //     // this.router.navigate(['/user-management']);
-    //     this.dialogRef.close();
-    //   },
-    //   (error) => console.log('error', error)
-    // );
   }
 
   selectedRoleHandler(selected: any) {

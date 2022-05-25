@@ -100,7 +100,7 @@
   top: 0;
   z-index: 5;
 
-  background-color: rebeccapurple;
+  background-color: rgb(56, 150, 119);
   position: sticky;
   position: -webkit-sticky;
   // top: 0px;
@@ -214,15 +214,15 @@
   -webkit-animation: sk-bounce 2s infinite ease-in-out;
   animation: sk-bounce 2s infinite ease-in-out;
 }
-.relative {
-  position: relative;
-  background-color: red !important;
-  top: 0;
-  z-index: 5;
+// .relative {
+//   position: relative;
+//   background-color: red !important;
+//   top: 0;
+//   z-index: 5;
 
-  align-content: center;
-  color: #fff;
-}
+//   align-content: center;
+//   color: #fff;
+// }
 .sticky {
   // background-color: black;
   position: sticky;
@@ -234,23 +234,32 @@
 
 .search_btn {
   margin-left: 20px;
-  // margin-right: 200px;
+  margin-right: 100px;
 }
 
 .book_btn {
   // right: 30px;
-  margin-left: 100px;
+  // margin-left: 100px;
+  font-size: 20px;
+  // width: 10%;
+  position: relative;
+  margin-right: 100px;
 }
 
 .form-field-book {
   font-size: 15px;
 }
 
-::ng-deep .mat-tooltip {
+.mat-tooltip {
   font-size: 18px;
 }
 
 .search-sort {
   font-size: 15px;
   margin-right: 20px;
+  text-align: center;
+}
+
+.matMenu2_btn {
+  font-size: 18px;
 }

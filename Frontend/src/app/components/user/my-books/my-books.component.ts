@@ -28,7 +28,12 @@ export class MyBooksComponent implements OnInit {
   showEditBtn: boolean = false;
   userLogged: any;
   sortFormGroup: FormGroup;
-  sortings: Array<string> = ['A-Z', 'Z-A'];
+  sortings: Array<string> = [
+    'A-Z',
+    'Z-A',
+    'Preț crescător',
+    'Preț descrescător',
+  ];
   categories: Category[] = [];
   currentUser$: Observable<User> = this.userService.currentUser$;
   currentUser: User;
@@ -79,28 +84,28 @@ export class MyBooksComponent implements OnInit {
     });
   }
   change(event) {
-    console.log(event.source.value);
-    if (event.source.value === 'A-Z') {
-      // this.books.sort();
-      this.books.sort((a, b) => a.title.localeCompare(b.title));
-      //  this.getBooks();
-    } else {
-      this.books.sort((a, b) => a.title.localeCompare(b.title)).reverse();
-      //  this.getBooks();
+    switch (event.source.value) {
+      case 'A-Z':
+        this.books.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'Z-A':
+        this.books.sort((a, b) => a.title.localeCompare(b.title)).reverse();
+        break;
+      case 'Preț crescător':
+        this.books.sort((a, b) => Number(a.price) - Number(b.price));
+        break;
+      case 'Preț descrescător':
+        this.books.sort((a, b) => Number(b.price) - Number(a.price));
+        break;
+      default:
+        '';
+        break;
     }
   }
 
   async changeCategory(event) {
-    console.log(event.source.value);
-
     this.books = await this.bookService.getBooksByCategoryAsync$(
       event.source.value
     );
-
-    // this.books = this.booksFiltered.filter(
-    //   (t) => t.category.name == event.source.value
-    // );
-
-    console.log(this.books);
   }
 }

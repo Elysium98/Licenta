@@ -155,9 +155,29 @@
             </summary>
             <param name="model"></param>
         </member>
+        <member name="M:BooksAPI.Controllers.UserController.UpdatePhoto(System.String,BooksAPI.Models.ImageModel)">
+            <summary>
+             Update user photo
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.Update(System.String,BooksAPI.Models.UpdateUserModel)">
+            <summary>
+             Update a user
+            </summary>
+        </member>
         <member name="M:BooksAPI.Controllers.UserController.DeleteUser(System.String)">
             <summary>
             Delete a user by id
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.UploadPhoto">
+            <summary>
+             Save user photo
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.UserController.ChangePassword(BooksAPI.Models.ChangePasswordModel)">
+            <summary>
+             Change user password
             </summary>
         </member>
     </members>

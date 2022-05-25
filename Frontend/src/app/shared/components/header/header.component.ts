@@ -24,6 +24,7 @@ import { tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { BookService } from 'src/app/services/book.service';
 import { UserService } from 'src/app/services/user.service';
+import { CommonService } from '../../common.service';
 
 import { AuthenticationComponent } from '../authentication/authentication.component';
 import { LoaderService } from '../loader/loader.service';
@@ -49,11 +50,14 @@ export class HeaderComponent implements AfterViewChecked {
   test12: string = '';
   // user: Observable<User>;
   currentUser: User = new User();
+  currentRoleIsAdmin = false;
+  currentRoleIsUser = false;
   currentUser$: Observable<User> = this.userService.currentUser$;
   userLogged: User = this.userService.decodeToken(
     localStorage.getItem('token')
   );
   searchFormGroup: FormGroup;
+  adminTable: string = '';
 
   searchedTitle(title: string) {
     // this.emitSearchedTitle.emit(title);
@@ -75,9 +79,22 @@ export class HeaderComponent implements AfterViewChecked {
     private loaderService: LoaderService,
     private fb: FormBuilder,
     private bookService: BookService,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService
   ) {
-    this.currentUser$.subscribe((data) => (this.currentUser = data));
+    this.currentUser$.subscribe((data) => {
+      this.currentUser = data;
+
+      console.log('TEST ' + this.currentUser.role);
+      if (this.currentUser.role === 'Admin') {
+        this.currentRoleIsAdmin = true;
+        this.currentRoleIsUser = false;
+      } else {
+        this.currentRoleIsAdmin = false;
+        this.currentRoleIsUser = true;
+      }
+    });
+
     //this.message = 'Salut  ' + this.currentUser.firstName;
     //   console.log('DAAA' + this.currentUser);
   }
@@ -129,6 +146,27 @@ export class HeaderComponent implements AfterViewChecked {
     });
   }
 
+  goToAdminB() {
+    this.adminTable = 'books';
+    this.router.navigate(['/admin-panel', this.adminTable]);
+  }
+
+  goToAdminC() {
+    this.adminTable = 'categories';
+    this.router.navigate(['/admin-panel', this.adminTable]);
+  }
+
+  goToAdminR() {
+    this.adminTable = 'roles';
+
+    this.router.navigate(['/admin-panel', this.adminTable]);
+  }
+
+  goToAdminU() {
+    this.adminTable = 'users';
+    this.router.navigate(['/admin-panel', this.adminTable]);
+  }
+
   goToHomePage() {
     this.searchFormGroup.reset();
     this.bookService.setCurrentProperty('');
@@ -143,27 +181,17 @@ export class HeaderComponent implements AfterViewChecked {
 
     this.router.navigate(['/book-list']);
   }
-  // ngOnInit(): void {
-  //   this.scrollDispatcher.scrolled().subscribe((event: CdkScrollable) => {
-  //     const scroll = event.measureScrollOffset('top');
-  //     let newIsOnTop = this.isOnTop;
-
-  //     if (scroll > 0) {
-  //       newIsOnTop = false;
-  //     } else {
-  //       newIsOnTop = true;
-  //     }
-
-  //     if (newIsOnTop !== this.isOnTop) {
-  //       this.zone.run(() => {
-  //         this.isOnTop = newIsOnTop;
-  //       });
-  //     }
-  //   });
-  // }
 
   logout() {
     this.userService.logout();
+    this.router.navigate(['/home']);
+    this.commonService.showSnackBarMessage(
+      'Ai fost delogat cu succes !',
+      'center',
+      'bottom',
+      4000,
+      'notif-success'
+    );
   }
 
   openDialog(): void {

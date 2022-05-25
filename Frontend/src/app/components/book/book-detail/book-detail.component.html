@@ -9,10 +9,12 @@
   </div>
   <div class="container">
     <mat-card>
-      <mat-card-title
-        ><b>{{ book.title }}</b></mat-card-title
+      <mat-card-title class="mat_card_title"
+        ><p>
+          <b>{{ book.title }}</b>
+        </p></mat-card-title
       >
-      <mat-card-content>
+      <mat-card-content class="mat_card_content">
         <p>{{ book.author }}</p>
       </mat-card-content>
     </mat-card>
@@ -20,14 +22,15 @@
       <mat-card class="mat_card_details">
         <mat-card-content class="mat_card_content">
           <p>Editura: {{ book.publisher }}</p>
-          <p>Numar pagini: {{ book.page }}</p>
+          <p>Număr pagini: {{ book.page }}</p>
           <p>Limba: {{ book.language }}</p>
-          <p>Data aparitiei:{{ book.publicationDate | date }}</p>
+          <p>Data publicării: {{ book.publicationDate | date: "yyyy" }}</p>
           <p>Categorie: {{ book.category.name }}</p>
           <p>Stare: {{ book.condition }}</p>
+          <p>Preț: {{ book.price }} LEI</p>
           <p>
             Vândută de
-            {{ book.user.userName }}
+            {{ book.user.lastName }} {{ book.user.firstName }}
             <mat-icon
               class="red_eye"
               #tooltip="matTooltip"

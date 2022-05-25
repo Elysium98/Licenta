@@ -11,6 +11,7 @@ export class Book {
   publicationDate: Date = new Date();
   // publicationDate: string = '';
   page: number = 0;
+  price: number = 0;
   language: string = '';
   condition: string = '';
   isSold: boolean = false;

@@ -15,12 +15,12 @@
             formControlName="email"
           />
           <mat-error *ngIf="hasErrorLogin('email', 'required')"
-            >Email is required!</mat-error
+            >Email obligatoriu</mat-error
           >
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>Parola</mat-label>
           <input
             matInput
             type="password"
@@ -28,7 +28,7 @@
             formControlName="password"
           />
           <mat-error *ngIf="hasErrorLogin('password', 'required')"
-            >Password is required!</mat-error
+            >Parola obligatorie</mat-error
           >
         </mat-form-field>
 
@@ -54,8 +54,8 @@
             placeholder="Introduceți numele"
             formControlName="lastName"
           />
-          <mat-error *ngIf="hasErrorRegister('lastName', 'required')"
-            >LastName is required!</mat-error
+          <mat-error *ngIf="hasRegisterError('lastName', 'required')"
+            >Nume obligatoriu</mat-error
           >
         </mat-form-field>
 
@@ -67,8 +67,8 @@
             placeholder="Introduceți prenumele"
             formControlName="firstName"
           />
-          <mat-error *ngIf="hasErrorRegister('firstName', 'required')"
-            >FirstName is required!</mat-error
+          <mat-error *ngIf="hasRegisterError('firstName', 'required')"
+            >Prenume obligatoriu</mat-error
           >
         </mat-form-field>
 
@@ -81,16 +81,16 @@
               placeholder="Introduceți orașul"
               formControlName="city"
             />
-            <mat-error *ngIf="hasErrorRegister('city', 'required')"
-              >City is required!</mat-error
+            <mat-error *ngIf="hasRegisterError('city', 'required')"
+              >Oraș obligatoriu</mat-error
             >
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Data nașterii</mat-label>
             <input matInput type="date" formControlName="birthDate" />
-            <mat-error *ngIf="hasErrorRegister('birthDate', 'required')"
-              >Câmp obligatoriu !</mat-error
+            <mat-error *ngIf="hasRegisterError('birthDate', 'required')"
+              >Data nașterii obligatoriu</mat-error
             >
           </mat-form-field>
         </div>
@@ -123,8 +123,8 @@
             placeholder="Introduceți numărul de telefon"
             formControlName="phoneNumber"
           />
-          <mat-error *ngIf="hasErrorRegister('phoneNumber', 'required')"
-            >Phone is required!</mat-error
+          <mat-error *ngIf="hasRegisterError('phoneNumber', 'required')"
+            >Telefon obligatoriu</mat-error
           >
         </mat-form-field>
 
@@ -159,10 +159,10 @@
             formControlName="email"
           />
           <mat-error *ngIf="hasErrorLogin('email', 'required')"
-            >Email is required!</mat-error
+            >Email obligatoriu</mat-error
           >
-          <mat-error *ngIf="hasErrorRegister('email', 'email')"
-            >Email must contain @</mat-error
+          <mat-error *ngIf="hasRegisterError('email', 'email')"
+            >Trebuie să conțină @</mat-error
           >
         </mat-form-field>
 
@@ -174,12 +174,12 @@
             placeholder="Introduceți parola"
             formControlName="password"
           />
-          <mat-error *ngIf="hasErrorRegister('password', 'required')"
-            >Password is required!</mat-error
+          <mat-error *ngIf="hasRegisterError('password', 'required')"
+            >Parola obligatorie</mat-error
           >
-          <mat-error *ngIf="hasErrorRegister('password', 'pattern')"
-            >Password must contain 1 upper case, 1 lower case and 1 special
-            character</mat-error
+          <mat-error *ngIf="hasRegisterError('password', 'pattern')"
+            >Parola trebuie să conțină 1 literă mare, 1 literă mică și 1
+            caracter special</mat-error
           >
         </mat-form-field>
 

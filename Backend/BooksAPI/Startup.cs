@@ -2,7 +2,7 @@
 using BooksAPI.Data.Entities;
 using BooksAPI.Services;
 using BooksAPI.Services.Category;
-using BooksAPI.Services.Email;
+
 using BooksAPI.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -42,8 +42,6 @@ namespace BooksAPI
         {
             services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
 
-            services.AddSingleton<IEmailSender, EmailSender>();
-
             services.AddTransient<IBookService, BookService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
@@ -59,7 +57,7 @@ namespace BooksAPI
                 .AddIdentity<ApplicationUser, IdentityRole>(
                     opt =>
                     {
-                        //       opt.SignIn.RequireConfirmedEmail = true;
+                        opt.User.RequireUniqueEmail = true;
                     }
                 )
                 .AddEntityFrameworkStores<AppDBContext>()
@@ -142,12 +140,14 @@ namespace BooksAPI
                 }
             );
 
-            services.Configure<FormOptions>(o =>
-            {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
+            services.Configure<FormOptions>(
+                o =>
+                {
+                    o.ValueLengthLimit = int.MaxValue;
+                    o.MultipartBodyLengthLimit = int.MaxValue;
+                    o.MemoryBufferThreshold = int.MaxValue;
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -156,11 +156,15 @@ namespace BooksAPI
             app.UseCors("CorsPolicy");
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
+            app.UseStaticFiles(
+                new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(Directory.GetCurrentDirectory(), @"Resources")
+                    ),
+                    RequestPath = new PathString("/Resources")
+                }
+            );
 
             if (env.IsDevelopment())
             {

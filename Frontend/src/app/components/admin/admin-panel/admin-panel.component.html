@@ -1,0 +1,333 @@
+<div *ngIf="booksTable">
+  <div class="book_container">
+    <button mat-raised-button class="book_btn" (click)="openBookDialog()">
+      Adaugă o carte
+    </button>
+  </div>
+  <div class="container">
+    <table mat-table [dataSource]="books" class="mat-table-books">
+      <ng-container matColumnDef="books_header">
+        <th mat-header-cell *matHeaderCellDef colspan="13" class="centered">
+          Lista de cărți
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="isbn">
+        <th mat-header-cell *matHeaderCellDef>ISBN</th>
+        <td mat-cell *matCellDef="let book">{{ book.isbn }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Titlu</th>
+        <td mat-cell *matCellDef="let book">{{ book.title }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef>Autor</th>
+        <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="publisher">
+        <th mat-header-cell *matHeaderCellDef>Editura</th>
+        <td mat-cell *matCellDef="let book">
+          {{ book.publisher }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicationDate">
+        <th mat-header-cell *matHeaderCellDef>Data publicării</th>
+        <td mat-cell *matCellDef="let book">
+          {{ book.publicationDate | date: "yyyy" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="page">
+        <th mat-header-cell *matHeaderCellDef>Număr pagini</th>
+        <td mat-cell *matCellDef="let book">{{ book.page }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="language">
+        <th mat-header-cell *matHeaderCellDef>Limba</th>
+        <td mat-cell *matCellDef="let book">{{ book.language }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="condition">
+        <th mat-header-cell *matHeaderCellDef>Stare</th>
+        <td mat-cell *matCellDef="let book">{{ book.condition }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Poza</th>
+        <td mat-cell *matCellDef="let book">
+          <button
+            mat-mini-fab
+            color="primary"
+            (click)="openImageDialogEdit(book)"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Preț</th>
+        <td mat-cell *matCellDef="let book"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Categorie</th>
+        <td mat-cell *matCellDef="let book">{{ book.category.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="uploadedBy">
+        <th mat-header-cell *matHeaderCellDef>Încărcată de</th>
+        <td mat-cell *matCellDef="let book">{{ book.user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let book">
+          <div class="column_btn">
+            <button
+              mat-mini-fab
+              color="primary"
+              (click)="openBookDialogEdit(book)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Editează"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >edit</mat-icon
+              >
+            </button>
+
+            <button
+              mat-mini-fab
+              color="secondary"
+              (click)="deleteBook(book.id)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Șterge"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >delete</mat-icon
+              >
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="books_header"></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedBooksColumns; sticky: true"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedBooksColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[10, 20, 30]"
+      class="paginator"
+    ></mat-paginator>
+  </div>
+</div>
+<div class="container" *ngIf="usersTable">
+  <table mat-table [dataSource]="users" class="mat-table-users">
+    <ng-container matColumnDef="users_header">
+      <th mat-header-cell *matHeaderCellDef colspan="6" class="centered">
+        Lista de utlizatori
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Nume</th>
+      <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>Prenume</th>
+      <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthDate">
+      <th mat-header-cell *matHeaderCellDef>Dată naștere</th>
+      <td mat-cell *matCellDef="let user">
+        {{ user.birthDate | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phoneNumber">
+      <th mat-header-cell *matHeaderCellDef>Telefon</th>
+      <td mat-cell *matCellDef="let user">{{ user.phoneNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-mini-fab color="primary" aria-label="View item">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          mat-mini-fab
+          color="secondary"
+          aria-label="Delete item"
+          (click)="deleteUser(user.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="users_header; sticky: true"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 15]"
+    class="paginator"
+  ></mat-paginator>
+</div>
+
+<!-- TABEL CATEGORI -->
+<div *ngIf="categoriesTable" class="test22">
+  <div class="book_container">
+    <button mat-raised-button class="book_btn" (click)="openCategoryDialog()">
+      Adaugă o categorie
+    </button>
+  </div>
+  <div class="categories_container">
+    <table mat-table [dataSource]="categories" class="mat-table-categories">
+      <ng-container matColumnDef="categories_header">
+        <th mat-header-cell *matHeaderCellDef colspan="2" class="centered">
+          Lista de categorii
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nume</th>
+        <td mat-cell *matCellDef="let category">{{ category.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let category">
+          <div class="column_btn">
+            <button
+              mat-mini-fab
+              color="primary"
+              (click)="openEditCategoryDialog(category)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Editează"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >edit</mat-icon
+              >
+            </button>
+
+            <button
+              mat-mini-fab
+              color="secondary"
+              (click)="deleteCategory(category.id)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Șterge"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >delete</mat-icon
+              >
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="categories_header; sticky: true"
+      ></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedCategoriesColumns"
+      ></tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      class="categories_paginator"
+    ></mat-paginator>
+  </div>
+</div>
+
+<div *ngIf="rolesTable">
+  <div class="book_container">
+    <button mat-raised-button class="book_btn" (click)="openRoleDialog()">
+      Adaugă un rol
+    </button>
+  </div>
+  <div class="container">
+    <table mat-table [dataSource]="roles" class="mat-table-categories">
+      <ng-container matColumnDef="roles_header">
+        <th mat-header-cell *matHeaderCellDef colspan="2" class="centered">
+          Lista de roluri
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nume</th>
+        <td mat-cell *matCellDef="let role">{{ role.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let role">
+          <div class="column_btn">
+            <button
+              mat-mini-fab
+              color="primary"
+              (click)="openEditRoleDialog(role)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Editează"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >edit</mat-icon
+              >
+            </button>
+
+            <button
+              mat-mini-fab
+              color="secondary"
+              (click)="deleteRole(role.id)"
+            >
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Șterge"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >delete</mat-icon
+              >
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="roles_header; sticky: true"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedCategoriesColumns"
+      ></tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      class="paginator"
+    ></mat-paginator>
+  </div>
+</div>

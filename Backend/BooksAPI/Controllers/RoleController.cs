@@ -14,14 +14,10 @@ namespace BooksAPI.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly UserManager<ApplicationUser> _userManager;
-
         public RoleController(
-            RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager
+            RoleManager<IdentityRole> roleManager
         )
         {
-            _userManager = userManager;
             _roleManager = roleManager;
         }
 
@@ -64,6 +60,7 @@ namespace BooksAPI.Controllers
         ///<summary>
         ///Delete a role by id
         ///</summary>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -84,7 +81,6 @@ namespace BooksAPI.Controllers
         ///<summary>
         ///Add a role
         ///</summary>
-        //   [Authorize(Roles = "Admin")]
         [HttpPost()]
         public async Task<IActionResult> AddRole([FromBody] RoleModel model)
         {
@@ -103,7 +99,7 @@ namespace BooksAPI.Controllers
                 var result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {
-                    return Ok("Role added successfully");
+                    return Ok(result);
                 }
                 return BadRequest("Something went wrong please try again");
             }
@@ -116,53 +112,31 @@ namespace BooksAPI.Controllers
         /////<summary>
         /////Update a role
         /////</summary>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<object> UpdateRole(string id, RoleModel model)
+        {
+            try
+            {
+                if (model == null || model.Name == "")
+                {
+                    return BadRequest("Parameters are missing");
+                }
 
-        //[HttpPut()]
-        //public async Task<object> UpdateRole(string id,  RoleModel role)
-        //{
-        //    try
-        //    {
-        //        if (role == null || role.Role == "")
-        //        {
-        //            return await Task.FromResult(
-        //                new ResponseModel(ResponseCode.Error, "Parameters are missing", null)
-        //            );
-        //        }
+                var roles = await _roleManager.FindByIdAsync(id);
+                roles.Name = model.Name;
+                var result = await _roleManager.UpdateAsync(roles);
 
-        //        var roles = await _roleManager.FindByIdAsync(id);
-        //        roles.Name = role.Role;
-        //        var result = await _roleManager.UpdateAsync(roles);
-
-        //        foreach (var user in _userManager.Users)
-        //        {
-        //            if (await _userManager.IsInRoleAsync(user, role.Name))
-        //            {
-        //                // model.U
-        //            }
-        //        }
-
-
-        //        if (result.Succeeded)
-        //        {
-        //            return await Task.FromResult(
-        //                new ResponseModel(ResponseCode.OK, "Role added successfully", result)
-        //            );
-        //        }
-        //        return await Task.FromResult(
-        //            new ResponseModel(
-        //                ResponseCode.Error,
-        //                "Something went wrong please try again",
-        //                null
-        //            )
-        //        );
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return await Task.FromResult(
-        //            new ResponseModel(ResponseCode.Error, ex.Message, null)
-        //        );
-        //    }
-        //}
-
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest("Something went wrong please try again");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
