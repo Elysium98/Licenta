@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Net.Http.Headers;
 using System.Web;
+using System.Net.Mail;
 
 namespace BooksAPI.Controllers
 {
@@ -84,13 +85,16 @@ namespace BooksAPI.Controllers
 
                     return Ok(tempUser);
                 }
-                return BadRequest();
+                return BadRequest(result);
+                
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+   
 
         ///<summary>
         ///Gets all users

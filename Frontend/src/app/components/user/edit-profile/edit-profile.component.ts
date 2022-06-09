@@ -47,11 +47,11 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
-    private http: HttpClient,
     private router: Router,
     private commonService: CommonService
   ) {
+    this.image2$ = this.commonService.loadImage(this.image2);
+
     this.userLogged = this.userService.decodeToken(
       localStorage.getItem('token')
     )['nameid'];
@@ -65,6 +65,8 @@ export class EditProfileComponent implements OnInit {
   formData = new FormData();
   // user22: User = new User();
   // image22;
+  image2: string = ' ../../../assets/img/poza_buna_Ultima.png';
+  image2$: Promise<any>;
 
   bodyData: any;
   imgUrl: string = '';
@@ -76,6 +78,7 @@ export class EditProfileComponent implements OnInit {
     this.userService.getUserByIdAsync(this.userLogged);
     this.user = await this.userService.getUserByIdAsync(this.userLogged);
     this.imgUrl = await this.createImgPath2();
+    console.log(this.user.image);
     // this.createImgPath2();
     console.log(this.user);
     this._imageSubject.next(this.imgUrl);
@@ -91,8 +94,9 @@ export class EditProfileComponent implements OnInit {
       email: [this.user.email, Validators.email],
       firstName: [this.user.firstName],
       lastName: [this.user.lastName],
-      phoneNumber: [this.user.phoneNumber],
+      phoneNumber: [this.user.phoneNumber, Validators.pattern('[0-9]{10}')],
       study: [this.user.study],
+      city: [this.user.city],
       image: '',
     });
 
@@ -247,7 +251,6 @@ export class EditProfileComponent implements OnInit {
 
   change(event) {
     if (event.isUserInput) {
-      console.log(event.source.value, event.source.selected);
     }
   }
 }

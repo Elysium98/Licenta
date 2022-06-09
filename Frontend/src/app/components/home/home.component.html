@@ -3,11 +3,11 @@
     timings="450ms ease-in"
     [autoplay]="true"
     color="accent"
-    maxWidth="auto"
+    maxWidth="1600px"
     [interval]="8000"
+    [proportion]="50"
     [maintainAspectRatio]="true"
     [loop]="true"
-    [proportion]="60"
     [hideArrows]="false"
     [hideIndicators]="false"
     [useKeyboard]="true"
@@ -15,7 +15,6 @@
     orientation="ltr"
   >
     <mat-carousel-slide
-      class="test23"
       #matCarouselSlide
       *ngFor="let slide of slides; let i = index"
       [image]="slide.image"
@@ -28,34 +27,30 @@
 <div class="bottom_container">
   <div class="title">Ultimele cărți adăugate</div>
 
-  <div class="main-container-shelf">
+  <div class="card-main-container">
     <img
-      class="img_shelf"
+      class="shelf_img"
       src="../../../assets/img/v69.png"
       fxLayoutAlign="center"
     />
     <mat-card class="container-card">
       <div class="content">
         <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
-          <div *ngFor="let book of books.slice(0, 4)" class="test22">
+          <div *ngFor="let book of books.slice(0, 4)">
             <mat-card-header>
-              <!-- <mat-card-title class="mat-title"
-                ><b>Alba ca zapada si cei 7 pitici</b></mat-card-title
-              > -->
               <mat-card-title class="mat-title"
                 ><b>{{ book.title }}</b></mat-card-title
               >
             </mat-card-header>
             <img
-              class="img_shadow"
+              class="shadow_img"
               src="../../../assets/img/book_shadow.png"
               fxLayoutAlign="center"
             />
 
-            <!-- <mat-card-title><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title> -->
             <a (click)="getBookDetails(book)">
               <img
-                class="img_book"
+                class="book_img"
                 mat-card-image
                 [src]="createImgPath(book.image)"
                 fxLayoutAlign="center"

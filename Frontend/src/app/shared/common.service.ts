@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+
 @Injectable()
 export class CommonService {
   constructor(private snackBar: MatSnackBar) {}
+
+  loadImage(src: string) {
+    return new Promise((resolve) => {
+      resolve(src);
+    });
+  }
 
   showSnackBarMessage(
     message: string,

@@ -55,9 +55,9 @@ export class AddCategoryByAdminComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (this.editMode === false) {
-      this.matTitle = 'Adaugă o categorie';
+      this.matTitle = 'Adăugați o categorie';
     } else {
-      this.matTitle = 'Editează o categorie';
+      this.matTitle = 'Editați o categorie';
     }
 
     if (this.editMode === false) {

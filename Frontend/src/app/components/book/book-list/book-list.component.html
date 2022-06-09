@@ -1,6 +1,6 @@
 <div class="content">
   <div class="buttons_top">
-    <button mat-raised-button class="book_btn" routerLink="/add-book">
+    <button mat-raised-button class="book_btn" (click)="goToAddBook()">
       Adăugați o carte
     </button>
     <form [formGroup]="sortFormGroup" class="sortForm">
@@ -16,7 +16,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="form-field-sort" appearance="fill">
+      <mat-form-field class="form-field-sort" appearance="fill" color="accent">
         <mat-label>Filtrează</mat-label>
         <mat-select
           formControlName="category"
@@ -32,6 +32,7 @@
       </mat-form-field>
     </form>
   </div>
+
   <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
     <div *ngFor="let book of books">
       <mat-card>
@@ -39,20 +40,13 @@
           <mat-card-title class="title"
             ><b>{{ book.title }}</b></mat-card-title
           >
-
-          <!-- <mat-card-title class="title"
-            ><b>Alba ca Zapada si cei 7 pitici</b></mat-card-title
-          > -->
         </mat-card-header>
-
         <img
-          class="img_card"
+          class="card_img"
           mat-card-image
           [src]="createImgPath(book.image)"
           fxLayoutAlign="center"
         />
-        <!-- <div *ngIf="searchedProperty$ | async as property">{{ property }}</div> -->
-
         <mat-card-content>
           <p>{{ book.author }}</p>
           <p>{{ book.price }} LEI</p>
@@ -60,7 +54,7 @@
         <mat-card-actions class="buttons">
           <button
             mat-raised-button
-            color="accent"
+            color="warn"
             (click)="getBookById(book)"
             class="details_btn"
           >

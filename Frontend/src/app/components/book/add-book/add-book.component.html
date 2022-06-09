@@ -126,7 +126,7 @@
           <input
             matInput
             type="date"
-            placeholder="Data publicatiei"
+            placeholder="Data publicării"
             formControlName="publicationDate"
           />
           <mat-error *ngIf="hasAddError('publicationDate', 'required')"
@@ -180,7 +180,7 @@
         </div>
         <div align="center">
           <button
-            color="primary"
+            color="warn"
             mat-raised-button
             class="submitButton"
             type="submit"
@@ -195,7 +195,12 @@
 
   <mat-card *ngIf="editMode" class="mat-card-edit">
     <div class="img_div" *ngIf="image$ | async as image">
-      <img class="img" mat-card-image [src]="image" fxLayoutAlign="center" />
+      <img
+        class="book_img"
+        mat-card-image
+        [src]="image"
+        fxLayoutAlign="center"
+      />
     </div>
     <input
       #file
@@ -212,12 +217,13 @@
         color="warn"
         (click)="file.click()"
       >
-        Schimbă imaginea cărții
+        Schimbați imaginea cărții
       </button>
     </div>
   </mat-card>
 
   <div class="home-img" *ngIf="!editMode">
-    <img id="logo" src="../../../assets/img/books.png" />
+    <!-- <img id="books_img" src="../../../assets/img/new_books.png" /> -->
+    <img id="books_img" [src]="image2$ | async" />
   </div>
 </div>

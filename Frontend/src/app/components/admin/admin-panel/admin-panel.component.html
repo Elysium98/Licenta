@@ -1,13 +1,13 @@
 <div *ngIf="booksTable">
   <div class="book_container">
     <button mat-raised-button class="book_btn" (click)="openBookDialog()">
-      Adaugă o carte
+      Adăugați o carte
     </button>
   </div>
   <div class="container">
     <table mat-table [dataSource]="books" class="mat-table-books">
       <ng-container matColumnDef="books_header">
-        <th mat-header-cell *matHeaderCellDef colspan="13" class="centered">
+        <th mat-header-cell *matHeaderCellDef colspan="14" class="centered">
           Lista de cărți
         </th>
       </ng-container>
@@ -71,7 +71,7 @@
 
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef>Preț</th>
-        <td mat-cell *matCellDef="let book"></td>
+        <td mat-cell *matCellDef="let book">{{ book.price }}</td>
       </ng-container>
 
       <ng-container matColumnDef="category">
@@ -82,6 +82,11 @@
       <ng-container matColumnDef="uploadedBy">
         <th mat-header-cell *matHeaderCellDef>Încărcată de</th>
         <td mat-cell *matCellDef="let book">{{ book.user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let book">{{ state }}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -170,7 +175,13 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
       <td mat-cell *matCellDef="let user">
         <button mat-mini-fab color="primary" aria-label="View item">
-          <mat-icon>edit</mat-icon>
+          <mat-icon
+            #tooltip="matTooltip"
+            matTooltip="Editează"
+            matTooltipPosition="above"
+            matTooltipHideDelay="100"
+            >edit</mat-icon
+          >
         </button>
 
         <button
@@ -179,7 +190,13 @@
           aria-label="Delete item"
           (click)="deleteUser(user.id)"
         >
-          <mat-icon>delete</mat-icon>
+          <mat-icon
+            #tooltip="matTooltip"
+            matTooltip="Șterge"
+            matTooltipPosition="above"
+            matTooltipHideDelay="100"
+            >delete</mat-icon
+          >
         </button>
       </td>
     </ng-container>
@@ -194,11 +211,11 @@
   ></mat-paginator>
 </div>
 
-<!-- TABEL CATEGORI -->
+<!-- TABEL CATEGORII -->
 <div *ngIf="categoriesTable" class="test22">
   <div class="book_container">
     <button mat-raised-button class="book_btn" (click)="openCategoryDialog()">
-      Adaugă o categorie
+      Adăugați o categorie
     </button>
   </div>
   <div class="categories_container">
@@ -235,7 +252,7 @@
             <button
               mat-mini-fab
               color="secondary"
-              (click)="deleteCategory(category.id)"
+              (click)="deleteCategory(category.categoryId)"
             >
               <mat-icon
                 #tooltip="matTooltip"
@@ -268,11 +285,11 @@
 <div *ngIf="rolesTable">
   <div class="book_container">
     <button mat-raised-button class="book_btn" (click)="openRoleDialog()">
-      Adaugă un rol
+      Adăugați un rol
     </button>
   </div>
-  <div class="container">
-    <table mat-table [dataSource]="roles" class="mat-table-categories">
+  <div class="roles_container">
+    <table mat-table [dataSource]="roles" class="mat-table-roles">
       <ng-container matColumnDef="roles_header">
         <th mat-header-cell *matHeaderCellDef colspan="2" class="centered">
           Lista de roluri
@@ -327,7 +344,7 @@
     </table>
     <mat-paginator
       [pageSizeOptions]="[5, 10, 15]"
-      class="paginator"
+      class="roles_paginator"
     ></mat-paginator>
   </div>
 </div>

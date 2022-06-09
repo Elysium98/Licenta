@@ -76,13 +76,20 @@
         </member>
         <member name="M:BooksAPI.Controllers.CategoryController.GetCategories">
             <summary>
-            Gets all books
+            Gets all categories
             </summary>
             <returns></returns>
         </member>
         <member name="M:BooksAPI.Controllers.CategoryController.GetCategoryById(System.Guid)">
             <summary>
-            Gets a book with a certain id
+            Gets a category with a certain id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BooksAPI.Controllers.CategoryController.GetCategoryByName(System.String)">
+            <summary>
+            Gets a category with a certain name
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -127,6 +134,11 @@
         <member name="M:BooksAPI.Controllers.RoleController.AddRole(BooksAPI.ViewModels.RoleModel)">
             <summary>
             Add a role
+            </summary>
+        </member>
+        <member name="M:BooksAPI.Controllers.RoleController.UpdateRole(System.String,BooksAPI.ViewModels.RoleModel)">
+            <summary>
+            Update a role
             </summary>
         </member>
         <member name="M:BooksAPI.Controllers.UserController.RegisterUser(BooksAPI.ViewModels.RegisterModel)">

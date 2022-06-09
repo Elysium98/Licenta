@@ -23,6 +23,7 @@
     "@angular/router": "~12.2.0",
     "@auth0/angular-jwt": "^5.0.2",
     "angular2-uuid": "^1.1.1",
+    "ng-lazyload-image": "^9.1.3",
     "ng-mat-carousel": "^0.11.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",

@@ -1,11 +1,10 @@
 mat-form-field,
 mat-checkbox {
   width: 40%;
-
-  //display: block;
   margin: 25px 25px 0px 25px;
   font-size: 17px;
 }
+
 mat-card-content {
   margin-top: 10px;
   text-align: center;
@@ -13,7 +12,7 @@ mat-card-content {
 
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 3%;
 }
 
@@ -23,14 +22,15 @@ mat-card {
 }
 .home-img {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
-#logo {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: 600px;
+.img {
+  margin-right: 1%;
+  width: 40%;
+  object-fit: cover;
+  height: auto;
+  object-position: 50% 50%;
 }
 
 .avatar_img {
@@ -71,15 +71,18 @@ mat-card {
 .add_img_div {
   margin-top: 10px;
 }
+
 .add_img_btn {
-  font-size: 16px;
+  font-size: 20px;
 }
+
 .submit-btn {
   margin: 0px 0px;
   width: 200px;
   height: 40px;
   font-size: 20px;
 }
+
 ::ng-deep .mat-form-field-subscript-wrapper {
   font-size: 90%;
 }

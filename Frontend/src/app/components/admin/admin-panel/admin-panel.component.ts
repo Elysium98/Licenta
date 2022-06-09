@@ -14,8 +14,8 @@ import { CategoryService } from 'src/app/services/category.service';
 import { RoleService } from 'src/app/services/role.service';
 import { UserService } from 'src/app/services/user.service';
 import { CommonService } from 'src/app/shared/common.service';
+import { AddBookByAdminComponent } from '../add-book/add-book.component';
 import { AddCategoryByAdminComponent } from '../add-category/add-category.component';
-import { AddPropertyComponent } from '../add-property/add-property.component';
 import { AddRoleByAdminComponent } from '../add-role/add-role.component';
 import { EditImageComponent } from '../edit-image/edit-image.component';
 
@@ -33,6 +33,8 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   categories: MatTableDataSource<Category> = new MatTableDataSource();
   roles: MatTableDataSource<Role> = new MatTableDataSource();
   // categories: Category[];
+  state: any;
+
   books$: Observable<Book[]>;
   dataSource: MatTableDataSource<Book>;
   currentUser$: Observable<User> = this.userService.currentUser$;
@@ -60,6 +62,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     'price',
     'category',
     'uploadedBy',
+    'state',
     'actions',
   ];
 
@@ -186,7 +189,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   openBookDialog() {
     this.dialog
-      .open(AddPropertyComponent, {
+      .open(AddBookByAdminComponent, {
         width: '800px',
         height: 'auto',
       })
@@ -200,7 +203,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   openBookDialogEdit(book: Book) {
     this.dialog
-      .open(AddPropertyComponent, {
+      .open(AddBookByAdminComponent, {
         width: '800px',
         height: 'auto',
         data: book,
@@ -245,6 +248,13 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.bookService.getBooks$().subscribe((result) => {
       // this.books = result;
       this.books = new MatTableDataSource(result);
+      for (let book of result) {
+        if (book.isSold === false) {
+          this.state = 'Activa';
+        } else {
+          this.state = 'Vanduta';
+        }
+      }
       this.books.paginator = this.paginator;
     });
   }

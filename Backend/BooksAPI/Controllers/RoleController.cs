@@ -109,9 +109,9 @@ namespace BooksAPI.Controllers
             }
         }
 
-        /////<summary>
-        /////Update a role
-        /////</summary>
+        ///<summary>
+        ///Update a role
+        ///</summary>
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<object> UpdateRole(string id, RoleModel model)

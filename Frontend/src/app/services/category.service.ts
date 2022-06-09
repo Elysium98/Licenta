@@ -41,7 +41,7 @@ export class CategoryService {
 
   async getCategoryByName$(name: string) {
     return await this.httpClient
-      .get<Category>(this.baseUrl + name, this.httpOptions)
+      .get<Category>(this.baseUrl + '/name/' + name, this.httpOptions)
       .toPromise();
   }
 

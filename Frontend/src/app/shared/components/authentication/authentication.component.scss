@@ -1,12 +1,8 @@
 mat-form-field,
 mat-checkbox {
   width: 80%;
-  // display: block;
   margin: 0px 50px;
 }
-// ::ng-deep mat-card-content {
-//   margin-top: 20px;
-// }
 
 .login-button {
   margin-top: 20px;
@@ -25,10 +21,12 @@ mat-checkbox {
 ::ng-deep .mat-dialog-container {
   overflow: hidden !important;
 }
+::ng-deep .mat-tab-label {
+  font-size: 20px;
+}
 
 :host ::ng-deep .mat-button {
   font-size: 22px;
-  // margin-top: 80%;
 }
 
 ::ng-deep .mat-dialog-actions {
@@ -41,8 +39,6 @@ mat-checkbox {
 
 .app-logo {
   padding-bottom: 0;
-  //width: 15%;
-  // min-width: 1.2vw;
 }
 
 #logo {
@@ -62,19 +58,18 @@ mat-checkbox {
 }
 .add_img_btn {
   width: 80%;
+  font-size: 20px;
 }
 
 .add_img_div {
-  //margin-top: 10px;
   text-align: center;
   margin-bottom: 15px;
 }
 
-::ng-deep .mat-snack-bar-container {
-  // min-width: 840px;
-  margin-top: 70px !important;
+.birthdate_form {
+  right: 25px;
+}
 
-  // color: rgb(245, 245, 245);
-  //top: 60px;
-  // background-color: green;
+::ng-deep .mat-snack-bar-container {
+  margin-top: 70px !important;
 }

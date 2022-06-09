@@ -17,12 +17,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthenticationComponent } from './shared/components/authentication/authentication.component';
-import {
-  FormControlDirective,
-  FormGroupDirective,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -43,7 +38,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { BookListComponent } from './components/book/book-list/book-list.component';
 import { BookDetailComponent } from './components/book/book-detail/book-detail.component';
-import { SortPipePipe } from './components/pipes/sort-pipe.pipe';
+
 import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonService } from './shared/common.service';
@@ -51,14 +46,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MyBooksComponent } from './components/user/my-books/my-books.component';
 import { HistoryBooksComponent } from './components/user/history-books/history-books.component';
 import { DatePipe } from '@angular/common';
-import { AddPropertyComponent } from './components/admin/add-property/add-property.component';
+
 import { EditImageComponent } from './components/admin/edit-image/edit-image.component';
-import { AddBookByAdminComponent } from './components/admin/add-book/add-book.component';
+
 import { AddUserByAdminComponent } from './components/admin/add-user/add-user.component';
 import { AddRoleByAdminComponent } from './components/admin/add-role/add-role.component';
 import { AddCategoryByAdminComponent } from './components/admin/add-category/add-category.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ContactComponent } from './components/contact/contact.component';
+import { AddBookByAdminComponent } from './components/admin/add-book/add-book.component';
 
 export function initializeApp(userService: UserService) {
   return (): Promise<any> => {
@@ -77,16 +74,15 @@ export function initializeApp(userService: UserService) {
     UserProfileComponent,
     BookListComponent,
     BookDetailComponent,
-    SortPipePipe,
     EditProfileComponent,
     MyBooksComponent,
     HistoryBooksComponent,
-    AddPropertyComponent,
     EditImageComponent,
     AddBookByAdminComponent,
     AddUserByAdminComponent,
     AddRoleByAdminComponent,
     AddCategoryByAdminComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,

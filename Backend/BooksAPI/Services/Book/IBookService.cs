@@ -4,7 +4,7 @@ namespace BooksAPI.Services
 {
     public interface IBookService : ICommonService<BookModel>
     {
-        Task<bool> Update2(Guid id, UpdateBookModel model);
+        Task<bool> UpdateCertainProperties(Guid id, UpdateBookModel model);
 
         Task<List<BookModel>> GetAllByUserAndStatus(string userId, bool isSold);
 

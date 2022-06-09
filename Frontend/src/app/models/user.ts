@@ -2,14 +2,12 @@ import { Role } from './role';
 
 export class User {
   id: string = '';
-  //fullName: string = '';
-
   firstName: string = '';
   lastName: string = '';
   study: string = '';
   image: string = '';
   city: string = '';
-  birthDate: string = '';
+  birthDate: Date = new Date();
   phoneNumber: string = '';
   email: string = '';
   password: string = '';

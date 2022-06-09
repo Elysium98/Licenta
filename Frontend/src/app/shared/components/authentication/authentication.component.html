@@ -1,12 +1,17 @@
 <div class="login-page">
-  <mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
+  <mat-tab-group
+    [(selectedIndex)]="selectedTab"
+    mat-stretch-tabs
+    class="example-stretched-tabs"
+    color="primary"
+  >
     <mat-tab label="Sign In">
       <form
         class="formGroup"
         [formGroup]="loginFormGroup"
         (ngSubmit)="onSubmitLogin()"
       >
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" c>
           <mat-label>Email</mat-label>
           <input
             matInput
@@ -16,6 +21,9 @@
           />
           <mat-error *ngIf="hasErrorLogin('email', 'required')"
             >Email obligatoriu</mat-error
+          >
+          <mat-error *ngIf="hasErrorLogin('email', 'email')"
+            >Emailul trebuie să conțină @</mat-error
           >
         </mat-form-field>
 
@@ -33,7 +41,9 @@
         </mat-form-field>
 
         <div mat-dialog-actions align="center">
-          <button mat-button [disabled]="!loginFormGroup.valid">Sign in</button>
+          <button mat-button [disabled]="!loginFormGroup.valid" color="warn">
+            Sign in
+          </button>
         </div>
       </form>
 
@@ -74,7 +84,7 @@
 
         <div class="register-row" fxLayout="row">
           <mat-form-field appearance="outline">
-            <mat-label>Oras</mat-label>
+            <mat-label>Oraș</mat-label>
             <input
               matInput
               type="text"
@@ -86,22 +96,17 @@
             >
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="birthdate_form">
             <mat-label>Data nașterii</mat-label>
             <input matInput type="date" formControlName="birthDate" />
             <mat-error *ngIf="hasRegisterError('birthDate', 'required')"
-              >Data nașterii obligatoriu</mat-error
+              >Data nașterii obligatorie</mat-error
             >
           </mat-form-field>
         </div>
 
-        <!-- <mat-form-field appearance="outline">
-                <mat-label>ID Student</mat-label>
-                <input matInput type="text" />
-              </mat-form-field> -->
-
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Alege ultima formă de învățământ </mat-label>
+          <mat-label>Alegeți ultima formă de învățământ </mat-label>
           <mat-select
             formControlName="study"
             (selectionChange)="change($event)"
@@ -126,12 +131,11 @@
           <mat-error *ngIf="hasRegisterError('phoneNumber', 'required')"
             >Telefon obligatoriu</mat-error
           >
+          <mat-error *ngIf="hasRegisterError('phoneNumber', 'pattern')"
+            >Telefonul trebuie să aibe 10 cifre
+          </mat-error>
         </mat-form-field>
 
-        <!-- <mat-form-field appearance="outline">
-          <mat-label>Image</mat-label>
-          <input matInput type="text" formControlName="image" />
-        </mat-form-field> -->
         <input
           #file
           (change)="uploadFile(file.files)"
@@ -158,11 +162,11 @@
             placeholder="Introduceți emailul"
             formControlName="email"
           />
-          <mat-error *ngIf="hasErrorLogin('email', 'required')"
+          <mat-error *ngIf="hasRegisterError('email', 'required')"
             >Email obligatoriu</mat-error
           >
           <mat-error *ngIf="hasRegisterError('email', 'email')"
-            >Trebuie să conțină @</mat-error
+            >Emailul trebuie să conțină @</mat-error
           >
         </mat-form-field>
 
@@ -184,7 +188,7 @@
         </mat-form-field>
 
         <div mat-dialog-actions align="center">
-          <button mat-button [disabled]="!registerFormGroup.valid">
+          <button mat-button [disabled]="!registerFormGroup.valid" color="warn">
             Sign up
           </button>
         </div>

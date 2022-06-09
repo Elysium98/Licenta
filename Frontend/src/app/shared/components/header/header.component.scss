@@ -1,13 +1,11 @@
 .app-logo {
   padding-top: 40px;
   padding-bottom: 0;
-  //width: 15%;
-  // min-width: 1.2vw;
 }
 
 #logo {
   padding-top: 5px;
-  width: 45px;
+  width: 65px;
   cursor: pointer;
 }
 
@@ -18,102 +16,31 @@
 
 /*change color of underline when focused*/
 :host ::ng-deep.mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: white;
+  background-color: rgb(0, 0, 0);
 }
 
 /*change color of label when focused*/
-:host ::ng-deep.mat-focused .mat-form-field-label {
-  color: white !important;
+::ng-deep.mat-focused .mat-form-field-label {
+  color: black !important;
 }
 
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.906);
 }
 
 ::ng-deep .mat-form-field-appearance-fill .under {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-// ::ng-deep .mat-form-field-wrapper {
-//   padding-bottom: 1.3em;
-// }
-
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
   padding: 0 0 0 0 !important;
 }
-// a {
-//   text-decoration: none;
-//   color: white;
-// }
-// a:hover,
-// a:active {
-//   color: lightgray;
-// }
-// .navigation-items {
-//   list-style-type: none;
-//   padding: 0;
-//   margin: 0;
-// }
-// mat-toolbar {
-//   border-radius: 3px;
-// }
-// @media (max-width: 959px) {
-//   mat-toolbar {
-//     border-radius: 0px;
-//   }
-// }
-
-// .position-fixed {
-//   position: fixed;
-// }
-
-// ::ng-deep .mat-drawer-container {
-//   background-color: none !important;
-// }
-
-// .mat-toolbar.mat-primary {
-//   -webkit-transition: 700ms;
-//   -ms-transition: 700ms;
-//   transition: 700ms;
-//   -webkit-animation: sk-bounce 2s infinite ease-in-out;
-//   animation: sk-bounce 2s infinite ease-in-out;
-// }
-// .fixed {
-//   position: absolute;
-//   background-color: transparent !important;
-//   top: 0;
-//   z-index: 5;
-//   margin-top: 0.9%;
-//   align-content: center;
-//   color: #fff;
-// }
-// .sticky {
-//   position: sticky;
-//   position: -webkit-sticky;
-//   top: 0;
-//   z-index: 5;
-// }
 
 .sticky {
   position: sticky;
-  position: -webkit-sticky;
   top: 0;
-  z-index: 5;
-
-  background-color: rgb(56, 150, 119);
-  position: sticky;
-  position: -webkit-sticky;
-  // top: 0px;
-  -webkit-transition: 700ms;
-  -ms-transition: 700ms;
-  transition: 700ms;
-  -webkit-animation: sk-bounce 2s infinite ease-in-out;
-  animation: sk-bounce 2s infinite ease-in-out;
-}
-
-.opaque {
-  background-color: rgb(76, 51, 135);
-  color: rgb(226, 133, 133);
+  z-index: 995;
+  background-color: #59cfc2;
   -webkit-transition: 700ms;
   -ms-transition: 700ms;
   transition: 700ms;
@@ -124,14 +51,13 @@
 .account_btn {
   width: 40%;
   height: 20% !important;
-  //margin: auto;
   cursor: pointer;
   display: flex;
   align-items: center;
   font-size: 2vw !important;
 }
 .account_btn:hover {
-  color: white !important;
+  color: rgb(255, 255, 255) !important;
 }
 
 .navbar-dark .nav-item .nav-link {
@@ -158,19 +84,11 @@
   color: black;
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
 .example-full-width {
   width: 70%;
   text-align: center;
-  font-size: 0.85vw;
+  font-size: 0.92vw;
   margin-top: 20px;
-
-  // color:white;
 }
 
 ::ng-deep .seach-form {
@@ -179,32 +97,18 @@
 }
 
 .search-bar {
+  margin-top: 0.3%;
   width: 60%;
-  padding-right: 5%;
   padding-left: 5%;
 }
 
-// ::ng-deep .mat-toolbar.mat-primary {
-//   -webkit-transition: 700ms;
-//   -ms-transition: 700ms;
-//   transition: 700ms;
-//   -webkit-animation: sk-bounce 2s infinite ease-in-out;
-//   animation: sk-bounce 2s infinite ease-in-out;
-// }
-.scroll-wrapper {
-  // overflow: auto;
-  max-height: 500px;
+.contact_btn {
+  font-size: 1.3vw;
+  margin-right: 3%;
 }
 
-.sticky-toolbar {
-  background-color: rebeccapurple;
-  position: sticky;
-  top: 0px;
-  -webkit-transition: 700ms;
-  -ms-transition: 700ms;
-  transition: 700ms;
-  -webkit-animation: sk-bounce 2s infinite ease-in-out;
-  animation: sk-bounce 2s infinite ease-in-out;
+.scroll-wrapper {
+  max-height: 500px;
 }
 
 .mat-toolbar.mat-primary {
@@ -214,36 +118,21 @@
   -webkit-animation: sk-bounce 2s infinite ease-in-out;
   animation: sk-bounce 2s infinite ease-in-out;
 }
-// .relative {
-//   position: relative;
-//   background-color: red !important;
-//   top: 0;
-//   z-index: 5;
 
-//   align-content: center;
-//   color: #fff;
-// }
 .sticky {
-  // background-color: black;
-  position: sticky;
-  position: -webkit-sticky;
-
-  top: 0;
-  z-index: 5;
 }
 
 .search_btn {
   margin-left: 20px;
-  margin-right: 100px;
+  height: 45px;
+  width: 5%;
+  bottom: 1px;
+  font-size: 0.92vw;
 }
 
 .book_btn {
-  // right: 30px;
-  // margin-left: 100px;
-  font-size: 20px;
-  // width: 10%;
-  position: relative;
-  margin-right: 100px;
+  font-size: 1.3vw;
+  margin-right: 3%;
 }
 
 .form-field-book {
@@ -255,7 +144,8 @@
 }
 
 .search-sort {
-  font-size: 15px;
+  width: 15%;
+  font-size: 0.92vw;
   margin-right: 20px;
   text-align: center;
 }

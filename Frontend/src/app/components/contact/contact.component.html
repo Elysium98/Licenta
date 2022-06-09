@@ -1,0 +1,52 @@
+<div class="container">
+  <mat-card class="mat_card_details">
+    <div class="mat_title">Scrie-ne un mesaj !</div>
+    <mat-card-content>
+      <form
+        class="add_form"
+        [formGroup]="contactFormGroup"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Email </mat-label>
+          <input matInput placeholder="Email" formControlName="emailTo" />
+
+          <mat-error *ngIf="hasError('emailTo', 'required')"
+            >Email obligatoriu</mat-error
+          >
+          <mat-error *ngIf="hasError('emailTo', 'email')"
+            >Emailul trebuie să conțină @</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="form-field-message" appearance="outline">
+          <mat-label>Mesaj </mat-label>
+          <textarea
+            class="textarea"
+            matInput
+            placeholder="Mesaj"
+            formControlName="message"
+          ></textarea>
+
+          <mat-error *ngIf="hasError('message', 'required')"
+            >Mesaj obligatoriu</mat-error
+          >
+        </mat-form-field>
+        <div align="center">
+          <button
+            color="warn"
+            mat-raised-button
+            class="submitButton"
+            type="submit"
+            [disabled]="!contactFormGroup.valid"
+          >
+            Trimite
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- <img id="img" src="../../../assets/img/Contact us-rafiki.png" /> -->
+  <img id="img" [src]="image2$ | async" />
+</div>

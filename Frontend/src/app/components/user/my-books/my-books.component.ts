@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Book } from 'src/app/models/book';
 import { Category } from 'src/app/models/category';
@@ -10,7 +9,6 @@ import { User } from 'src/app/models/user';
 import { BookService } from 'src/app/services/book.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { UserService } from 'src/app/services/user.service';
-import { CommonService } from 'src/app/shared/common.service';
 import { BookDetailComponent } from '../../book/book-detail/book-detail.component';
 
 @Component({
@@ -41,9 +39,7 @@ export class MyBooksComponent implements OnInit {
   constructor(
     private bookService: BookService,
     public dialog: MatDialog,
-    private commonService: CommonService,
     private userService: UserService,
-    private router: Router,
     private fb: FormBuilder,
     private categoryService: CategoryService
   ) {
@@ -103,9 +99,15 @@ export class MyBooksComponent implements OnInit {
     }
   }
 
-  async changeCategory(event) {
-    this.books = await this.bookService.getBooksByCategoryAsync$(
-      event.source.value
+  // async changeCategory(event) {
+  //   this.books = await this.bookService.getBooksByCategoryAsync$(
+  //     event.source.value
+  //   );
+  // }
+
+  changeCategory(event) {
+    this.books = this.booksFiltered.filter(
+      (t) => t.category.name == event.source.value
     );
   }
 }

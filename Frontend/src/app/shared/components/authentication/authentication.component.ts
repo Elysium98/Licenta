@@ -4,14 +4,13 @@ import { Role } from 'src/app/models/role';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { UUID } from 'angular2-uuid';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpEventType,
 } from '@angular/common/http';
 import { CommonService } from '../../common.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authentication',
@@ -20,7 +19,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationComponent implements OnInit {
   isSignedIn = false;
-
+  selectedTab: any;
   birthdate: Date = new Date();
   educationForms: Array<string> = ['Liceu', 'Facultate'];
   users: User[] = [];
@@ -43,7 +42,8 @@ export class AuthenticationComponent implements OnInit {
     public dialogRef: MatDialogRef<AuthenticationComponent>,
     private fb: FormBuilder,
     private http: HttpClient,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class AuthenticationComponent implements OnInit {
       image: ['', Validators.required],
       city: ['', Validators.required],
       birthDate: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['', [Validators.email, Validators.required]],
       password: [
         '',
@@ -68,7 +68,7 @@ export class AuthenticationComponent implements OnInit {
     });
 
     this.loginFormGroup = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
@@ -106,10 +106,10 @@ export class AuthenticationComponent implements OnInit {
         console.log('error', error);
         if ((error.error = 'Invalid email or password')) {
           this.commonService.showSnackBarMessage(
-            'Email sau parolă greșită',
+            'Email sau parola greșită',
             'right',
             'bottom',
-            1000,
+            3000,
             'notif-error'
           );
         }
@@ -128,7 +128,7 @@ export class AuthenticationComponent implements OnInit {
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           this.commonService.showSnackBarMessage(
-            'Image upload succes',
+            'Imagine încărcată cu succes',
             'right',
             'bottom',
             3000,
@@ -168,9 +168,32 @@ export class AuthenticationComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          console.log('response', data);
+          // this.dialogRef.close();
+          // this.dialog.open(AuthenticationComponent, {
+          //   width: '530px',
+          //   height: '850px',
+          // });
+          this.selectedTab = 0;
+          this.commonService.showSnackBarMessage(
+            'Înregistrare cu succes',
+            'right',
+            'bottom',
+            4000,
+            'notif-success'
+          );
         },
-        (error) => console.log('error', error)
+        (error) => {
+          console.log('error', error);
+          if ((error.errors = 'DuplicateEmail')) {
+            this.commonService.showSnackBarMessage(
+              'Emailul există deja',
+              'right',
+              'bottom',
+              3000,
+              'notif-error'
+            );
+          }
+        }
       );
   }
 
@@ -179,9 +202,7 @@ export class AuthenticationComponent implements OnInit {
   }
 
   change(event) {
-    if (event.isUserInput) {
-      console.log(event.source.value, event.source.selected);
-    }
+    console.log(event);
   }
 
   getUsers() {

@@ -2,6 +2,7 @@ import { Category } from './category';
 import { User } from './user';
 
 export class UpdateBook {
+  // categoryId: string = '';
   isbn: string = '';
   // userId: string;
   title: string = '';

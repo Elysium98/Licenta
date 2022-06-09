@@ -218,7 +218,7 @@ namespace BooksAPI.Controllers
                 {
                     return BadRequest();
                 }
-                if (!await _bookService.Update2(id, book))
+                if (!await _bookService.UpdateCertainProperties(id, book))
                 {
                     return NotFound();
                 }

@@ -34,9 +34,9 @@ export class AddRoleByAdminComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (this.editMode === false) {
-      this.matTitle = 'Adaugă o categorie';
+      this.matTitle = 'Adăugați un rol';
     } else {
-      this.matTitle = 'Editează o categorie';
+      this.matTitle = 'Editați rolul';
     }
 
     if (this.editMode === false) {

@@ -1,6 +1,6 @@
 <div class="container">
   <mat-card class="example-card">
-    <mat-tab-group>
+    <mat-tab-group color="primary">
       <mat-tab label="Detalii">
         <div class="img_container" *ngIf="image$ | async as image">
           <img class="avatar_img" mat-card-avatar [src]="image" />
@@ -76,10 +76,23 @@
                 placeholder="Introduceți numărul de telefon"
                 formControlName="phoneNumber"
               />
+              <mat-error *ngIf="hasErrorDetails('phoneNumber', 'pattern')"
+                >Telefonul trebuie să aibe 10 cifre
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Oraș</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Introduceți orașul"
+                formControlName="city"
+              />
             </mat-form-field>
 
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Alege ultima formă de învățământ </mat-label>
+              <mat-label>Alegeți ultima formă de învățământ </mat-label>
               <mat-select
                 formControlName="study"
                 (selectionChange)="change($event)"
@@ -97,7 +110,7 @@
               <button
                 class="submit-btn"
                 mat-raised-button
-                color="accent"
+                color="warn"
                 type="submit"
                 [disabled]="!updateUserFormGroup.valid"
               >
@@ -161,9 +174,6 @@
               <mat-error *ngIf="confirmNewPassword.hasError('mismatch')"
                 >Parolele nu se potrivesc</mat-error
               >
-              <!-- <mat-error *ngIf="securityFormGroup.hasError('notSame')">
-                your new passwords are not match
-              </mat-error> -->
             </mat-form-field>
 
             <div align="center">
@@ -183,7 +193,6 @@
     </mat-tab-group>
   </mat-card>
 
-  <div class="home-img">
-    <img id="logo" src="../../../assets/img/login.png" />
-  </div>
+  <img class="img" [src]="image2$ | async" />
+  <!-- <img class="img" src="../../../assets/img/poza_buna_Ultima.png" /> -->
 </div>

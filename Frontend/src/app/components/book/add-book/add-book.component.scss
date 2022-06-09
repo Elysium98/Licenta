@@ -1,24 +1,4 @@
-// .add-item-container {
-//   height: fit-content;
-//   display: flex;
-// }
-// .add-item-container form {
-//   margin-top: 0;
-//   margin-left: 15vw;
-// }
-
-// form {
-//   margin-top: 50px;
-//   margin-left: 5%;
-//   display: inline-block;
-// }
-// .form-field {
-//   width: 400px;
-//   height: 8.5vh;
-//   max-width: 400px;
-// }
 .submitButton {
-  // margin-left: 25%;
   margin-top: 4%;
   width: 200px;
   height: 45px;
@@ -31,57 +11,19 @@
   height: 45px;
   font-size: 20px;
 }
-// .onlineMarket {
-//   width: 700px;
-//   height: 600px;
-//   float: right;
-// }
-// .form-div {
-//   display: grid;
-//   grid-template-columns: 150px 200px;
-//   grid-template-areas: "theText theInput";
-//   padding-bottom: 10px;
-// }
-// .form-text {
-//   grid-area: theText;
-// }
-// .form-input {
-//   grid-area: theInput;
-// }
 
-// .home-img {
-//   display: flex;
-//   justify-content: center;
-// }
-
-#logo {
+#books_img {
   max-width: 100%;
   max-height: 100%;
   width: 1000px;
   height: auto;
 }
-// .add_form {
-//   padding-top: 30px;
-// }
-
-// .form-field {
-//   padding-bottom: 5px;
-//   font-size: 18px;
-// }
-
-// .upload {
-//   font-weight: bold;
-//   color: #28a745;
-//   text-align: center;
-//   line-height: 36px;
-// }
 
 .add_img_btn {
   font-size: 20px;
 }
 
 .add_img_div {
-  //margin-top: 10px;
   text-align: center;
   margin-bottom: 15px;
   margin-top: 20px;
@@ -90,13 +32,6 @@
 .mat_title {
   font-size: 33px;
 }
-// .img {
-//   width: 400px;
-//   height: 615px;
-
-// }
-
-////////////////////////////////////////////////////////
 
 .mat-card-title {
   text-align: center;
@@ -105,17 +40,19 @@
 .mat-card-header {
   justify-content: center;
 }
+
 .img_container {
   display: flex;
   justify-content: center;
 }
+
 mat-form-field,
 mat-checkbox {
   width: 40%;
-  //display: block;
   margin: 25px 25px 0px 25px;
   font-size: 16px;
 }
+
 mat-card-content {
   margin-top: 10px !important;
   text-align: center;
@@ -133,10 +70,9 @@ mat-card {
   margin-bottom: 2%;
 }
 
-.img {
+.book_img {
   width: 400px;
   height: 615px;
-  //  border: 2px solid #555;
   box-shadow: 10px 10px 5px #ccc;
   -moz-box-shadow: 10px 10px 5px #ccc;
   -webkit-box-shadow: 10px 10px 5px #ccc;

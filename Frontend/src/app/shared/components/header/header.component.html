@@ -3,7 +3,7 @@
     <a class="app-logo">
       <img
         id="logo"
-        src="../../../assets/img/books.ico"
+        src="../../../assets/img/logo_testtt_2.png"
         (click)="goToHomePage()"
       /> </a
   ></span>
@@ -11,7 +11,7 @@
   <span class="example-spacer"></span>
 
   <div class="search-bar">
-    <form class="search-form" [formGroup]="searchFormGroup">
+    <form [formGroup]="searchFormGroup">
       <mat-form-field class="search-sort" appearance="fill">
         <mat-label>Alege</mat-label>
         <mat-select
@@ -39,7 +39,7 @@
 
       <button
         mat-raised-button
-        color="primary"
+        color="accent"
         class="search_btn"
         (click)="searchedTitle(search.value)"
       >
@@ -47,21 +47,13 @@
       </button>
     </form>
   </div>
-  <!-- <button
-    mat-raised-button
-    id="logout-btn"
-    *ngIf="isLoggedIn$ | async"
-    (click)="logout()"
-  >
-    Logout
-  </button> -->
-
-  <!-- <button mat-raised-button class="book_btn" routerLink="/add-book">
-    Adauga carte
-  </button> -->
 
   <button mat-raised-button class="book_btn" (click)="goToBookList()">
     Vizualizare cărți
+  </button>
+
+  <button mat-raised-button class="contact_btn" [routerLink]="['/contact']">
+    Contact
   </button>
 
   <a (click)="openDialog()" *ngIf="!(isLoggedIn$ | async)">
@@ -80,7 +72,6 @@
       matTooltipHideDelay="100"
       >perm_identity</mat-icon
     >
-    <!-- <span class="aligned-with-icon">Contul meu</span> -->
   </a>
 
   <mat-menu #menu="matMenu">
@@ -138,6 +129,3 @@
     </button>
   </mat-menu>
 </mat-toolbar>
-<!-- <div class="loader-container">
-  <mat-spinner *ngIf="isLoading$ | async" mode="indeterminate"> </mat-spinner>
-</div> -->

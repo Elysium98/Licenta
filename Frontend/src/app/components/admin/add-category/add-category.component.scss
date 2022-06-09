@@ -1,5 +1,4 @@
 .add_img_div {
-  //margin-top: 10px;
   text-align: center;
   margin-bottom: 15px;
   margin-top: 20px;
@@ -9,17 +8,22 @@
   text-align: center;
 }
 
+.mat_title {
+  font-size: 33px;
+}
+
 .mat-card-header {
   justify-content: center;
 }
+
 .img_container {
   display: flex;
   justify-content: center;
 }
+
 mat-form-field,
 mat-checkbox {
   width: 80%;
-  //display: block;
   margin: 25px 25px 0px 25px;
   font-size: 16px;
 }

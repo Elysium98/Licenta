@@ -9,7 +9,6 @@ export class Book {
   author: string = '';
   publisher: string = '';
   publicationDate: Date = new Date();
-  // publicationDate: string = '';
   page: number = 0;
   price: number = 0;
   language: string = '';

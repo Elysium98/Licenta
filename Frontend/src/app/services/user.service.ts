@@ -37,7 +37,6 @@ export class UserService {
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
       }),
     };
-
     return httpOptionsJWT;
   }
 
@@ -55,22 +54,16 @@ export class UserService {
 
   initializeUser(): Promise<any> {
     return new Promise(async (resolve) => {
-      console.log(this._currentUserSubject.getValue());
-
       if (localStorage.getItem('token') !== null) {
-        var token = this.helper.decodeToken(localStorage.getItem('token'));
+        let token = this.helper.decodeToken(localStorage.getItem('token'));
         let userId = JSON.stringify(token['nameid']);
-        let user: User;
+        let id = JSON.parse(userId);
+        let user = await this.getUserByIdAsync(id);
 
-        var id: string = '';
-        id = JSON.parse(userId);
-
-        user = await this.getUserByIdAsync(id);
         if (this._currentUserSubject.getValue() !== null) {
           this.setCurrentUser(user);
         }
       }
-
       resolve(null);
     });
   }
@@ -81,7 +74,7 @@ export class UserService {
     study: string,
     image: string,
     city: string,
-    birthDate: string,
+    birthDate: Date,
     phoneNumber: string,
     email: string,
     password: string,

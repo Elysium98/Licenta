@@ -1,28 +1,11 @@
-// .home-img {
-//   display: flex;
-//   justify-content: center;
-// }
-
-// #logo {
-//   max-width: 100%;
-//   max-height: 100%;
-//   width: 800px;
-//   height: auto;
-//   padding-top: 30px;
-// }
-
 .mat-title {
   padding-left: 14px;
-
   padding-bottom: 20px;
   width: 9.5em;
   overflow: hidden;
-  white-space: nowrap; /* Don't forget this one */
+  white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 25px;
-}
-.test22 {
-  text-align: center;
 }
 
 .mat-card-header {
@@ -30,9 +13,6 @@
   justify-content: center;
 }
 
-.container {
-  padding-bottom: 100px !important;
-}
 .title {
   color: black;
   padding-top: 25px;
@@ -43,63 +23,11 @@
   margin: 1% !important;
 }
 
-.div-books {
-  text-align: center;
-}
-// .tooltip1 {
-//   position: relative;
-//   display: inline-block;
-// }
-
-// .tooltip1 .tooltiptext {
-//   visibility: hidden;
-//   width: 300px;
-//   background-color: rgb(250, 246, 246);
-//   color: rgb(182, 165, 165);
-//   text-align: center;
-//   border-radius: 6px;
-//   padding: 2px 0;
-//   padding-left: 10px;
-//   position: absolute;
-//   z-index: 1;
-//   top: -5px;
-//   left: 110%;
-//   padding-bottom: 20%;
-//   padding-left: 20%;
-//   padding-right: 20%;
-//   padding-top: 10%;
-// }
-
-// .tooltip1 .tooltiptext::after {
-//   content: "";
-//   position: absolute;
-//   top: 50%;
-//   right: 100%;
-//   margin-top: -5px;
-// }
-
-// .tooltip1:hover .tooltiptext {
-//   visibility: visible;
-// }
-// .note {
-//   width: 250px;
-//   height: 350px;
-//   float: left;
-//   margin: 20px 10px 20px 10px;
-
-//   overflow: hidden;
-// }
-
 .carousel {
-  margin-top: 2%;
-  margin-right: 15%;
-  margin-left: 15%;
+  margin-top: 1%;
+  margin-right: 10%;
+  margin-left: 10%;
 }
-mat-carousel {
-  width: 800px;
-}
-
-///////////////////////////////////////////@at-root
 
 .content {
   padding: 36px;
@@ -110,32 +38,16 @@ mat-carousel {
 }
 
 mat-card {
-  // width: 400px;
-  // height: 700px;
-  // max-width: 220px;
   max-width: 100%;
   max-height: 100%;
   width: 1400px;
   height: 650px;
   text-align: center;
   margin-bottom: 2%;
-  //width: auto;
-  // width: 250px;
-  // height: 450px;
-  // height: auto;
 }
 .column-label {
   margin-right: 8px;
   font-size: 1rem;
-}
-
-mat-card img {
-  // object-fit: cover;
-  // width: 100%;
-  // height: 80%;
-  // padding-left: 10%;
-  // padding-right: 10%;
-  // margin-left: 2%;
 }
 
 ::ng-deep .carousel-slide,
@@ -143,11 +55,11 @@ mat-card img {
   border-radius: 15px;
 }
 
-.img_book {
+.book_img {
   cursor: pointer;
   object-fit: cover;
-  width: 100%;
-  height: 80%;
+  width: 280px;
+  height: 322px;
   padding-left: 10%;
   padding-right: 10%;
   margin-left: 2%;
@@ -155,19 +67,9 @@ mat-card img {
   z-index: 1;
 }
 
-.img_book {
-  width: 280px;
-  height: 322px;
-  //  border: 2px solid #555;
-}
-.img_shadow {
+.shadow_img {
   position: absolute;
   z-index: 0;
-}
-
-.mat-card-header {
-  display: flex;
-  justify-content: center;
 }
 
 mat-card-content {
@@ -181,58 +83,28 @@ mat-card-content {
 }
 
 .main-container {
-  //  margin-left: 130px !important;
   justify-content: center;
   position: relative;
   z-index: 3;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.buttons_top {
-  display: flex;
-  justify-content: space-between;
-}
-
-mat-form-field,
-mat-checkbox {
-  // width: 40%;
-  //display: block;
-  //font-size: 20px;
-}
-
-.form-field-sort {
-  font-size: 18px;
-}
-
-::ng-deep .mat-select-panel {
-  //background: rgb(119, 112, 112);
 }
 
 ::ng-deep .mat-select-value {
   padding-left: 5px;
 }
 
-.img_shelf {
+.shelf_img {
   object-fit: cover;
-  // width: 100%;
   position: absolute;
-  top: 1600px;
+  top: 1550px;
   z-index: 1;
-  // height: 1000px;
 }
 
 .container_card {
   max-width: 100%;
   max-height: 100%;
-
-  // height: 600px;
 }
 
-.main-container-shelf {
+.card-main-container {
   margin-top: 5%;
   display: flex;
   justify-content: center;

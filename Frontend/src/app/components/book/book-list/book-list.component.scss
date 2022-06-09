@@ -7,16 +7,10 @@
 }
 
 mat-card {
-  // width: 400px;
-  // height: 700px;
-  // max-width: 220px;
   max-width: 100%;
   max-height: 100%;
   width: 250px;
-  // height: 450px;
   height: 490px;
-
-  // height: auto;
 }
 .column-label {
   margin-right: 8px;
@@ -30,7 +24,7 @@ mat-card img {
   padding-right: 10%;
 }
 
-.img_card {
+.card_img {
   width: 280px;
   height: 340px;
 }
@@ -46,8 +40,7 @@ mat-card-content {
 }
 
 .book_btn {
-  margin-bottom: 20px;
-  font-size: 15px;
+  // margin-bottom: 20px;
   height: 50px;
   font-size: 20px;
 }
@@ -59,9 +52,7 @@ mat-card-content {
   font-size: 24px;
   width: 9.5em;
   overflow: hidden;
-  // margin-left: 10%;
-  // margin-right: 10%;
-  white-space: nowrap; /* Don't forget this one */
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -75,18 +66,18 @@ mat-card-content {
   padding: 0 0 0 0 !important;
 }
 .details_btn {
+  font-size: 20px;
   margin-top: -4px !important;
 }
 .buttons_top {
   display: flex;
   justify-content: space-between;
+  // margin-bottom: 2%;
 }
 
 mat-form-field,
 mat-checkbox {
   width: 70%;
-  //display: block;
-  // font-size: 25px;
   margin: 25px 25px 0px 25px;
 }
 
@@ -104,5 +95,7 @@ mat-checkbox {
 }
 
 .sortForm {
+  position: relative;
+  bottom: 25px;
   display: flex;
 }

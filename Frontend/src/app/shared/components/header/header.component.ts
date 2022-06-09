@@ -65,6 +65,7 @@ export class HeaderComponent implements AfterViewChecked {
 
     this.bookService.setCurrentProperty(this.searchProperty);
     this.bookService.setCurrentValue(title);
+
     console.log('searchedTitle() is ' + title);
     console.log('searched property ' + this.searchProperty);
     this.router.navigate(['/book-list']);
@@ -103,41 +104,9 @@ export class HeaderComponent implements AfterViewChecked {
   isLoading$ = this.loaderService.isLoading$;
   ngAfterViewChecked(): void {
     this.userService.checkUserLogin().subscribe();
-    // this.isLoggedIn.pipe(tap((data) => console.log(data)));
+
     this.cdr.detectChanges();
-    // this.userService
-    //   .checkLoggedIn()
-    //   .subscribe((isAuth) => (this.isLoggedIn = isAuth));
-    // this.checkLoggedIn();
   }
-
-  // ngAfterViewInit() {
-  //   this.scrollable.elementScrolled().subscribe(() => {
-  //     const scrollTop =
-  //       this.sidenavContainer.scrollable.getElementRef().nativeElement
-  //         .scrollTop;
-  //     if (scrollTop > 0) {
-  //       this.toolbar._elementRef.nativeElement.classList.add('sticky');
-  //       this.toolbar._elementRef.nativeElement.classList.remove('fixed');
-  //       // console.log('SCroll', "sticky");
-  //     } else {
-  //       this.toolbar._elementRef.nativeElement.classList.add('fixed');
-  //       this.toolbar._elementRef.nativeElement.classList.remove('sticky');
-  //     }
-  //   });
-  // }
-
-  // ngAfterViewInit() {
-  //   this.scrollable.elementScrolled().subscribe(() => {
-  //     console.log('merge');
-  //     const scrollTop = this.scrollable.getElementRef().nativeElement.scrollTop;
-  //     console.log(scrollTop);
-  //     //make an HTTP call when it reaches to the end, to add some more data
-  //   });
-  //   this.zone.run(() => {
-  //     console.log('to run change detection');
-  //   });
-  // }
 
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({

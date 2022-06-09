@@ -1,0 +1,23 @@
+<div class="container">
+  <mat-card class="mat_card_details" *ngIf="book">
+    <div class="img_container">
+      <img
+        class="avatar_img"
+        mat-card-avatar
+        [src]="createImgPath(book.user.image)"
+      />
+    </div>
+    <mat-card-content class="mat_card_content">
+      <div class="details">
+        <p>Nume: {{ book.user.lastName }} {{ book.user.firstName }}</p>
+        <p>Vârstă: {{ age }} de ani</p>
+        <p>Oraș: {{ book.user.city }}</p>
+        <p>Studii: {{ book.user.study }}</p>
+        <p>Telefon: {{ book.user.phoneNumber }}</p>
+        <p>Email: {{ book.user.email }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <img id="img" src="../../../assets/img/User research-bro.png" />
+</div>

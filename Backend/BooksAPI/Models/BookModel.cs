@@ -9,8 +9,6 @@ namespace BooksAPI.Models
     {
         public Guid Id { get; set; }
 
-        // [KeyAttribute]
-        // [ForeignKeyAttribute("User")]
         public string ISBN { get; set; }
         public string Title { get; set; }
 

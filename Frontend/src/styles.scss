@@ -14,64 +14,85 @@ $custom-typography: mat-typography-config(
   $font-family: "Kalam",
 );
 
+@include mat-core();
+
+$md-mcgpalette0: (
+  50: #f9ebed,
+  100: #f1cdd1,
+  200: #e7acb3,
+  300: #dd8b94,
+  400: #d6727d,
+  500: #cf5966,
+  600: #ca515e,
+  700: #c34853,
+  800: #bd3e49,
+  900: #b22e38,
+  A100: #fff6f6,
+  A200: #ffc3c7,
+  A400: #ff9097,
+  A700: #ff767f,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$accent: mat-palette($mat-grey, 50);
+// $green: mat-palette($mat-teal, 200);
+$primary: mat-palette($mat-grey, 900);
+$warn: mat-palette($md-mcgpalette0);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
 @include angular-material-typography($custom-typography);
+
 html,
 body {
+  // font-size: var(--normal-font-size);
   height: 100%;
-  font-size: var(--normal-font-size);
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 0px;
 }
 body {
-  // background-color: var(--body-color);
-
-  background: rgb(63, 94, 251);
-  background: radial-gradient(
-    circle,
-    rgba(63, 94, 251, 1) 0%,
-    rgba(251, 219, 172, 1) 100%
-  );
+  background-size: 100% 100%;
+  background: #efebd8;
   margin: 0;
   font-family: "Petit Formal Script";
   padding: 0 0px;
-  // overflow:  scroll;
 }
+
 h1 {
   font-size: var(--h1-font-size);
-  //font-weight:normal;
 }
+
 h2 {
   font-size: var(--h2-font-size);
-  //font-weight:normal;
   letter-spacing: 3px;
 }
+
 h3 {
   font-size: var(--h3-font-size);
-  //font-weight:normal;
 }
-
-// .title {
-//   width: 96%;
-//   color: var(--text-color);
-//   padding-top: 25px;
-//   padding-bottom: 10px;
-//   padding-left: 2%;
-//   border-bottom: 3px solid;
-//   margin: 1% !important;
-//   font-size: var(--h1-font-size) !important;
-//   ////font-family: "Inconsolata", monospace !important;
-// }
-
-// ::ng-deep .mat-snack-bar-container {
-
-//   color: rgb(245, 245, 245);
-//   background-color: green;
-// }
 
 ::ng-deep .info {
   background-color: #2196f3;
 }
 
 .notif-success {
-  color: #000000b3 !important; // green
+  color: #ffffff !important;
   background-color: #71d28e !important;
   border-color: #000000 !important;
   .mat-simple-snackbar {
@@ -88,6 +109,10 @@ h3 {
   color: #ffffff !important;
   background-color: #ba1c00 !important;
   border-color: #c3e6cb !important;
+  .mat-simple-snackbar {
+    line-height: 0px !important;
+    font-size: 20px;
+  }
   .mat-simple-snackbar-action {
     color: #fcfcfc !important;
   }
@@ -96,13 +121,9 @@ h3 {
 .mat-simple-snack-bar-content {
   font-size: 30px;
 }
-// ::ng-deep .success {
-//   background-color: #1de9b6;
-// }
 
 .mat-tooltip {
-  // making the font size on the mat-tooltip 1.5rem globally
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   &.exaggerated-tooltip {
     // to modify the tooltip create a class like this
     font-size: 2.5rem; // and use it like this: *matTooltipClass="exaggerated-tooltip"* in the

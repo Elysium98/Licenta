@@ -27,18 +27,25 @@
           <p>Data publicării: {{ book.publicationDate | date: "yyyy" }}</p>
           <p>Categorie: {{ book.category.name }}</p>
           <p>Stare: {{ book.condition }}</p>
+          <p>ISBN: {{ book.isbn }}</p>
           <p>Preț: {{ book.price }} LEI</p>
           <p>
             Vândută de
             {{ book.user.lastName }} {{ book.user.firstName }}
-            <mat-icon
-              class="red_eye"
-              #tooltip="matTooltip"
-              matTooltip="Vizualizează profilul"
-              matTooltipPosition="above"
-              matTooltipHideDelay="100"
-              >remove_red_eye</mat-icon
+            <a
+              (click)="goToUserProfile()"
+              [routerLink]="['/user-profile', book.id]"
             >
+              <mat-icon
+                color="primary"
+                class="red_eye"
+                #tooltip="matTooltip"
+                matTooltip="Vizualizează profilul"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                >remove_red_eye</mat-icon
+              >
+            </a>
           </p>
         </mat-card-content>
       </mat-card>

@@ -11,19 +11,11 @@ import { Image } from '../models/image';
 })
 export class BookService {
   readonly baseUrl = 'https://localhost:7295/books';
+
   readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     }),
-  };
-
-  readonly httpOptionsText = {
-    headers: new HttpHeaders({
-      Accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'text/plain, charset=utf-8',
-    }),
-    observe: 'response',
-    responseType: 'text',
   };
 
   getHttpOptionsBearerTextResponse() {
@@ -42,9 +34,17 @@ export class BookService {
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
       }),
     };
-
     return httpOptionsJWT;
   }
+
+  readonly httpOptionsText = {
+    headers: new HttpHeaders({
+      Accept: 'text/html, application/xhtml+xml, */*',
+      'Content-Type': 'text/plain, charset=utf-8',
+    }),
+    observe: 'response',
+    responseType: 'text',
+  };
 
   public _searchPropertySubject = new BehaviorSubject<string>('');
   searchProperty$ = this._searchPropertySubject.asObservable();
@@ -66,7 +66,7 @@ export class BookService {
     return this.httpClient.get<Book[]>(this.baseUrl, this.httpOptions);
   }
 
-  async getBooksAsync$() {
+  async getBooksAsync() {
     return await this.httpClient
       .get<Book[]>(this.baseUrl, this.httpOptions)
       .toPromise();
@@ -78,12 +78,18 @@ export class BookService {
       .toPromise();
   }
 
-  async getBooksByStatusAsync$(isSold: boolean) {
+  async getBooksByStatusAsync(isSold: boolean) {
     return await this.httpClient
       .get<Book[]>(this.baseUrl + '/status/' + isSold, this.httpOptions)
       .toPromise();
   }
 
+  getBooksByStatus$(isSold: boolean): Observable<Book[]> {
+    return this.httpClient.get<Book[]>(
+      this.baseUrl + '/status/' + isSold,
+      this.httpOptions
+    );
+  }
   async getBooksByCategoryAsync$(categoryName: string) {
     return await this.httpClient
       .get<Book[]>(this.baseUrl + '/category/' + categoryName, this.httpOptions)
@@ -145,7 +151,8 @@ export class BookService {
   }
 
   updateBook$(id: string, model): Observable<UpdateBook> {
-    let book: UpdateBook = {
+    let book = {
+      categoryId: model.categoryId,
       isbn: model.isbn,
       title: model.title,
       author: model.author,

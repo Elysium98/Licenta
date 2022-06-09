@@ -81,6 +81,8 @@ namespace BooksAPI.Services
 
             return result;
         }
+        
+
 
         public async Task<List<BookModel>> GetAllByCategory(string categoryName)
         {
@@ -93,12 +95,15 @@ namespace BooksAPI.Services
             return result;
         }
 
+
+     
+
         public Task<bool> Update(Guid id, BookModel model)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Update2(Guid id, UpdateBookModel model)
+        public async Task<bool> UpdateCertainProperties(Guid id, UpdateBookModel model)
         {
             if (model.Id == null)
             {
@@ -106,16 +111,8 @@ namespace BooksAPI.Services
             }
             var book = await _context.Books.FindAsync(id);
 
-            //_context.Entry(model).State = EntityState.Modified;
-
-            // var entry = _context.Entry(model);
-            //  entry.State = EntityState.Modified;
-            // _context.Books.Attach(model);
-
-            //   var book = _context.Books.AsNoTracking().Single(i => i.Id == id);
-
-            // _context.Entry(model).State = EntityState.Detached;
             book.ISBN = model.ISBN;
+            book.CategoryId = model.CategoryId;
             book.Title = model.Title;
             book.Author = model.Author;
             book.Publisher = model.Publisher;
@@ -124,19 +121,6 @@ namespace BooksAPI.Services
             book.Language = model.Language;
             book.Condition = model.Condition;
             book.isSold = model.isSold;
-
-            //   _context.Entry(model).Property(x => x.Title).IsModified = true;
-            //  _context.Entry(model).Property(x => x.Author).IsModified = true;
-            //  _context.Entry(model).Property(x => x.Publishing).IsModified = true;
-            //  _context.Entry(model).Property(x => x.Page).IsModified = true;
-
-
-            // book.Publishing = model.Publishing;
-            //  book.Page = model.Page;
-            // user.Image = model.Image;
-            //  book.Language = model.Language;
-            //    book.Status = model.Status;
-
 
 
             await _context.SaveChangesAsync();

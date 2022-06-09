@@ -24,7 +24,7 @@ namespace BooksAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all books
+        /// Gets all categories
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -46,7 +46,7 @@ namespace BooksAPI.Controllers
         }
 
         /// <summary>
-        /// Gets a book with a certain id
+        /// Gets a category with a certain id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -56,6 +56,30 @@ namespace BooksAPI.Controllers
             try
             {
                 CategoryModel foundCategory = await _categoryService.Get(id);
+                if (foundCategory == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(foundCategory);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets a category with a certain name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("name/{name}", Name = "GetCategoryByName")]
+        public async Task<IActionResult> GetCategoryByName(string name)
+        {
+            try
+            {
+                CategoryModel foundCategory = await _categoryService.GetByName(name);
                 if (foundCategory == null)
                 {
                     return NotFound();
