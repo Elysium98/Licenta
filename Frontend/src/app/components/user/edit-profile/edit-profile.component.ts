@@ -1,29 +1,15 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEventType,
-} from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { ChangePassword } from 'src/app/models/changePassword';
 import { Image } from 'src/app/models/image';
-import { Password } from 'src/app/models/password';
 import { UpdateUser } from 'src/app/models/updateUser';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
@@ -38,11 +24,18 @@ export class EditProfileComponent implements OnInit {
   updateUserFormGroup!: FormGroup;
   securityFormGroup!: FormGroup;
   educationForms: Array<string> = ['Liceu', 'Facultate'];
-  // @Output() public onUploadFinished = new EventEmitter();
-
   image: string = '';
   private _imageSubject = new BehaviorSubject(this.image);
   image$ = this._imageSubject.asObservable();
+  user: User = new User();
+  userEmail: UpdateUser = new UpdateUser();
+  userLogged: string;
+  password: ChangePassword = new ChangePassword();
+  formData = new FormData();
+  image2: string = ' ../../../assets/img/edit_user_img.png';
+  image2$: Promise<any>;
+  bodyData: any;
+  imgUrl: string = '';
 
   constructor(
     private userService: UserService,
@@ -56,39 +49,13 @@ export class EditProfileComponent implements OnInit {
       localStorage.getItem('token')
     )['nameid'];
   }
-  currentUser$: Observable<User> = this.userService.currentUser$;
-  //user: User;
-  user: User = new User();
-  userEmail: UpdateUser = new UpdateUser();
-  userLogged: string;
-  password: Password = new Password();
-  formData = new FormData();
-  // user22: User = new User();
-  // image22;
-  image2: string = ' ../../../assets/img/poza_buna_Ultima.png';
-  image2$: Promise<any>;
 
-  bodyData: any;
-  imgUrl: string = '';
-  public response: { dbPath: '' };
   async ngOnInit() {
-    // this.currentUser$.subscribe((data) => (this.user = data));
-    // console.log(this.user);
-    //this.getUser(this.userLogged);
     this.userService.getUserByIdAsync(this.userLogged);
     this.user = await this.userService.getUserByIdAsync(this.userLogged);
-    this.imgUrl = await this.createImgPath2();
-    console.log(this.user.image);
-    // this.createImgPath2();
-    console.log(this.user);
+    this.imgUrl = await this.createImgPath();
+
     this._imageSubject.next(this.imgUrl);
-
-    // console.log(this.userLogged);
-    // console.log(typeof this.userLogged);
-
-    // this.userService
-    //   .getUserById$(this.userLogged)
-    //   .subscribe((data) => (this.user22 = data));
 
     this.updateUserFormGroup = this.fb.group({
       email: [this.user.email, Validators.email],
@@ -120,9 +87,6 @@ export class EditProfileComponent implements OnInit {
     console.log(this.user.email);
   }
 
-  createImgPath = (serverPath: string) => {
-    return `https://localhost:7295/${serverPath}`;
-  };
   get newPassword(): AbstractControl {
     return this.securityFormGroup.controls['newPassword'];
   }
@@ -131,7 +95,7 @@ export class EditProfileComponent implements OnInit {
     return this.securityFormGroup.controls['confirmNewPassword'];
   }
 
-  async createImgPath2() {
+  async createImgPath() {
     return await `https://localhost:7295/${this.user.image}`;
   }
 
@@ -148,9 +112,7 @@ export class EditProfileComponent implements OnInit {
     if (files.length === 0) {
       return;
     }
-
     let imageToUpload = <File>files[0];
-
     this.userService.uploadImage$(imageToUpload).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
@@ -164,17 +126,16 @@ export class EditProfileComponent implements OnInit {
 
   updateUser() {
     this.user.image = this.bodyData.dbPath;
-
     let model: Image = {
       image: this.user.image,
     };
+
     this.userService.updateUserPhoto$(this.user.id, model).subscribe(
       async (data) => {
-        this.imgUrl = await this.createImgPath2();
+        this.imgUrl = await this.createImgPath();
         this._imageSubject.next(this.imgUrl);
-        // this.userService.getUsers$();
         this.commonService.showSnackBarMessage(
-          'Poză actualizată cu succes !',
+          'Poza a fost actualizată cu succes !',
           'right',
           'bottom',
           4000,
@@ -203,48 +164,57 @@ export class EditProfileComponent implements OnInit {
     this.userService.changeUserDetails$(this.user.id, model).subscribe(
       (data) => {
         this.commonService.showSnackBarMessage(
-          'Informații actualizate cu succes !',
+          'Informațiile au fost actualizate cu succes !',
           'right',
           'bottom',
           4000,
           'notif-success'
         );
       },
-      (error) => console.log('error', error)
+      (error) => console.log(error)
     );
   }
 
   onSubmit() {
     this.password.newPassword = this.securityFormGroup.value.newPassword;
-
     this.password.currentPassword =
       this.securityFormGroup.value.currentPassword;
 
-    let model: Password = {
+    let model: ChangePassword = {
       currentPassword: this.password.currentPassword,
       newPassword: this.password.newPassword,
     };
 
-    this.userService.changePassword$(model).subscribe(
+    this.userService.changePassword$(model, this.user.id).subscribe(
       (data) => {
-        console.log('response', data);
         this.userService.logout();
         this.router.navigate(['/home']);
         this.commonService.showSnackBarMessage(
-          'Parolă schimbată cu succes !',
+          'Parola a fost schimbată cu succes ! Vă rugăm să vă logați !',
           'right',
           'bottom',
           3000,
           'notif-success'
         );
       },
-      (error) => console.log('error', error)
+      (error) => {
+        if ((error.error = 'Invalid Password')) {
+          this.commonService.showSnackBarMessage(
+            'Parola curentă nu este corectă !',
+            'right',
+            'bottom',
+            3000,
+            'notif-error'
+          );
+        }
+      }
     );
   }
 
   hasErrorSecurity(controlName: string, errorName: string) {
     return this.securityFormGroup.controls[controlName].hasError(errorName);
   }
+
   hasErrorDetails(controlName: string, errorName: string) {
     return this.updateUserFormGroup.controls[controlName].hasError(errorName);
   }

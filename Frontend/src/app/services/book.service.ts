@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Book } from '../models/book';
 import { UpdateBook } from '../models/updateBook';
 import { Image } from '../models/image';
@@ -90,6 +90,7 @@ export class BookService {
       this.httpOptions
     );
   }
+
   async getBooksByCategoryAsync$(categoryName: string) {
     return await this.httpClient
       .get<Book[]>(this.baseUrl + '/category/' + categoryName, this.httpOptions)
@@ -112,36 +113,21 @@ export class BookService {
       .toPromise();
   }
 
-  addBook$(
-    isbn: string,
-    // uid: string,
-    userId: string,
-    title: string,
-    author: string,
-    publisher: string,
-    publicationDate: Date,
-    page: number,
-    price: number,
-    language: string,
-    condition: string,
-    categoryId: string,
-    image: string,
-    isSold: boolean
-  ): Observable<Book> {
-    let book = {
-      isbn: isbn,
-      userId: userId,
-      title: title,
-      author: author,
-      publisher: publisher,
-      publicationDate: publicationDate,
-      page: page,
-      price: price,
-      language: language,
-      condition: condition,
-      categoryId: categoryId,
-      image: image,
-      isSold: isSold,
+  addBook$(model: Partial<Book>): Observable<Book> {
+    let book: Partial<Book> = {
+      isbn: model.isbn,
+      userId: model.userId,
+      title: model.title,
+      author: model.author,
+      publisher: model.publisher,
+      publicationDate: model.publicationDate,
+      page: model.page,
+      price: model.price,
+      language: model.language,
+      condition: model.condition,
+      categoryId: model.categoryId,
+      image: model.image,
+      isSold: model.isSold,
     };
     return this.httpClient.post<Book>(
       this.baseUrl,
@@ -172,7 +158,6 @@ export class BookService {
 
   saveImageBook$(image: File): Observable<HttpEvent<Response>> {
     const formData = new FormData();
-
     formData.append('image', image, image.name);
 
     return this.httpClient.post<Response>(

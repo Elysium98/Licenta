@@ -20,7 +20,6 @@ export class CategoryService {
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
       }),
     };
-
     return httpOptionsJWT;
   }
 
@@ -33,6 +32,7 @@ export class CategoryService {
     };
     return httpOptionsJWT;
   }
+
   constructor(private httpClient: HttpClient) {}
 
   getCategories$(): Observable<Category[]> {

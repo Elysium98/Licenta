@@ -5,7 +5,6 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class CommonService {

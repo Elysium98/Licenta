@@ -18,7 +18,6 @@ import { BookDetailComponent } from '../book-detail/book-detail.component';
 })
 export class BookListComponent implements OnInit {
   roles: Role[] = [];
-  array2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
   booksToBeFilteredBySearch: Book[] = [];
   booksToBeFilteredByCategory: Book[] = [];
   showEditBtn: boolean = false;
@@ -34,8 +33,8 @@ export class BookListComponent implements OnInit {
   property: string = '';
   searchedValue: string = '';
   onSearch: boolean = false;
-
   books: Book[] = [];
+
   constructor(
     private bookService: BookService,
     public dialog: MatDialog,
@@ -63,7 +62,6 @@ export class BookListComponent implements OnInit {
         if (this.searchedValue === '') {
           this.sortFormGroup.reset();
           this.books = await this.bookService.getBooksByStatusAsync(false);
-          // console.log(this.books);
         }
 
         switch (this.property) {
@@ -89,27 +87,6 @@ export class BookListComponent implements OnInit {
             break;
         }
 
-        // if (this.property === 'Titlu') {
-        //   // this.onSearch = true;
-        //   this.books = this.filteredBooks.filter((t) =>
-        //     t.title.toLowerCase().includes(this.searchedValue.toLowerCase())
-        //   );
-        // }
-
-        // if (this.property === 'Autor') {
-        //   // this.onSearch = true;
-        //   this.books = this.filteredBooks.filter((t) =>
-        //     t.author.toLowerCase().includes(this.searchedValue.toLowerCase())
-        //   );
-        // }
-
-        // if (this.property === 'Editura') {
-        //   // this.onSearch = true;
-        //   this.books = this.filteredBooks.filter((t) =>
-        //     t.publisher.toLowerCase().includes(this.searchedValue.toLowerCase())
-        //   );
-        // }
-
         this.booksToBeFilteredByCategory = this.books;
       });
     });
@@ -121,22 +98,6 @@ export class BookListComponent implements OnInit {
       sorting: '',
       category: '',
     });
-  }
-
-  getBooks() {
-    // this.books$ = this.bookService.getBooks$();
-
-    this.userLogged = this.userService.decodeToken(
-      localStorage.getItem('token')
-    )['nameid'];
-
-    for (let book of this.books) {
-      if (book.userId === this.userLogged) {
-        this.showEditBtn = true;
-      } else {
-        this.showEditBtn = false;
-      }
-    }
   }
 
   goToAddBook() {
@@ -161,6 +122,7 @@ export class BookListComponent implements OnInit {
       data: book,
     });
   }
+
   change(event) {
     switch (event.source.value) {
       case 'A-Z':

@@ -14,9 +14,7 @@ namespace BooksAPI.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RoleController(
-            RoleManager<IdentityRole> roleManager
-        )
+        public RoleController(RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
         }

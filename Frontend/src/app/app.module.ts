@@ -29,8 +29,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { InterceptorService } from './shared/components/loader/interceptor.service';
-import { LoaderService } from './shared/components/loader/loader.service';
+
 import { UserService } from './services/user.service';
 import { MatTableModule } from '@angular/material/table';
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
@@ -124,8 +123,6 @@ export function initializeApp(userService: UserService) {
     },
     DatePipe,
     CommonService,
-    LoaderService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
   ],
   bootstrap: [AppComponent],
 })

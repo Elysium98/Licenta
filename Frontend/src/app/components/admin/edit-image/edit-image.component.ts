@@ -30,7 +30,7 @@ export class EditImageComponent implements OnInit {
     return `https://localhost:7295/${serverPath}`;
   };
 
-  uploadFile(files) {
+  editImage(files) {
     if (files.length === 0) {
       return;
     }
@@ -44,7 +44,7 @@ export class EditImageComponent implements OnInit {
           this.dialogRef.close('success');
 
           this.commonService.showSnackBarMessage(
-            'Poza editată cu succes',
+            'Poza a fost editată cu succes !',
             'center',
             'bottom',
             4000,

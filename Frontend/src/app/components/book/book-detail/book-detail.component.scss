@@ -1,10 +1,7 @@
-.details {
-}
-
 .img {
   width: 400px;
   height: 615px;
-  //  border: 2px solid #555;
+
   box-shadow: 20px 10px 10px #ccc;
   -moz-box-shadow: 20px 10px 10px #ccc;
   -webkit-box-shadow: 20px 10px 10px #ccc;
@@ -14,38 +11,43 @@
 .mat_card_details {
   margin-top: 25px;
   width: 350px;
-  // height: 250px;
 }
 
 .mat_card_content {
   font-size: 22px;
-  //margin-top: 40px;
+  line-height: 20px;
+}
+
+.author {
+  font-size: 22px;
+  line-height: 25px;
 }
 
 .mat_card_title {
-  font-size: 35px;
+  font-size: 30px;
+  line-height: 1;
 }
 
 .container {
   margin-left: 25px;
 }
 
-.book_detail {
-}
 .mat-card-image:first-child {
   margin-top: 0px !important;
   margin-left: 10px;
 }
+
 p {
   margin-bottom: 15px;
 }
+
 .red_eye {
-  //margin: auto;
   cursor: pointer;
 
   font-size: 1.3vw !important;
   bottom: 20px;
 }
+
 .red_eye:hover {
-  color: rgb(212, 146, 116) !important;
+  color: #cf5966 !important;
 }

@@ -48,10 +48,8 @@ namespace BooksAPI.Services.Category
         public async Task<CategoryModel> GetByName(string name)
         {
             var category = await _context.Categories
-               .Where(c => c.Name == name)
-               .FirstOrDefaultAsync();
-         
- 
+                .Where(c => c.Name == name)
+                .FirstOrDefaultAsync();
 
             return category;
         }
@@ -79,7 +77,5 @@ namespace BooksAPI.Services.Category
 
             return true;
         }
-
-     
     }
 }

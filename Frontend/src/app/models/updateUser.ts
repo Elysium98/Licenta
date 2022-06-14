@@ -4,7 +4,7 @@ export class UpdateUser {
   firstName: string = '';
   study: string = '';
   phoneNumber: string = '';
-  // image: string = '';
+
   constructor(init?: Partial<UpdateUser>) {
     Object.assign(this, init);
   }

@@ -13,6 +13,5 @@ namespace BooksAPI.Data
         public DbSet<BookModel> Books { get; set; }
 
         public DbSet<CategoryModel> Categories { get; set; }
-
     }
 }

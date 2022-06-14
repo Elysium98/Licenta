@@ -1,5 +1,3 @@
-import { Role } from './role';
-
 export class User {
   id: string = '';
   firstName: string = '';
@@ -17,6 +15,7 @@ export class User {
   constructor(init?: Partial<User>) {
     Object.assign(this, init);
   }
+
   // constructor(fullName: string, email: string, userName: string) {
   //   this.fullName = fullName;
   //   this.email = email;

@@ -28,29 +28,25 @@ export class AddBookComponent implements OnInit {
   buttonName: string = '';
   categories: Category[] = [];
   users: User[] = [];
-
   currentCategory: Category;
   selectedCategory: Category;
   selectedUser: string = '';
   conditions: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
   states: Array<string> = ['Activa', 'Vanduta'];
   state: any;
-  helper = new JwtHelperService();
-  public response: { dbPath: '' };
   formData = new FormData();
   convertedDate: any;
   bodyData: any;
   currentBook: Book;
   book: Book = new Book();
   image: string = '';
-
   private _imageSubject = new BehaviorSubject(this.image);
   image$ = this._imageSubject.asObservable();
   imgUrl: string = '';
   image2: string = '../../../assets/img/new_books.png';
   image2$: Promise<any>;
 
-  uploadFile(files) {
+  editImage(files) {
     if (files.length === 0) {
       return;
     }
@@ -59,7 +55,13 @@ export class AddBookComponent implements OnInit {
     this.bookService.saveImageBook$(imageToUpload).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
-          //this.message = 'Upload success.';
+          this.commonService.showSnackBarMessage(
+            'Imaginea a fost editată cu succes !',
+            'right',
+            'bottom',
+            3000,
+            'notif-success'
+          );
           this.bodyData = event.body;
           this.updateImageBook();
         }
@@ -77,6 +79,13 @@ export class AddBookComponent implements OnInit {
     this.bookService.saveImageBook$(imageToUpload).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
+          this.commonService.showSnackBarMessage(
+            'Imaginea a fost încărcată cu succes',
+            'right',
+            'bottom',
+            3000,
+            'notif-success'
+          );
           this.bodyData = event.body;
         }
       },
@@ -133,9 +142,9 @@ export class AddBookComponent implements OnInit {
 
     if (this.editMode === false) {
       this.addBookFormGroup = this.fb.group({
-        isbn: ['', Validators.required],
+        isbn: ['', [Validators.required, Validators.pattern('[0-9]{13}')]],
         title: ['', Validators.required],
-        author: ['', [Validators.required, Validators.maxLength(30)]],
+        author: ['', [Validators.required, Validators.maxLength(100)]],
         publisher: ['', Validators.required],
         publicationDate: ['', Validators.required],
         category: ['', Validators.required],
@@ -168,7 +177,7 @@ export class AddBookComponent implements OnInit {
         this.state = 'Vanduta';
       }
       this.addBookFormGroup = await this.fb.group({
-        isbn: [this.currentBook.isbn],
+        isbn: [this.currentBook.isbn, Validators.pattern('[0-9]{13}')],
         title: [this.currentBook.title],
         author: [this.currentBook.author, Validators.maxLength(100)],
         publisher: [this.currentBook.publisher],
@@ -198,11 +207,8 @@ export class AddBookComponent implements OnInit {
     };
     this.bookService.updatePhotoBook$(this.currentBook.id, model).subscribe(
       async (data) => {
-        console.log('response', data);
-        console.log(this.currentBook.image);
         this.imgUrl = await this.createImgPath();
         this._imageSubject.next(this.imgUrl);
-        // this.userService.getUsers$();
       },
       (error) => console.log('error', error)
     );
@@ -251,33 +257,33 @@ export class AddBookComponent implements OnInit {
     );
 
     if (this.editMode === false) {
-      this.bookService
-        .addBook$(
-          this.book.isbn,
-          userLogged['nameid'],
-          this.book.title,
-          this.book.author,
-          this.book.publisher,
-          this.book.publicationDate,
-          this.book.page,
-          this.book.price,
-          this.book.language,
-          this.book.condition,
-          this.book.category.categoryId,
-          this.book.image,
-          false
-        )
-        .subscribe(() => {
-          // this.router.navigate(['/my-books']);
+      let model: Partial<Book> = {
+        isbn: this.book.isbn,
+        userId: userLogged['nameid'],
+        title: this.book.title,
+        author: this.book.author,
+        publisher: this.book.publisher,
+        publicationDate: this.book.publicationDate,
+        page: this.book.page,
+        price: this.book.price,
+        language: this.book.language,
+        condition: this.book.condition,
+        categoryId: this.book.category.categoryId,
+        image: this.book.image,
+        isSold: false,
+      };
 
-          this.commonService.showSnackBarMessage(
-            'Cartea a fost adăugată cu succes',
-            'right',
-            'bottom',
-            4000,
-            'notif-success'
-          );
-        });
+      this.bookService.addBook$(model).subscribe(() => {
+        // this.router.navigate(['/my-books']);
+
+        this.commonService.showSnackBarMessage(
+          'Cartea a fost adăugată cu succes !',
+          'right',
+          'bottom',
+          4000,
+          'notif-success'
+        );
+      });
     } else {
       let model = {
         categoryId: this.selectedCategory.categoryId,
@@ -293,8 +299,11 @@ export class AddBookComponent implements OnInit {
       };
 
       this.bookService.updateBook$(this.bookId, model).subscribe(() => {
+        if (model.isSold === true) {
+          this.router.navigate(['/history-books']);
+        }
         this.commonService.showSnackBarMessage(
-          'Cartea a fost actualizată cu succes',
+          'Cartea a fost actualizată cu succes !',
           'right',
           'bottom',
           4000,
@@ -307,10 +316,5 @@ export class AddBookComponent implements OnInit {
   change(event) {
     if (event.isUserInput) {
     }
-  }
-  uuidValue: string = ' ';
-  generateUUID() {
-    this.uuidValue = UUID.UUID();
-    return this.uuidValue;
   }
 }

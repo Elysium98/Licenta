@@ -135,7 +135,11 @@
           >
             <mat-form-field appearance="outline">
               <mat-label>Parolă curentă</mat-label>
-              <input matInput type="text" formControlName="currentPassword" />
+              <input
+                matInput
+                type="password"
+                formControlName="currentPassword"
+              />
               <mat-error *ngIf="hasErrorSecurity('currentPassword', 'required')"
                 >Parola curentă obligatorie</mat-error
               >
@@ -145,7 +149,7 @@
               <mat-label>Parolă nouă</mat-label>
               <input
                 matInput
-                type="text"
+                type="password"
                 formControlName="newPassword"
                 (change)="onPasswordChange()"
               />
@@ -163,7 +167,7 @@
               <mat-label>Confirmare parolă nouă</mat-label>
               <input
                 matInput
-                type="text"
+                type="password"
                 formControlName="confirmNewPassword"
                 (change)="onPasswordChange()"
               />

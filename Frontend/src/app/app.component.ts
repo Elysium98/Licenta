@@ -1,14 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  AfterContentInit,
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
-import { asyncScheduler, Observable } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
-import { LoaderService } from './shared/components/loader/loader.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -18,16 +8,5 @@ import { LoaderService } from './shared/components/loader/loader.service';
 export class AppComponent {
   title = 'BookApp';
 
-  constructor(
-    public loaderService: LoaderService,
-    private httpClient: HttpClient,
-    private changeDetector: ChangeDetectorRef
-  ) {}
-
-  isLoading$: Observable<boolean>;
-
-  // this.changeDetector.detectChanges();
+  constructor() {}
 }
-// ngAfterContentInit() {
-//   setTimeout(() => console.log('Place what you want here'), 0);
-// }

@@ -4,13 +4,10 @@ import { Role } from 'src/app/models/role';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { UUID } from 'angular2-uuid';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEventType,
-} from '@angular/common/http';
+import { MatDialogRef } from '@angular/material/dialog';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { CommonService } from '../../common.service';
+import { Login } from 'src/app/models/login';
 
 @Component({
   selector: 'app-authentication',
@@ -28,22 +25,13 @@ export class AuthenticationComponent implements OnInit {
   registerFormGroup!: FormGroup;
   selectedRole: string = '';
   roles: Role[] = [];
-  token: any;
-  tokenJWT: any;
-  formData = new FormData();
-  message: string;
   bodyData: any;
-
-  public response: { dbPath: '' };
-  @Output() public onUploadFinished = new EventEmitter();
 
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<AuthenticationComponent>,
     private fb: FormBuilder,
-    private http: HttpClient,
-    private commonService: CommonService,
-    private dialog: MatDialog
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -85,7 +73,12 @@ export class AuthenticationComponent implements OnInit {
     this.user.email = this.loginFormGroup.value.email;
     this.user.password = this.loginFormGroup.value.password;
 
-    this.userService.login$(this.user.email, this.user.password).subscribe(
+    let model: Login = {
+      email: this.user.email,
+      password: this.user.password,
+    };
+
+    this.userService.login$(model).subscribe(
       (user: any) => {
         let token = JSON.stringify(user.token);
         this.isSignedIn = true;
@@ -106,7 +99,7 @@ export class AuthenticationComponent implements OnInit {
         console.log('error', error);
         if ((error.error = 'Invalid email or password')) {
           this.commonService.showSnackBarMessage(
-            'Email sau parola greșită',
+            'Email-ul sau parola greșită',
             'right',
             'bottom',
             3000,
@@ -128,7 +121,7 @@ export class AuthenticationComponent implements OnInit {
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           this.commonService.showSnackBarMessage(
-            'Imagine încărcată cu succes',
+            'Imaginea a fost încărcată cu succes',
             'right',
             'bottom',
             3000,
@@ -153,48 +146,42 @@ export class AuthenticationComponent implements OnInit {
     this.user.password = this.registerFormGroup.value.password;
     this.user.role = 'User';
 
-    this.userService
-      .register$(
-        this.user.firstName,
-        this.user.lastName,
-        this.user.study,
-        this.user.image,
-        this.user.city,
-        this.user.birthDate,
-        this.user.phoneNumber,
-        this.user.email,
-        this.user.password,
-        this.user.role
-      )
-      .subscribe(
-        (data) => {
-          // this.dialogRef.close();
-          // this.dialog.open(AuthenticationComponent, {
-          //   width: '530px',
-          //   height: '850px',
-          // });
-          this.selectedTab = 0;
+    let model: Partial<User> = {
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      study: this.user.study,
+      image: this.user.image,
+      city: this.user.city,
+      birthDate: this.user.birthDate,
+      phoneNumber: this.user.phoneNumber,
+      email: this.user.email,
+      password: this.user.password,
+      role: this.user.role,
+    };
+
+    this.userService.register$(model).subscribe(
+      (data) => {
+        this.selectedTab = 0;
+        this.commonService.showSnackBarMessage(
+          'Înregistrare cu succes !',
+          'right',
+          'bottom',
+          4000,
+          'notif-success'
+        );
+      },
+      (error) => {
+        if ((error.errors = 'DuplicateEmail')) {
           this.commonService.showSnackBarMessage(
-            'Înregistrare cu succes',
+            'Email-ul există deja',
             'right',
             'bottom',
-            4000,
-            'notif-success'
+            3000,
+            'notif-error'
           );
-        },
-        (error) => {
-          console.log('error', error);
-          if ((error.errors = 'DuplicateEmail')) {
-            this.commonService.showSnackBarMessage(
-              'Emailul există deja',
-              'right',
-              'bottom',
-              3000,
-              'notif-error'
-            );
-          }
         }
-      );
+      }
+    );
   }
 
   selectedRoleHandler(selected: any) {

@@ -12,8 +12,8 @@ import { BookDetailComponent } from '../book/book-detail/book-detail.component';
 export class HomeComponent implements OnInit {
   books: Book[] = [];
   slides = [
-    { image: '../../assets/img/prima_poza_galerie_23.jpg' },
-    { image: '../../assets/img/a_doua_poza_galerie.jpg' },
+    { image: '../../assets/img/first_image_gallery.jpg' },
+    { image: '../../assets/img/second_image_gallery.jpg' },
   ];
 
   constructor(private bookService: BookService, public dialog: MatDialog) {}

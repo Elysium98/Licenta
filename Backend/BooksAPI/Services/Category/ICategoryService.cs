@@ -2,7 +2,7 @@
 
 namespace BooksAPI.Services.Category
 {
-    public interface ICategoryService : ICommonService<CategoryModel> 
+    public interface ICategoryService : ICommonService<CategoryModel>
     {
         Task<CategoryModel> GetByName(string name);
     }

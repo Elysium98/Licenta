@@ -12,14 +12,14 @@ namespace BooksAPI.Controllers
 {
     [ApiController]
     [Route("/email")]
-    public class EmailController: ControllerBase
+    public class EmailController : ControllerBase
     {
         private readonly IEmailService mailService;
+
         public EmailController(IEmailService mailService)
         {
             this.mailService = mailService;
         }
-
 
         [HttpPost("sendMessage")]
         public async Task<IActionResult> Send(MailRequest request)
@@ -31,12 +31,8 @@ namespace BooksAPI.Controllers
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
-
     }
 }
-

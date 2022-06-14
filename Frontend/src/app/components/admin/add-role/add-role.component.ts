@@ -64,7 +64,7 @@ export class AddRoleByAdminComponent implements OnInit {
         (data) => {
           this.dialogRef.close('save');
           this.commonService.showSnackBarMessage(
-            'Rol adăugat cu succes',
+            'Rolul a fost adăugat cu succes !',
             'center',
             'bottom',
             4000,
@@ -81,7 +81,7 @@ export class AddRoleByAdminComponent implements OnInit {
       this.roleService.updateRole$(this.currentRole.id, model).subscribe(
         (data) => {
           this.commonService.showSnackBarMessage(
-            'Rol editat cu succes',
+            'Rolul a fost editat cu succes !',
             'center',
             'bottom',
             4000,

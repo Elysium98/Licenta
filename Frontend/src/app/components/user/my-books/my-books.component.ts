@@ -56,11 +56,6 @@ export class MyBooksComponent implements OnInit {
       this.categories = categories;
     });
 
-    console.log(this.sortFormGroup.value.category);
-    // this.searchedValue = await this.bookService.searchProperty$;
-
-    //  this.bookService.getBooks$().subscribe((data) => (this.books = data));
-    // this.books = await this.bookService.getBooksAsync$();
     this.books = await this.bookService.getBooksByUserAndStatusAsync$(
       this.currentUser.id,
       false
@@ -79,6 +74,7 @@ export class MyBooksComponent implements OnInit {
       data: book,
     });
   }
+
   change(event) {
     switch (event.source.value) {
       case 'A-Z':
@@ -98,12 +94,6 @@ export class MyBooksComponent implements OnInit {
         break;
     }
   }
-
-  // async changeCategory(event) {
-  //   this.books = await this.bookService.getBooksByCategoryAsync$(
-  //     event.source.value
-  //   );
-  // }
 
   changeCategory(event) {
     this.books = this.booksFiltered.filter(

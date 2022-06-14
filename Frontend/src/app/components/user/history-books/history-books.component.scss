@@ -7,17 +7,12 @@
 }
 
 mat-card {
-  // width: 400px;
-  // height: 700px;
-  // max-width: 220px;
   max-width: 100%;
   max-height: 100%;
   width: 250px;
-  // height: 450px;
   height: 490px;
-
-  // height: auto;
 }
+
 .column-label {
   margin-right: 8px;
   font-size: 1rem;
@@ -25,7 +20,6 @@ mat-card {
 
 mat-card img {
   object-fit: cover;
-
   padding-left: 10%;
   padding-right: 10%;
 }
@@ -46,7 +40,6 @@ mat-card-content {
 }
 
 .book_btn {
-  margin-bottom: 20px;
   height: 50px;
   font-size: 20px;
 }
@@ -58,21 +51,41 @@ mat-card-content {
   font-size: 24px;
   width: 9.5em;
   overflow: hidden;
-  // margin-left: 10%;
-  // margin-right: 10%;
-  white-space: nowrap; /* Don't forget this one */
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .top_title {
+  font-size: 2.5vw;
+  z-index: 1;
+  position: relative;
   color: black;
-  padding-top: 25px;
   text-align: center;
-  margin: 1% !important;
-  font-size: var(--h1-font-size) !important;
+  top: 6vh;
+  margin-bottom: 20px;
 }
+
 .main-container {
+  position: relative;
+  bottom: 55px;
   margin-left: 130px !important;
+}
+
+.background_title {
+  display: flex;
+  text-align: center;
+  position: relative;
+  z-index: 0;
+  max-height: 100%;
+  width: 20%;
+  bottom: 65px;
+  margin-top: 30px;
+}
+
+.shape-img {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .buttons {
@@ -80,19 +93,22 @@ mat-card-content {
   justify-content: center;
   padding: 0 0 0 0 !important;
 }
+
 .details_btn {
-  margin-top: -4px !important;
+  font-size: 20px;
+  margin-top: -8px !important;
 }
+
 .buttons_top {
   display: flex;
   justify-content: flex-end;
+  position: relative;
+  bottom: 6vh;
 }
 
 mat-form-field,
 mat-checkbox {
   width: 70%;
-  //display: block;
-  // font-size: 25px;
   margin: 25px 25px 0px 25px;
 }
 
@@ -101,14 +117,23 @@ mat-checkbox {
   text-align: center;
 }
 
-::ng-deep .mat-select-panel {
-  //background: rgb(119, 112, 112);
-}
-
 ::ng-deep .mat-select-value {
   padding-left: 5px;
 }
 
 .sortForm {
+  position: relative;
+  bottom: 25px;
   display: flex;
+}
+
+.author {
+  padding-top: 3px;
+  padding-bottom: 4px;
+  text-align: center;
+  width: 11em;
+  padding-left: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

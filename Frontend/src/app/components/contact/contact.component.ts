@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Email } from 'src/app/models/email';
 import { EmailService } from 'src/app/services/email.service';
 import { CommonService } from 'src/app/shared/common.service';
@@ -11,9 +11,10 @@ import { CommonService } from 'src/app/shared/common.service';
 })
 export class ContactComponent implements OnInit {
   contactFormGroup: FormGroup;
-  image2: string =
-    '../../../assets/img/Contact us-rafiki copy_VERSIUNE_NOUA.png';
+  image2: string = '../../../assets/img/contact_us.png';
   image2$: Promise<any>;
+  @ViewChild('formDirective') private formDirective: NgForm;
+
   constructor(
     private fb: FormBuilder,
     private emailService: EmailService,
@@ -31,21 +32,31 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     let model: Email = {
-      emailTo: 'justst4r699@gmail.com',
+      emailTo: 'booksapp13@gmail.com',
       subject: this.contactFormGroup.value.emailTo,
       body: this.contactFormGroup.value.message,
     };
 
-    this.emailService.sendEmail$(model).subscribe((data) => {
-      console.log(data),
+    this.emailService.sendEmail$(model).subscribe(
+      (data) => {
+        console.log(data), this.formDirective.resetForm();
         this.commonService.showSnackBarMessage(
-          'Mesaj trimis cu succes !',
+          'Mesajul a fost trimis cu succes !',
           'right',
           'bottom',
           3000,
           'notif-success'
         );
-    });
+      },
+      (error) =>
+        this.commonService.showSnackBarMessage(
+          'Cartea nu a fost actualizată',
+          'right',
+          'bottom',
+          3000,
+          'notif-error'
+        )
+    );
   }
 
   hasError(controlName: string, errorName: string) {

@@ -22,7 +22,6 @@ export class EmailService {
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
       }),
     };
-
     return httpOptionsJWT;
   }
 

@@ -6,6 +6,7 @@
         class="add_form"
         [formGroup]="contactFormGroup"
         (ngSubmit)="onSubmit()"
+        #formDirective="ngForm"
       >
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Email </mat-label>
@@ -47,6 +48,10 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- <img id="img" src="../../../assets/img/Contact us-rafiki.png" /> -->
+  <div class="address">
+    Brașov, Strada Memorandului 43 <br />
+    0214906050
+  </div>
+  <img id="pin_img" src="../../../assets/img/pin.png" />
   <img id="img" [src]="image2$ | async" />
 </div>

@@ -1,4 +1,10 @@
 <div class="top_title">Cărți vândute</div>
+<div class="shape-img">
+  <img
+    class="background_title"
+    src="../../../assets/img/background_for_title.png"
+  />
+</div>
 <div class="content">
   <div class="buttons_top">
     <form [formGroup]="sortFormGroup" class="sortForm">
@@ -51,13 +57,13 @@
         />
 
         <mat-card-content>
-          <p>{{ book.author }}</p>
+          <p class="author">{{ book.author }}</p>
           <p>{{ book.price }} LEI</p>
         </mat-card-content>
         <mat-card-actions class="buttons">
           <button
             mat-raised-button
-            color="accent"
+            color="warn"
             (click)="getBookById(book)"
             class="details_btn"
           >

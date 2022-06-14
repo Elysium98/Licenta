@@ -162,7 +162,7 @@
     <ng-container matColumnDef="birthDate">
       <th mat-header-cell *matHeaderCellDef>Dată naștere</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.birthDate | date }}
+        {{ user.birthDate | date: "yyyy" }}
       </td>
     </ng-container>
 

@@ -5,6 +5,7 @@ export class Book {
   isbn: string = '';
   id: string = '';
   userId: string = '';
+  categoryId: string = '';
   title: string = '';
   author: string = '';
   publisher: string = '';

@@ -86,15 +86,12 @@ namespace BooksAPI.Controllers
                     return Ok(tempUser);
                 }
                 return BadRequest(result);
-                
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-   
 
         ///<summary>
         ///Gets all users
@@ -327,6 +324,7 @@ namespace BooksAPI.Controllers
                     }
 
                     user.Email = model.Email;
+                    user.UserName = model.Email;
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.Study = model.Study;
@@ -444,26 +442,41 @@ namespace BooksAPI.Controllers
         /// Change user password
         ///</summary>
         [Authorize(Roles = "User,Admin")]
-        [HttpPost("changePassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        [HttpPut("changePassword/{id}")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model, string Id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.ChangePasswordAsync(
-                    user,
-                    model.CurrentPassword,
-                    model.NewPassword
-                );
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await _signInManager.RefreshSignInAsync(user);
-                    return Ok(model);
+                    var user = await _userManager.FindByIdAsync(Id);
+                    var checkIsValid = await _userManager.CheckPasswordAsync(
+                        user,
+                        model.CurrentPassword
+                    );
+
+                    if (checkIsValid == false)
+                    {
+                        return BadRequest("Invalid Password");
+                    }
+                    var result = await _userManager.ChangePasswordAsync(
+                        user,
+                        model.CurrentPassword,
+                        model.NewPassword
+                    );
+
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.RefreshSignInAsync(user);
+                        return Ok(model);
+                    }
                 }
+                return BadRequest();
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

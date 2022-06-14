@@ -81,8 +81,6 @@ namespace BooksAPI.Services
 
             return result;
         }
-        
-
 
         public async Task<List<BookModel>> GetAllByCategory(string categoryName)
         {
@@ -94,9 +92,6 @@ namespace BooksAPI.Services
 
             return result;
         }
-
-
-     
 
         public Task<bool> Update(Guid id, BookModel model)
         {
@@ -121,7 +116,6 @@ namespace BooksAPI.Services
             book.Language = model.Language;
             book.Condition = model.Condition;
             book.isSold = model.isSold;
-
 
             await _context.SaveChangesAsync();
 

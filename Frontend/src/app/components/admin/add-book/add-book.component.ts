@@ -46,6 +46,13 @@ export class AddBookByAdminComponent implements OnInit {
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           this.bodyData = event.body;
+          this.commonService.showSnackBarMessage(
+            'Imaginea a fost încărcată cu succes',
+            'right',
+            'bottom',
+            3000,
+            'notif-success'
+          );
         }
       },
       error: (err: HttpErrorResponse) => console.log(err),
@@ -187,35 +194,34 @@ export class AddBookByAdminComponent implements OnInit {
     );
 
     if (this.editMode === false) {
-      this.bookService
-        .addBook$(
-          this.book.isbn,
-          userLogged['nameid'],
-          this.book.title,
-          this.book.author,
-          this.book.publisher,
-          this.book.publicationDate,
-          this.book.page,
-          this.book.price,
-          this.book.language,
-          this.book.condition,
-          this.book.category.categoryId,
-          this.book.image,
-          false
-        )
-        .subscribe(
-          (data) => {
-            this.dialogRef.close('save');
-            this.commonService.showSnackBarMessage(
-              'Carte adăugată cu succes',
-              'center',
-              'bottom',
-              4000,
-              'notif-success'
-            );
-          },
-          (error) => console.log('error', error)
-        );
+      let model: Partial<Book> = {
+        isbn: this.book.isbn,
+        userId: userLogged['nameid'],
+        title: this.book.title,
+        author: this.book.author,
+        publisher: this.book.publisher,
+        publicationDate: this.book.publicationDate,
+        page: this.book.page,
+        price: this.book.price,
+        language: this.book.language,
+        condition: this.book.condition,
+        categoryId: this.book.category.categoryId,
+        image: this.book.image,
+        isSold: false,
+      };
+      this.bookService.addBook$(model).subscribe(
+        (data) => {
+          this.dialogRef.close('save');
+          this.commonService.showSnackBarMessage(
+            'Cartea a fost adăugată cu succes !',
+            'center',
+            'bottom',
+            4000,
+            'notif-success'
+          );
+        },
+        (error) => console.log('error', error)
+      );
     } else {
       let model = {
         categoryId: this.selectedCategory.categoryId,
@@ -233,7 +239,7 @@ export class AddBookByAdminComponent implements OnInit {
       this.bookService.updateBook$(this.currentBook.id, model).subscribe(
         (data) => {
           this.commonService.showSnackBarMessage(
-            'Carte editată cu succes',
+            'Cartea a fost editată cu succes !',
             'center',
             'bottom',
             4000,

@@ -2,13 +2,12 @@ import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../models/user';
-// import jwt_decode from 'jwt-decode';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Role } from '../models/role';
-import { Password } from '../models/password';
+
 import { UpdateUser } from '../models/updateUser';
 import { Image } from '../models/image';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Login } from '../models/login';
+import { ChangePassword } from '../models/changePassword';
 
 @Injectable({
   providedIn: 'root',
@@ -68,30 +67,19 @@ export class UserService {
     });
   }
 
-  register$(
-    firstName: string,
-    lastName: string,
-    study: string,
-    image: string,
-    city: string,
-    birthDate: Date,
-    phoneNumber: string,
-    email: string,
-    password: string,
-    role: string
-  ): Observable<User> {
-    let user = {
-      firstName: firstName,
-      lastName: lastName,
-      study: study,
-      image: image,
-      city: city,
-      birthDate: birthDate,
-      phoneNumber: phoneNumber,
-      password: password,
-      email: email,
-      role: role,
-    };
+  register$(model: Partial<User>): Observable<User> {
+    let user = new User({
+      firstName: model.firstName,
+      lastName: model.lastName,
+      study: model.study,
+      image: model.image,
+      city: model.city,
+      birthDate: model.birthDate,
+      phoneNumber: model.phoneNumber,
+      password: model.password,
+      email: model.email,
+      role: model.role,
+    });
     return this.httpClient.post<User>(
       this.baseUrl + '/register',
       user,
@@ -99,12 +87,12 @@ export class UserService {
     );
   }
 
-  login$(email: string, password: string): Observable<User> {
-    let user = {
-      email: email,
-      password: password,
+  login$(model: Login): Observable<Login> {
+    let user: Login = {
+      email: model.email,
+      password: model.password,
     };
-    return this.httpClient.post<User>(
+    return this.httpClient.post<Login>(
       this.baseUrl + '/login',
       user,
       this.httpOptions
@@ -119,13 +107,16 @@ export class UserService {
     return this.httpClient.get<User[]>(this.baseUrl);
   }
 
-  changePassword$(model: Password): Observable<Password> {
-    let password: Password = {
+  changePassword$(
+    model: ChangePassword,
+    id: string
+  ): Observable<ChangePassword> {
+    let password: ChangePassword = {
       currentPassword: model.currentPassword,
       newPassword: model.newPassword,
     };
-    return this.httpClient.post<Password>(
-      this.baseUrl + '/changePassword',
+    return this.httpClient.put<ChangePassword>(
+      this.baseUrl + '/changePassword/' + id,
       password,
       this.getHttpOptionsBearer()
     );

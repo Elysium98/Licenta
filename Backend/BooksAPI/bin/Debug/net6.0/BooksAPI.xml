@@ -187,7 +187,7 @@
              Save user photo
             </summary>
         </member>
-        <member name="M:BooksAPI.Controllers.UserController.ChangePassword(BooksAPI.Models.ChangePasswordModel)">
+        <member name="M:BooksAPI.Controllers.UserController.ChangePassword(BooksAPI.Models.ChangePasswordModel,System.String)">
             <summary>
              Change user password
             </summary>

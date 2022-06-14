@@ -30,13 +30,13 @@
   <div class="card-main-container">
     <img
       class="shelf_img"
-      src="../../../assets/img/v69.png"
+      src="../../../assets/img/bookshelf.png"
       fxLayoutAlign="center"
     />
     <mat-card class="container-card">
       <div class="content">
         <div fxLayout="row wrap" fxLayoutGap="36px grid" class="main-container">
-          <div *ngFor="let book of books.slice(0, 4)">
+          <div *ngFor="let book of books.slice(-4)">
             <mat-card-header>
               <mat-card-title class="mat-title"
                 ><b>{{ book.title }}</b></mat-card-title

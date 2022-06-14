@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -274,7 +273,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.userService.deleteUser(id).subscribe(() => {
       this.getUsers();
       this.commonService.showSnackBarMessage(
-        'Utilizator șters cu succes',
+        'Utilizatorul a fost șters cu succes !',
         'center',
         'bottom',
         4000,
@@ -288,7 +287,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.bookService.deleteBook(id).subscribe(() => {
       this.getBooks();
       this.commonService.showSnackBarMessage(
-        'Carte ștearsă cu succes',
+        'Cartea a fost ștearsă cu succes !',
         'center',
         'bottom',
         4000,
@@ -302,7 +301,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.categoryService.deleteCategory(id).subscribe(() => {
       this.getCategories();
       this.commonService.showSnackBarMessage(
-        'Categorie ștearsă cu succes',
+        'Categoria a fost ștearsă cu succes !',
         'center',
         'bottom',
         4000,
@@ -316,7 +315,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.roleService.deleteRole(id).subscribe(() => {
       this.getRoles();
       this.commonService.showSnackBarMessage(
-        'Rol șters cu succes',
+        'Rolul a fost șters cu succes !',
         'center',
         'bottom',
         4000,

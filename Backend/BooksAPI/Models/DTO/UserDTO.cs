@@ -4,23 +4,20 @@
     {
         public UserDTO(
             string id,
-            //string fullName,
             string firstName,
             string lastName,
             string study,
             string image,
             string city,
             DateTime birthDate,
-                   string phoneNumber,
+            string phoneNumber,
             string email,
             string userName,
-      
             DateTime dateCreated,
             string role
         )
         {
             Id = id;
-            //FullName = fullName;
             FirstName = firstName;
             LastName = lastName;
             Study = study;
@@ -35,8 +32,6 @@
         }
 
         public string Id { get; set; }
-
-        // public string FullName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Study { get; set; }

@@ -21,7 +21,6 @@ export class RoleService {
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token')),
       }),
     };
-
     return httpOptionsJWT;
   }
 

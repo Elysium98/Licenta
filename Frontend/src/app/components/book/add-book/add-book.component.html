@@ -14,6 +14,9 @@
           <mat-error *ngIf="hasAddError('isbn', 'required')"
             >ISBN obligatoriu</mat-error
           >
+          <mat-error *ngIf="hasAddError('isbn', 'pattern')"
+            >ISBN-ul trebuie să aibe 13 cifre
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="form-field" appearance="outline">
@@ -204,7 +207,7 @@
     </div>
     <input
       #file
-      (change)="uploadFile(file.files)"
+      (change)="editImage(file.files)"
       type="file"
       style="display: none"
     />

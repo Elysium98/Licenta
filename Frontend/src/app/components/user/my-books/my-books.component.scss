@@ -81,11 +81,13 @@ mat-card-content {
   bottom: 65px;
   margin-top: 30px;
 }
+
 .shape-img {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
+
 .buttons {
   display: flex;
   justify-content: space-between;
@@ -93,7 +95,7 @@ mat-card-content {
 }
 .details_btn {
   font-size: 20px;
-  margin-top: -4px !important;
+  margin-top: -8px !important;
 }
 .buttons_top {
   display: flex;
@@ -121,4 +123,15 @@ mat-checkbox {
   position: relative;
   bottom: 25px;
   display: flex;
+}
+
+.author {
+  padding-top: 3px;
+  padding-bottom: 4px;
+  text-align: center;
+  width: 11em;
+  padding-left: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

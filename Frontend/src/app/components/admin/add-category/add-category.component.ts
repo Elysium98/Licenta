@@ -1,27 +1,8 @@
-import { DatePipe } from '@angular/common';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEventType,
-} from '@angular/common/http';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  OnInit,
-  Optional,
-  Output,
-} from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Book } from 'src/app/models/book';
 import { Category } from 'src/app/models/category';
-import { User } from 'src/app/models/user';
-import { BookService } from 'src/app/services/book.service';
 import { CategoryService } from 'src/app/services/category.service';
-import { UserService } from 'src/app/services/user.service';
 import { CommonService } from 'src/app/shared/common.service';
 
 @Component({
@@ -33,7 +14,6 @@ export class AddCategoryByAdminComponent implements OnInit {
   addCategoryFormGroup: FormGroup;
   editMode: boolean = false;
   matTitle: string = '';
-  categories: Category[] = [];
   currentCategory: Category;
   category: Category = new Category();
 
@@ -85,7 +65,7 @@ export class AddCategoryByAdminComponent implements OnInit {
         (data) => {
           this.dialogRef.close('save');
           this.commonService.showSnackBarMessage(
-            'Categorie adăugată cu succes',
+            'Categoria a fost adăugată cu succes !',
             'center',
             'bottom',
             4000,
@@ -104,7 +84,7 @@ export class AddCategoryByAdminComponent implements OnInit {
         .subscribe(
           (data) => {
             this.commonService.showSnackBarMessage(
-              'Categorie editată cu succes',
+              'Categoria a fost editată cu succes !',
               'center',
               'bottom',
               4000,
