@@ -101,9 +101,9 @@ export class AddBookByAdminComponent implements OnInit {
 
     if (this.editMode === false) {
       this.addBookFormGroup = this.fb.group({
-        isbn: ['', Validators.required],
+        isbn: ['', [Validators.required, Validators.pattern('[0-9]{13}')]],
         title: ['', Validators.required],
-        author: ['', [Validators.required, Validators.maxLength(30)]],
+        author: ['', [Validators.required, Validators.maxLength(100)]],
         publisher: ['', Validators.required],
         publicationDate: ['', Validators.required],
         category: ['', Validators.required],
@@ -133,7 +133,7 @@ export class AddBookByAdminComponent implements OnInit {
         this.state = 'Vanduta';
       }
       this.addBookFormGroup = await this.fb.group({
-        isbn: [this.currentBook.isbn],
+        isbn: [this.currentBook.isbn, Validators.pattern('[0-9]{13}')],
         title: [this.currentBook.title],
         author: [this.currentBook.author, Validators.maxLength(100)],
         publisher: [this.currentBook.publisher],

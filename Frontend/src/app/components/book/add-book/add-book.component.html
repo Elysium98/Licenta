@@ -7,6 +7,7 @@
         class="add_form"
         [formGroup]="addBookFormGroup"
         (ngSubmit)="onSubmit()"
+        #formDirective="ngForm"
       >
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>ISBN </mat-label>

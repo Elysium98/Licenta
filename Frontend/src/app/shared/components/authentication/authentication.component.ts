@@ -188,9 +188,7 @@ export class AuthenticationComponent implements OnInit {
     this.selectedRole = selected.value;
   }
 
-  change(event) {
-    console.log(event);
-  }
+  change(event) {}
 
   getUsers() {
     this.userService.getUsers$().subscribe((result) => (this.users = result));

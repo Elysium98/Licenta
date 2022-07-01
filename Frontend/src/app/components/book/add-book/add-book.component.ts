@@ -1,9 +1,7 @@
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { UUID } from 'angular2-uuid';
 import { BehaviorSubject } from 'rxjs';
 import { Book } from 'src/app/models/book';
 import { Category } from 'src/app/models/category';
@@ -33,6 +31,7 @@ export class AddBookComponent implements OnInit {
   selectedUser: string = '';
   conditions: Array<string> = ['Medie', 'Bună', 'Foarte bună'];
   states: Array<string> = ['Activa', 'Vanduta'];
+  @ViewChild('formDirective') private formDirective: NgForm;
   state: any;
   formData = new FormData();
   convertedDate: any;
@@ -274,8 +273,7 @@ export class AddBookComponent implements OnInit {
       };
 
       this.bookService.addBook$(model).subscribe(() => {
-        // this.router.navigate(['/my-books']);
-
+        this.formDirective.resetForm();
         this.commonService.showSnackBarMessage(
           'Cartea a fost adăugată cu succes !',
           'right',

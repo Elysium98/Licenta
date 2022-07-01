@@ -63,9 +63,7 @@ export class EditImageComponent implements OnInit {
       image: this.currentBook.image,
     };
     this.bookService.updatePhotoBook$(this.currentBook.id, model).subscribe(
-      async (data) => {
-        console.log('response', data);
-      },
+      async (data) => {},
       (error) => console.log('error', error)
     );
   }

@@ -52,7 +52,6 @@ export class HistoryBooksComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log(this.currentUser);
     this.sortFormGroup = this.fb.group({
       sorting: '',
       category: this.books.map((book) => book.category.name),
@@ -62,11 +61,6 @@ export class HistoryBooksComponent implements OnInit {
       this.categories = categories;
     });
 
-    console.log(this.sortFormGroup.value.category);
-    // this.searchedValue = await this.bookService.searchProperty$;
-
-    //  this.bookService.getBooks$().subscribe((data) => (this.books = data));
-    //this.books = await this.bookService.getBooksAsync$();
     this.books = await this.bookService.getBooksByUserAndStatusAsync$(
       this.currentUser.id,
       true

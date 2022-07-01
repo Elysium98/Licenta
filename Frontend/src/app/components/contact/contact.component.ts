@@ -39,7 +39,7 @@ export class ContactComponent implements OnInit {
 
     this.emailService.sendEmail$(model).subscribe(
       (data) => {
-        console.log(data), this.formDirective.resetForm();
+        this.formDirective.resetForm();
         this.commonService.showSnackBarMessage(
           'Mesajul a fost trimis cu succes !',
           'right',

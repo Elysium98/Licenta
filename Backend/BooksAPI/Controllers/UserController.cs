@@ -181,7 +181,6 @@ namespace BooksAPI.Controllers
         ///<summary>
         ///Gets all users by role
         ///</summary>
-
         [HttpGet("{role}", Name = "getUsersByRole")]
         public async Task<object> GetUsersByRole(string role)
         {

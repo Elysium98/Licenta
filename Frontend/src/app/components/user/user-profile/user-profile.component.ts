@@ -29,7 +29,6 @@ export class UserProfileComponent implements OnInit {
       Date.now() - new Date(this.book.user.birthDate).getTime()
     );
     this.age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
-    console.log(this.age);
   }
 
   createImgPath = (serverPath: string) => {

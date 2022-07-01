@@ -118,6 +118,9 @@
               {{ educationForm }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="hasRegisterError('study', 'required')"
+            >Ultima formă de învățământ obligatorie</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field appearance="outline">

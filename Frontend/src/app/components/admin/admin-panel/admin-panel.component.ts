@@ -33,7 +33,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   roles: MatTableDataSource<Role> = new MatTableDataSource();
   // categories: Category[];
   state: any;
-
+  states: Array<string> = ['Activa', 'Vanduta'];
   books$: Observable<Book[]>;
   dataSource: MatTableDataSource<Book>;
   currentUser$: Observable<User> = this.userService.currentUser$;
@@ -43,7 +43,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     'firstName',
     'birthDate',
     'phoneNumber',
-    'actions',
   ];
 
   displayedRolesColumns: string[] = ['name', 'actions'];
@@ -121,11 +120,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
         this.rolesTable = false;
       }
     });
-
-    console.log(this.propertyFromHeader);
-
-    //this.books$ = this.bookService.getBooks$();
-    // this.books = await this.bookService.getBooksAsync$();
   }
 
   openRoleDialog() {
@@ -247,13 +241,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.bookService.getBooks$().subscribe((result) => {
       // this.books = result;
       this.books = new MatTableDataSource(result);
-      for (let book of result) {
-        if (book.isSold === false) {
-          this.state = 'Activa';
-        } else {
-          this.state = 'Vanduta';
-        }
-      }
       this.books.paginator = this.paginator;
     });
   }
@@ -267,9 +254,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   }
 
   deleteUser(id: string) {
-    // console.log('itemId', id);
-    // console.log(typeof id);
-    console.log('itemId', id);
     this.userService.deleteUser(id).subscribe(() => {
       this.getUsers();
       this.commonService.showSnackBarMessage(
@@ -283,7 +267,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   }
 
   deleteBook(id: string) {
-    console.log('itemId', id);
     this.bookService.deleteBook(id).subscribe(() => {
       this.getBooks();
       this.commonService.showSnackBarMessage(
@@ -297,7 +280,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   }
 
   deleteCategory(id: string) {
-    console.log('itemId', id);
     this.categoryService.deleteCategory(id).subscribe(() => {
       this.getCategories();
       this.commonService.showSnackBarMessage(
@@ -311,7 +293,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
   }
 
   deleteRole(id: string) {
-    console.log('itemId', id);
     this.roleService.deleteRole(id).subscribe(() => {
       this.getRoles();
       this.commonService.showSnackBarMessage(
