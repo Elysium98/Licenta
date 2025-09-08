@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BooksApp.Data.Entities;
+using BooksApp.Data.Implementation;
 using BooksApp.Data.Interfaces;
 using BooksApp.Services.Interfaces;
 using BooksApp.Services.Models;
@@ -19,8 +20,18 @@ namespace BooksApp.Services.Implementation
 
         public async Task<CategoryModel> GetByIdAsync(string id)
         {
-            var entity = await _categoryRepository.GetByIdAsync(id);
+            if (!Guid.TryParse(id, out var guidId))
+                throw new ArgumentException("Invalid GUID format", nameof(id));
+
+            var entity = await _categoryRepository.GetByIdAsync(guidId);
+            if (entity == null) return null;
+
             return _mapper.Map<CategoryModel>(entity);
+        }
+        public async Task<CategoryModel?> GetByName(string name)
+        {
+            var entity = await _categoryRepository.GetByNameAsync(name); 
+            return _mapper.Map<CategoryModel?>(entity);
         }
 
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()

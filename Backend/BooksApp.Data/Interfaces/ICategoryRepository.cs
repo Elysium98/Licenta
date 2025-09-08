@@ -9,5 +9,7 @@ namespace BooksApp.Data.Interfaces
 {
     public interface ICategoryRepository : IBaseRepository<CategoryEntity>
     {
+        Task<CategoryEntity?> GetByNameAsync(string name);
+
     }
 }

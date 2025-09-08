@@ -59,7 +59,14 @@ namespace BooksApp.Data.Implementation
         }
         public override async Task<BookEntity> GetByIdAsync(object id)
         {
-            var guidId = (Guid)id;
+            if (id == null) throw new ArgumentNullException(nameof(id));
+
+            Guid guidId = id is Guid g
+                          ? g
+                          : Guid.TryParse(id.ToString(), out var parsed)
+                            ? parsed
+                            : throw new ArgumentException("Id must be a GUID or a valid string GUID", nameof(id));
+
             var book = await _dbContext.Books
                 .Include(x => x.Category)
                 .Include(x => x.User)

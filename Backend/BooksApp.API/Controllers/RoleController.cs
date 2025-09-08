@@ -1,5 +1,6 @@
 ﻿using BooksApp.Services.Interfaces;
 using BooksApp.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApp.API.Controllers
@@ -15,6 +16,7 @@ namespace BooksApp.API.Controllers
             _roleService = roleService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
@@ -22,6 +24,7 @@ namespace BooksApp.API.Controllers
             return Ok(roles);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRole(string id)
         {
@@ -29,6 +32,7 @@ namespace BooksApp.API.Controllers
             return Ok(role);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddRole([FromBody] RoleModel model)
         {
@@ -37,6 +41,7 @@ namespace BooksApp.API.Controllers
             return BadRequest(message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRole(string id, [FromBody] RoleModel model)
         {
@@ -45,6 +50,7 @@ namespace BooksApp.API.Controllers
             return BadRequest(message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(string id)
         {

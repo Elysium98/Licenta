@@ -1,6 +1,7 @@
 ﻿using BooksApp.Services.Implementation;
 using BooksApp.Services.Interfaces;
 using BooksApp.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApp.API.Controllers
@@ -17,6 +18,7 @@ namespace BooksApp.API.Controllers
             _photoService = photoService;
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserById(string id)
         {
@@ -27,6 +29,7 @@ namespace BooksApp.API.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers([FromQuery] string role = null)
         {
@@ -34,6 +37,7 @@ namespace BooksApp.API.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("changePassword/{id}")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model, string id)
         {
@@ -48,6 +52,7 @@ namespace BooksApp.API.Controllers
             return Ok(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -100,6 +105,7 @@ namespace BooksApp.API.Controllers
             }
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserModel model)
         {
@@ -110,7 +116,7 @@ namespace BooksApp.API.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("updatePhoto/{id}")]
         public async Task<IActionResult> UpdatePhoto(string id, IFormFile file)
         {

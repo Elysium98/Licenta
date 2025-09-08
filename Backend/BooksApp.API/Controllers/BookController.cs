@@ -1,5 +1,6 @@
 ﻿using BooksApp.Services.Interfaces;
 using BooksApp.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksApp.API.Controllers
@@ -15,6 +16,7 @@ namespace BooksApp.API.Controllers
             _bookService = bookService;
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<IActionResult> GetBooks([FromQuery] string? userId, [FromQuery] bool? isSold, [FromQuery] string? categoryName)
         {
@@ -32,6 +34,7 @@ namespace BooksApp.API.Controllers
             }
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<BookModel>> GetById(string id)
         {
@@ -42,6 +45,7 @@ namespace BooksApp.API.Controllers
             return Ok(book);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public async Task<ActionResult<BookModel>> Create([FromBody] BookModel bookModel)
         {
@@ -49,10 +53,11 @@ namespace BooksApp.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] BookModel bookModel)
         {
-            var existing = await _bookService.GetByIdAsync(bookModel.Id);
+            var existing = await _bookService.GetByIdAsync(bookModel.Id.ToString());
             if (existing == null)
                 return NotFound();
 
@@ -60,6 +65,7 @@ namespace BooksApp.API.Controllers
             return Ok(bookModel);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

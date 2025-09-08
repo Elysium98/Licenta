@@ -5,7 +5,7 @@
 [Ll]ogs/
 *.log
 
-## Nu include fișierele generate de runtime
+## Do not include runtime-generated files
 *.dll
 *.exe
 *.pdb
@@ -30,12 +30,12 @@
 App_Data/
 migrations/
 
-## Nu urcă setările locale
+## Do not commit local settings
 appsettings.Development.json
 appsettings.Local.json
 secrets.json
 
-## Optional: ignori și appsettings.json (dacă nu vrei să fie în git deloc)
+## Optional: ignore appsettings.json entirely (if you don't want it in git)
 # appsettings.json
 
 ## Publish results
@@ -43,7 +43,7 @@ secrets.json
 *.pubxml
 *.publishproj
 
-## Nu urcă fișiere temporare
+## Do not commit temporary files
 *.tmp
 *.temp
 

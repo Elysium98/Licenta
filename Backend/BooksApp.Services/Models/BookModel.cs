@@ -2,7 +2,7 @@
 {
     public class BookModel
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public string ISBN { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
@@ -14,9 +14,9 @@
         public string Condition { get; set; }
         public bool isSold { get; set; }
         public string Image { get; set; }
-        public Guid CategoryId { get; set; }
+        public string? CategoryId { get; set; }
         public CategoryModel? Category { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public UserModel? User { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace BooksApp.Services.Interfaces
 {
     public interface ICategoryService : IBaseService<CategoryModel, string>
     {
+        Task<CategoryModel?> GetByName(string name);
     }
 }
